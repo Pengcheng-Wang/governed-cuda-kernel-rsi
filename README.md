@@ -916,7 +916,31 @@ A100 GPUs.
     `5.32x–6.96x` 8-GPU NVSwitch Ulysses `MoBA-CP = 8` speedup over Ring
     (`4.29x–6.23x` vs 1-GPU upstream, `0.00e+00` `rel_l2`), and `3.24x`
     ($D=1024$, `-0.1654 bpb`) / `3.22x` ($D=2048$, `-0.0954 bpb`) in a `12s`
-    autoresearch loop, `E158`).
+    autoresearch loop, `E158`), and **Round-33 RSI (`v150`): `Hierarchical
+    Dual-Route Sparse-Linear Attention (H2SA-GDN) & Governed Loop Optimization
+    v3.8 Tournament`** (co-designed and peer-reviewed with M365 Copilot
+    `Cowork` `GPT 6.2 Astra, Max` under the exact dense-vs-selected residual
+    decomposition $\mathbf{o}_{\text{dense}} - \mathbf{o}_{\text{sel}} =
+    m(\mathbf{r} - \mathbf{s})$ — *"a routing miss need not be a memory miss"* —
+    resolving coarse block routing's $1/B_C$ needle dilution (`MoBA E158`
+    Holdout `0.6437`) and token-only routing's long-horizon state drop (`DSA
+    E157` Holdout `0.7775`) via `16/16` `0`-spill (`83` specializations,
+    `max_regs = 168 <= 168`, `max_smem = 40,960 B`) Round-33 RSI Triton kernels
+    combining Route 1 coarse block centroids, Route 2 rejected-block subtile
+    outlier rescue $\tilde{\mathbf{k}}_u = \boldsymbol{\mu}_u +
+    \lambda(\mathbf{k}_{s^*(u)} - \boldsymbol{\mu}_c)$, and Route 3 `BV=32`
+    V-tiled / `BK=64` K-split causal block-delta Gated-DeltaNet fast-weight
+    memory $\mathbf{S}_c$, achieving `8/8` training shape wins up to `8.03x`
+    Fwd, `4.97x` Total & `4.55x` HBM reduction, `24.06x–108.41x` faster 3-launch
+    single-pass decode (`0.139–0.151 ms`), `3.51x` ($D=1024, K=64$) & `3.24x`
+    ($D=2048, K=128$) `H2SAGDNBlockRSI` + `DualRouteShare` stack speedup,
+    `2.67x–5.41x` 8-GPU NVSwitch Ulysses `H2SA-GDN-CP = 8` speedup over Ring,
+    `3.13x–3.18x` more steps in `12s` autoresearch, and `governed_loop_guard.py
+    v3.8` `PROMOTE` (`0.9578` Confirm IUT across all 3 comparators) +
+    `HOLDOUT_PROMOTE` (`0.9535` Single-Touch Holdout, `+0.3098` over `MoBA
+    E158` and `+0.1760` over `DSA E157` across `RULER_Needle`,
+    `BABILong_StateTrack`, `LongBench_DocQA`, `RepoBench_Code`, and
+    `Crowded_MQAR`), `E159`).
 
 See `EXPERIMENTS.md` for the preregistered matrix and
 `results/benchmark_report.md` for measured findings once available.

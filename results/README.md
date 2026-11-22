@@ -2015,6 +2015,42 @@ H_Q=32, H_{KV}=8$ across 8x A100 NVSwitch via fused Ulysses `MoBA-CP = 8`
 optimizer steps with **`-0.1654` ($D=1024$) & `-0.0954` ($D=2048$) final
 `val_bpb` reduction** in a fixed-`12s` autoresearch loop.
 
+Round-33 RSI (`E159`, `v150`) `Hierarchical Dual-Route Sparse-Linear Attention
+(H2SA-GDN) & Governed Loop Optimization v3.8 Tournament` (`MoBA`
+`arXiv:2502.13189` + `DeepSeek-V3.2 DSA` `arXiv:2512.02556` + `Gated-DeltaNet`
+`arXiv:2412.06464`) results are under `raw/h2sa_gdn_rsi/`. It contains the
+smoke verification gate (`smoke.json`), three independent 8-GPU process
+repetitions (`rep1.json`, `rep2.json`, `rep3.json`), the aggregated 3-rep
+summary (`h2sa_gdn_rsi_summary.json`), markdown report
+(`h2sa_gdn_rsi_report.md`), `README.md`, 6 CSV tables
+(`track1_training_matrix.csv`, `track2_decode_matrix.csv`,
+`track3_block_ablation.csv`, `track4_cp8_scaling.csv`,
+`track5_autoresearch.csv`, `track6_governed_loop_tournament.csv`), and
+`SHA256SUMS.txt` (`13` verified entries) governed by `PROGRAM.md` Section 36,
+the byte-identical frozen evaluator `code/rsi_kernel_harness.py` (`SHA256 =
+3cf0f078...`), and `code/governed_loop_guard.py v3.8` (`manifest_root_sha256 =
+654f7af7...`). Co-designed and peer-reviewed with M365 Copilot `Cowork` (`GPT
+6.2 Astra, Max`) around the exact residual identity $\mathbf{o}_{\text{dense}}
+- \mathbf{o}_{\text{sel}} = m(\mathbf{r} - \mathbf{s})$ (*"a routing miss need
+not be a memory miss"*), it compiles **`16/16` `0`-spill (`83` specializations,
+`max_regs = 168 <= 168`, `max_smem = 40,960 B`) Round-33 RSI Triton kernels**
+(`FP32 max_rel_l2 = 9.24e-7 < 1e-4`, `BF16 max_rel_l2 = 4.72e-3 < 1.5e-2`, `3/3`
+mutations killed) via 1D Dual-Route Subtile Bitmask Routing, `BV=32` V-Tiled /
+`BK=64` K-Split Causal Block-Delta GDN State Recurrence & Readout, wins all
+**`8/8` training shapes** up to **`8.03x` Fwd, `4.97x` Total & `4.55x` HBM
+reduction**, accelerates 3-launch single-pass decoding (`h2sa_gdn_decode_rsi`,
+`0.139–0.151 ms`) by **`24.06x–108.41x` vs Naive MoBA (`3.57x–92.57x` vs
+Chunk-Prefill)**, accelerates a 2-layer `H2SAGDNBlockRSI` + `DualRouteShare`
+stack by **`3.51x` ($D=1024, K=64$) & `3.24x` ($D=2048, K=128$)**, scales $B=2,
+T_{\text{total}} = 4,096..8,192, H_Q=32, H_{KV}=8$ across 8x A100 NVSwitch via
+Ulysses `H2SA-GDN-CP = 8` (**`2.67x–5.41x` vs 8-GPU Ring & `2.55x–3.84x` vs
+1-GPU Naive**, `0.0` `rel_l2_o`, up to `2.30M tok/s`), completes **`3.18x`
+($D=1024$) & `3.13x` ($D=2048$)** more optimizer steps in `12s` autoresearch,
+and achieves **`PROMOTE` (`0.9578` Confirm IUT across `baseline`, `dsa_e157`,
+`moba_e158`) and `HOLDOUT_PROMOTE` (`0.9535` Single-Touch Sealed Holdout,
+`+0.3098` over `MoBA E158` and `+0.1760` over `DSA E157`, all 5 public
+long-context strata `0.9390..0.9692`)**.
+
 Finite-sample prevalence certification is under
 `raw/pacing_coalescing_order_prevalence_certification/`. For every E89
 profile, kernel, and accuracy point, it computes the exact L1 distance to the

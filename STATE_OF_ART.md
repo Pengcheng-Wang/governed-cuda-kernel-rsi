@@ -4593,6 +4593,29 @@ Measured on this allocation:
   K=128$) 2-layer `MoBABlockRSI` + `BlockShare`**, **`5.32x–6.96x` vs 8-GPU Ring (`4.29x–6.23x` vs
   1-GPU upstream, `0.00e+00` `rel_l2`)** on 8-GPU NVSwitch Ulysses `MoBA-CP = 8`, and **`3.24x`
   ($D=1024$, `-0.1654 bpb`) & `3.22x` ($D=2048$, `-0.0954 bpb`)** in `12s` autoresearch.
+- Extending the same byte-identical frozen RSI evaluator (`SHA256 = 3cf0f078...`, Round-33
+  `PROGRAM.md` Sec. 36, E159) together with **Hardened Governed Loop Optimization
+  (`code/governed_loop_guard.py v3.8`, `manifest_root_sha256 = 654f7af7...`)** and **M365 Copilot
+  `Cowork` (`GPT 6.2 Astra, Max`) Frontier Co-Design & Peer Review** to **`Hierarchical Dual-Route
+  Sparse-Linear Attention (H2SA-GDN)`** across 3 full OS-process repetitions established the exact
+  dense-vs-selected residual identity $\mathbf{o}_{\text{dense}} - \mathbf{o}_{\text{sel}} =
+  m(\mathbf{r} - \mathbf{s})$ (*"a routing miss need not be a memory miss"*) and resolved both
+  coarse block routing's $1/B_C$ needle dilution (`MoBA E158` Holdout `0.6437`) and token-only
+  routing's long-horizon state drop (`DSA E157` Holdout `0.7775`). By partitioning Gated-DeltaNet
+  fast-weight state columns into `BV = 32` slices, K-splitting readout by `BK = 64`, and computing
+  1D per-query dual-route bitmasks, all **`16/16` Round-33 RSI Triton kernels (`83` compiled SM80
+  specializations)** achieved **`0` cubin register spills (`max_regs = 168 <= 168`, `max_smem =
+  40,960 B`, `FP32 max_rel_l2 = 9.24e-7 < 1e-4`, `BF16 max_rel_l2 = 4.72e-3 < 1.5e-2`, `3/3`
+  mutations killed)**, winning **`8/8` training shapes up to `8.03x` Fwd, `4.97x` Total & `4.55x`
+  HBM reduction (`2.515M tok/s`)**, **`24.06x–108.41x` faster 3-launch single-pass decode
+  (`h2sa_gdn_decode_rsi`, `0.139–0.151 ms`) vs Naive MoBA (`3.57x–92.57x` vs Chunk-Prefill)**,
+  **`3.51x` ($D=1024, K=64$) & `3.24x` ($D=2048, K=128$) 2-layer `H2SAGDNBlockRSI` +
+  `DualRouteShare` (`2.20x–2.26x` lower HBM)**, **`2.67x–5.41x` vs 8-GPU Ring (`2.55x–3.84x` vs
+  1-GPU Naive, `0.0` `rel_l2_o`, `2.30M tok/s`)** on 8-GPU NVSwitch Ulysses `H2SA-GDN-CP = 8`,
+  **`3.18x` ($D=1024$) & `3.13x` ($D=2048$) more optimizer steps** in `12s` autoresearch, and
+  **`HOLDOUT_PROMOTE` (`0.9535` Single-Touch Holdout vs `0.7775` `DSA E157` [`+0.1760`, `LCB =
+  +0.1701`] and `0.6437` `MoBA E158` [`+0.3098`, `LCB = +0.3039`], `Confirm IUT = 0.9578 PROMOTE`
+  across all `3/3` comparators, all 5 public long-context strata `0.9390..0.9692`)**.
 - Equal-split expert-dispatch all-to-all exposed a 0.096 ms intra-node and
   0.251 ms three-node launch/coordination floor.
 - Large expert-dispatch payloads reached 210.1 GB/s logical per-rank injection
