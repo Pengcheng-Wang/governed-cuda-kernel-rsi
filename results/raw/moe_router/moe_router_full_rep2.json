@@ -1,0 +1,1223 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-10T20:19:31Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1",
+    "vllm": "0.29.0+cu129"
+  },
+  "notes": [
+    "Router projection uses BF16 hidden states and BF16 gate weights; fused_topk internally computes softmax/top-k and returns FP32 weights plus INT32 expert IDs.",
+    "A deterministic FP32 expert-index epsilon of 1e-6 is added after BF16 projection so exact ties have the same ordering across PyTorch and vLLM backends.",
+    "The PyTorch reference computes FP32 softmax, torch.topk, and top-k renormalization.",
+    "moe_align_block_size measures vLLM's production expert-assignment sorting and padding preparation separately.",
+    "Fused expert timing includes its own internal alignment; the separate alignment timing is explanatory rather than additive.",
+    "Full router overhead is derived from independently timed full and precomputed-expert paths, so small negative fractions can occur within timing variance."
+  ],
+  "profile": "full",
+  "profiler_summaries": [
+    {
+      "num_experts": 32,
+      "num_tokens": 512,
+      "table": "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                    vllm::fused_experts        14.52%     545.458us        19.98%     750.883us     750.883us     386.431us        90.27%     409.088us     409.088us             1  \n                                       fused_moe_kernel         0.00%       0.000us         0.00%       0.000us       0.000us     386.431us        90.27%     386.431us     193.216us             2  \n                                       _C::silu_and_mul         0.53%      19.958us         0.80%      29.886us      29.886us      11.456us         2.68%      11.456us      11.456us             1  \nvoid vllm::act_and_mul_kernel<c10::BFloat16, __nv_bf...         0.00%       0.000us         0.00%       0.000us       0.000us      11.456us         2.68%      11.456us      11.456us             1  \n                                               aten::mm         5.36%     201.380us        69.26%       2.602ms       2.602ms       8.064us         1.88%      16.128us      16.128us             1  \n                                Activity Buffer Request        61.98%       2.329ms        61.98%       2.329ms       2.329ms       8.064us         1.88%       8.064us       8.064us             1  \n                           _moe_C::moe_align_block_size         0.62%      23.314us         1.49%      56.056us      56.056us       7.072us         1.65%       7.072us       7.072us             1  \nvoid cutlass::Kernel2<cutlass_80_tensorop_s16816gemm...         0.00%       0.000us         0.00%       0.000us       0.000us       5.184us         1.21%       5.184us       5.184us             1  \nvoid vllm::moe::moe_align_block_size_kernel<int>(int...         0.00%       0.000us         0.00%       0.000us       0.000us       4.448us         1.04%       4.448us       4.448us             1  \n                                            aten::copy_         0.71%      26.530us         1.09%      41.137us      41.137us       4.383us         1.02%       4.383us       4.383us             1  \nvoid at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us       4.383us         1.02%       4.383us       4.383us             1  \n                                        _moe_C::moe_sum         0.31%      11.712us         0.56%      21.080us      21.080us       4.129us         0.96%       4.129us       4.129us             1  \nvoid vllm::moe::moe_sum_vec_kernel<c10::BFloat16, in...         0.00%       0.000us         0.00%       0.000us       0.000us       4.129us         0.96%       4.129us       4.129us             1  \n                                   _moe_C::topk_softmax         1.03%      38.714us         1.68%      63.139us      63.139us       3.296us         0.77%       3.296us       3.296us             1  \nvoid vllm::moe::topkGating<4, 32, 4, 16, 32, int, fl...         0.00%       0.000us         0.00%       0.000us       0.000us       3.296us         0.77%       3.296us       3.296us             1  \n                                              aten::add         0.67%      25.298us         0.90%      33.764us      33.764us       3.263us         0.76%       3.263us       3.263us             1  \nvoid at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       3.263us         0.76%       3.263us       3.263us             1  \nvoid cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us       2.880us         0.67%       2.880us       2.880us             1  \nvoid vllm::moe::count_and_sort_expert_tokens_kernel<...         0.00%       0.000us         0.00%       0.000us       0.000us       2.624us         0.61%       2.624us       2.624us             1  \n                                           aten::linear         0.41%      15.508us        71.07%       2.670ms       2.670ms       0.000us         0.00%      16.128us      16.128us             1  \n                                                aten::t         0.44%      16.462us         1.27%      47.881us      47.881us       0.000us         0.00%       0.000us       0.000us             1  \n                                        aten::transpose         0.56%      21.080us         0.84%      31.419us      31.419us       0.000us         0.00%       0.000us       0.000us             1  \n                                       aten::as_strided         0.33%      12.463us         0.33%      12.463us       4.154us       0.000us         0.00%       0.000us       0.000us             3  \n                                           aten::matmul         0.13%       4.849us        69.38%       2.607ms       2.607ms       0.000us         0.00%      16.128us      16.128us             1  \n                                 cudaDeviceGetAttribute         0.06%       2.204us         0.06%       2.204us       2.204us       0.000us         0.00%       0.000us       0.000us             1  \n                                         cuLaunchKernel         1.62%      60.995us         1.62%      60.995us      60.995us       0.000us         0.00%       0.000us       0.000us             1  \n                                       cudaLaunchKernel         2.27%      85.359us         2.27%      85.359us      10.670us       0.000us         0.00%       0.000us       0.000us             8  \n                                               aten::to         0.11%       4.279us         2.49%      93.537us      93.537us       0.000us         0.00%       4.383us       4.383us             1  \n                                         aten::_to_copy         0.84%      31.720us         2.38%      89.258us      89.258us       0.000us         0.00%       4.383us       4.383us             1  \n                                    aten::empty_strided         0.59%      22.332us         0.59%      22.332us      11.166us       0.000us         0.00%       0.000us       0.000us             2  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 3.757ms\nSelf CUDA time total: 428.094us\n",
+      "top_cuda_events": [
+        {
+          "count": 1,
+          "device_time_us": 409.0880000000002,
+          "name": "vllm::fused_experts",
+          "self_device_time_us": 386.43100000000004
+        },
+        {
+          "count": 2,
+          "device_time_us": 386.43100000000004,
+          "name": "fused_moe_kernel",
+          "self_device_time_us": 386.43100000000004
+        },
+        {
+          "count": 1,
+          "device_time_us": 11.456000000000131,
+          "name": "_C::silu_and_mul",
+          "self_device_time_us": 11.456000000000131
+        },
+        {
+          "count": 1,
+          "device_time_us": 11.456000000000131,
+          "name": "void vllm::act_and_mul_kernel<c10::BFloat16, __nv_bfloat162, &(c10::BFloat16 vllm::silu_kernel<c10::BFloat16>(c10::BFloat16 const&, float)), &(__nv_bfloat162 vllm::packed_silu_kernel<__nv_bfloat162>(__nv_bfloat162 const&, float)), true, true, false, false>(c10::BFloat16*, c10::BFloat16 const*, int, float, float, float)",
+          "self_device_time_us": 11.456000000000131
+        },
+        {
+          "count": 1,
+          "device_time_us": 16.12800000000061,
+          "name": "aten::mm",
+          "self_device_time_us": 8.064000000000306
+        },
+        {
+          "count": 1,
+          "device_time_us": 8.064000000000306,
+          "name": "Activity Buffer Request",
+          "self_device_time_us": 8.064000000000306
+        },
+        {
+          "count": 1,
+          "device_time_us": 7.072000000000116,
+          "name": "_moe_C::moe_align_block_size",
+          "self_device_time_us": 7.072000000000116
+        },
+        {
+          "count": 1,
+          "device_time_us": 5.1840000000001965,
+          "name": "void cutlass::Kernel2<cutlass_80_tensorop_s16816gemm_bf16_64x64_64x6_tn_align8>(cutlass_80_tensorop_s16816gemm_bf16_64x64_64x6_tn_align8::Params)",
+          "self_device_time_us": 5.1840000000001965
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.44800000000032,
+          "name": "void vllm::moe::moe_align_block_size_kernel<int>(int const*, int*, int*, int*, int*, int, int, int, int, unsigned long, int*, int, int, bool)",
+          "self_device_time_us": 4.44800000000032
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.382999999999811,
+          "name": "aten::copy_",
+          "self_device_time_us": 4.382999999999811
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.382999999999811,
+          "name": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+          "self_device_time_us": 4.382999999999811
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.128999999999905,
+          "name": "_moe_C::moe_sum",
+          "self_device_time_us": 4.128999999999905
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.128999999999905,
+          "name": "void vllm::moe::moe_sum_vec_kernel<c10::BFloat16, int, 2, false>(c10::BFloat16*, c10::BFloat16 const*, long, int, long, long, int const*, int const*, long, long)",
+          "self_device_time_us": 4.128999999999905
+        },
+        {
+          "count": 1,
+          "device_time_us": 3.2959999999998217,
+          "name": "_moe_C::topk_softmax",
+          "self_device_time_us": 3.2959999999998217
+        },
+        {
+          "count": 1,
+          "device_time_us": 3.2959999999998217,
+          "name": "void vllm::moe::topkGating<4, 32, 4, 16, 32, int, float, (vllm::moe::ScoringFunc)0>(float const*, bool const*, float*, int, int*, int*, int, int, int, bool, float const*, double, bool const*)",
+          "self_device_time_us": 3.2959999999998217
+        },
+        {
+          "count": 1,
+          "device_time_us": 3.2630000000003747,
+          "name": "aten::add",
+          "self_device_time_us": 3.2630000000003747
+        },
+        {
+          "count": 1,
+          "device_time_us": 3.2630000000003747,
+          "name": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::native::CUDAFunctor_add<float> const&)::{lambda(int)#1})",
+          "self_device_time_us": 3.2630000000003747
+        },
+        {
+          "count": 1,
+          "device_time_us": 2.880000000000109,
+          "name": "void cublasLt::splitKreduce_kernel<32, 16, int, float, __nv_bfloat16, float, __nv_bfloat16, false, __nv_bfloat16, __nv_bfloat16, __nv_bfloat16, true, false, false, false>(cublasLt::cublasSplitKParams<float>, float const*, __nv_bfloat16 const*, __nv_bfloat16*, __nv_bfloat16*, float const*, float const*, __nv_bfloat16 const*, float const*, __nv_bfloat16*, void*, long, float*, int*, float*, float*, float const*, float const*, float const*, float const*, float const*)",
+          "self_device_time_us": 2.880000000000109
+        },
+        {
+          "count": 1,
+          "device_time_us": 2.6239999999997963,
+          "name": "void vllm::moe::count_and_sort_expert_tokens_kernel<int>(int const*, int*, int*, int*, unsigned long, int, int, int, bool)",
+          "self_device_time_us": 2.6239999999997963
+        },
+        {
+          "count": 1,
+          "device_time_us": 16.12800000000061,
+          "name": "aten::linear",
+          "self_device_time_us": 0.0
+        },
+        {
+          "count": 1,
+          "device_time_us": 16.12800000000061,
+          "name": "aten::matmul",
+          "self_device_time_us": 0.0
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.382999999999811,
+          "name": "aten::to",
+          "self_device_time_us": 0.0
+        },
+        {
+          "count": 1,
+          "device_time_us": 4.382999999999811,
+          "name": "aten::_to_copy",
+          "self_device_time_us": 0.0
+        }
+      ],
+      "top_k": 2
+    }
+  ],
+  "records": [
+    {
+      "block_size_m": 16,
+      "config": {
+        "BLOCK_SIZE_K": 128,
+        "BLOCK_SIZE_M": 16,
+        "BLOCK_SIZE_N": 64,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 4,
+        "num_warps": 4
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_vllm_speedup_vs_torch_router": 1.1388574841209516,
+      "fused_router_overhead_fraction": 0.29823814441952506,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 8,
+      "num_tokens": 32,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6050496101379395,
+          "mean_ms": 0.6018809604644775,
+          "median_ms": 0.6021440029144287,
+          "min_ms": 0.5985536098480224,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.5368224143981933,
+          "mean_ms": 0.5299673652648925,
+          "median_ms": 0.5287263870239258,
+          "min_ms": 0.5261792182922364,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.37488958835601804,
+          "mean_ms": 0.37087039947509765,
+          "median_ms": 0.37104001045227053,
+          "min_ms": 0.3668607950210571,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04078719913959503,
+          "mean_ms": 0.03884032070636749,
+          "median_ms": 0.03796800076961517,
+          "min_ms": 0.03717760145664215,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05952640175819397,
+          "mean_ms": 0.05634495973587036,
+          "median_ms": 0.05688959956169128,
+          "min_ms": 0.0534496009349823,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10355839729309083,
+          "mean_ms": 0.10289407968521118,
+          "median_ms": 0.10291520357131959,
+          "min_ms": 0.10201599597930908,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.045244801044464114,
+          "mean_ms": 0.043314560055732726,
+          "median_ms": 0.04440639913082123,
+          "min_ms": 0.040889599919319154,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 5.960464477539063e-08,
+        "mean_weight_abs_error": 1.792795956134796e-08
+      },
+      "torch_router_overhead_fraction": 0.3838018669015966,
+      "vllm_topk_speedup_vs_torch": 2.317575970709344
+    },
+    {
+      "block_size_m": 64,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 64,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 4
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0009765625,
+        "mean_abs_error": 1.4901161193847656e-08,
+        "normalized_rmse": 8.555708518542815e-06
+      },
+      "full_vllm_speedup_vs_torch_router": 1.1388155247931895,
+      "fused_router_overhead_fraction": 0.30760419533042904,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 8,
+      "num_tokens": 128,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6069215774536133,
+          "mean_ms": 0.6002201557159423,
+          "median_ms": 0.5979455947875977,
+          "min_ms": 0.5966368198394776,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.5272480010986328,
+          "mean_ms": 0.525343370437622,
+          "median_ms": 0.5250592231750488,
+          "min_ms": 0.5236192226409913,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.36395199298858644,
+          "mean_ms": 0.362960000038147,
+          "median_ms": 0.36354880332946776,
+          "min_ms": 0.36156160831451417,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.041510400176048276,
+          "mean_ms": 0.03798016011714935,
+          "median_ms": 0.03615680038928985,
+          "min_ms": 0.035692799091339114,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05837759971618652,
+          "mean_ms": 0.05588351964950562,
+          "median_ms": 0.0553600013256073,
+          "min_ms": 0.053881597518920896,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10346239805221558,
+          "mean_ms": 0.10229183912277222,
+          "median_ms": 0.10215359926223755,
+          "min_ms": 0.10157760381698608,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04403199851512909,
+          "mean_ms": 0.04113920032978058,
+          "median_ms": 0.040387201309204104,
+          "min_ms": 0.03931840062141419,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 5.960464477539063e-08,
+        "mean_weight_abs_error": 1.5890691429376602e-08
+      },
+      "torch_router_overhead_fraction": 0.39200354263232323,
+      "vllm_topk_speedup_vs_torch": 2.529355735252621
+    },
+    {
+      "block_size_m": 64,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 64,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 8
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 0.9999999403953552,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.001953125,
+        "mean_abs_error": 7.450580596923828e-09,
+        "normalized_rmse": 7.462720077455742e-06
+      },
+      "full_vllm_speedup_vs_torch_router": 1.1432879351565441,
+      "fused_router_overhead_fraction": 0.2865758264340058,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 8,
+      "num_tokens": 512,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6230048179626465,
+          "mean_ms": 0.6206745719909668,
+          "median_ms": 0.6212096214294434,
+          "min_ms": 0.6182496070861816,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.5451360225677491,
+          "mean_ms": 0.543446397781372,
+          "median_ms": 0.5433536052703858,
+          "min_ms": 0.5416927814483643,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.38841919898986815,
+          "mean_ms": 0.38691328048706053,
+          "median_ms": 0.3876415967941284,
+          "min_ms": 0.38455040454864503,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04883840084075928,
+          "mean_ms": 0.04707904040813446,
+          "median_ms": 0.04632959961891174,
+          "min_ms": 0.04584639966487884,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.056822401285171506,
+          "mean_ms": 0.05507328152656556,
+          "median_ms": 0.054176002740859985,
+          "min_ms": 0.05368000268936157,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10392639636993409,
+          "mean_ms": 0.10336383819580078,
+          "median_ms": 0.10346239805221558,
+          "min_ms": 0.10293439626693726,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.044095999002456664,
+          "mean_ms": 0.042314879298210144,
+          "median_ms": 0.04219839870929718,
+          "min_ms": 0.040992000699043275,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 1.1920928955078125e-07,
+        "mean_weight_abs_error": 1.6705598682165146e-08
+      },
+      "torch_router_overhead_fraction": 0.37598906484716044,
+      "vllm_topk_speedup_vs_torch": 2.4518086282127256
+    },
+    {
+      "block_size_m": 128,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 16,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 8
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0078125,
+        "mean_abs_error": 1.6880221664905548e-08,
+        "normalized_rmse": 1.8446105968905613e-05
+      },
+      "full_vllm_speedup_vs_torch_router": 0.8972797838764025,
+      "fused_router_overhead_fraction": 0.04881538354560327,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 8,
+      "num_tokens": 2048,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6454880237579346,
+          "mean_ms": 0.6443609619140626,
+          "median_ms": 0.6448383808135987,
+          "min_ms": 0.642406415939331,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.7212063789367675,
+          "mean_ms": 0.6817343902587891,
+          "median_ms": 0.7186592102050782,
+          "min_ms": 0.6023647785186768,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.684329605102539,
+          "mean_ms": 0.6833433628082275,
+          "median_ms": 0.683577585220337,
+          "min_ms": 0.6821856021881103,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04984959959983826,
+          "mean_ms": 0.04776896059513092,
+          "median_ms": 0.0485152006149292,
+          "min_ms": 0.04575360119342804,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05069119930267334,
+          "mean_ms": 0.04872128009796143,
+          "median_ms": 0.04825280010700226,
+          "min_ms": 0.047167998552322385,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10391360521316528,
+          "mean_ms": 0.10335103988647461,
+          "median_ms": 0.10369919538497925,
+          "min_ms": 0.10236159563064576,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04561919867992401,
+          "mean_ms": 0.0433484798669815,
+          "median_ms": 0.04432959854602814,
+          "min_ms": 0.041017600893974306,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 1.1920928955078125e-07,
+        "mean_weight_abs_error": 1.660737325437367e-08
+      },
+      "torch_router_overhead_fraction": -0.06007583537112146,
+      "vllm_topk_speedup_vs_torch": 2.3392766635887012
+    },
+    {
+      "block_size_m": 128,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 16,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 8
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0078125,
+        "mean_abs_error": 1.7724232748150826e-08,
+        "normalized_rmse": 1.6920001144171692e-05
+      },
+      "full_vllm_speedup_vs_torch_router": 1.0307043420828572,
+      "fused_router_overhead_fraction": 0.030251953607542126,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 8,
+      "num_tokens": 8192,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 1.998953628540039,
+          "mean_ms": 1.9975366210937502,
+          "median_ms": 1.9972511291503907,
+          "min_ms": 1.9970399856567382,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 1.9402816772460938,
+          "mean_ms": 1.9357178115844724,
+          "median_ms": 1.937753677368164,
+          "min_ms": 1.9301088333129883,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 1.8896095275878906,
+          "mean_ms": 1.8814905548095702,
+          "median_ms": 1.8791328430175782,
+          "min_ms": 1.8738624572753906,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04993599951267243,
+          "mean_ms": 0.047928320169448854,
+          "median_ms": 0.04904640018939972,
+          "min_ms": 0.04555839896202087,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05082560181617737,
+          "mean_ms": 0.048616960644721985,
+          "median_ms": 0.04798080027103424,
+          "min_ms": 0.04668160080909729,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.1022528052330017,
+          "mean_ms": 0.10199039936065675,
+          "median_ms": 0.10193920135498047,
+          "min_ms": 0.10169919729232788,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04461759924888611,
+          "mean_ms": 0.04295808017253876,
+          "median_ms": 0.042444801330566405,
+          "min_ms": 0.04154239892959595,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 1.1920928955078125e-07,
+        "mean_weight_abs_error": 1.6392277757404372e-08
+      },
+      "torch_router_overhead_fraction": 0.059140427765365065,
+      "vllm_topk_speedup_vs_torch": 2.4016887382994883
+    },
+    {
+      "block_size_m": 16,
+      "config": {
+        "BLOCK_SIZE_K": 128,
+        "BLOCK_SIZE_M": 16,
+        "BLOCK_SIZE_N": 64,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 4,
+        "num_warps": 4
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_vllm_speedup_vs_torch_router": 1.1362092461712012,
+      "fused_router_overhead_fraction": 0.28951774511495093,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 32,
+      "num_tokens": 32,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6175839900970459,
+          "mean_ms": 0.6163846302032471,
+          "median_ms": 0.6168543815612793,
+          "min_ms": 0.6142623901367188,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.5434912204742431,
+          "mean_ms": 0.5428505706787109,
+          "median_ms": 0.542905616760254,
+          "min_ms": 0.5422624111175537,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.3882944107055664,
+          "mean_ms": 0.38628544330596926,
+          "median_ms": 0.3857248067855835,
+          "min_ms": 0.38424320220947267,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04062399864196777,
+          "mean_ms": 0.03866047978401184,
+          "median_ms": 0.0379936009645462,
+          "min_ms": 0.037529599666595456,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05785599946975708,
+          "mean_ms": 0.05585215926170349,
+          "median_ms": 0.05683839917182922,
+          "min_ms": 0.05366399884223938,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10274560451507568,
+          "mean_ms": 0.10167871952056884,
+          "median_ms": 0.10173439979553223,
+          "min_ms": 0.10055040121078491,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04401600062847137,
+          "mean_ms": 0.04218176007270813,
+          "median_ms": 0.04205119907855988,
+          "min_ms": 0.041043201088905336,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 5.960464477539063e-08,
+        "mean_weight_abs_error": 1.3271346688270569e-08
+      },
+      "torch_router_overhead_fraction": 0.3746906590672161,
+      "vllm_topk_speedup_vs_torch": 2.4192984272689215
+    },
+    {
+      "block_size_m": 64,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 64,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 4
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_vllm_speedup_vs_torch_router": 1.139129850831348,
+      "fused_router_overhead_fraction": 0.2257927710809922,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 32,
+      "num_tokens": 128,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6270527839660645,
+          "mean_ms": 0.6247033500671387,
+          "median_ms": 0.6260511875152588,
+          "min_ms": 0.620959997177124,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.5520895957946778,
+          "mean_ms": 0.5497043228149414,
+          "median_ms": 0.5495872020721435,
+          "min_ms": 0.548201608657837,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.42766718864440917,
+          "mean_ms": 0.4257836723327637,
+          "median_ms": 0.425494384765625,
+          "min_ms": 0.4248672008514404,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04062080085277557,
+          "mean_ms": 0.038609920144081114,
+          "median_ms": 0.037376001477241516,
+          "min_ms": 0.03722879886627197,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.057183998823165896,
+          "mean_ms": 0.055569919347763064,
+          "median_ms": 0.056435197591781616,
+          "min_ms": 0.05323839783668518,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10491839647293091,
+          "mean_ms": 0.10238784313201905,
+          "median_ms": 0.10165120363235473,
+          "min_ms": 0.10143680572509765,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04442879855632782,
+          "mean_ms": 0.04230847954750061,
+          "median_ms": 0.041766399145126344,
+          "min_ms": 0.041168001294136045,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 5.960464477539063e-08,
+        "mean_weight_abs_error": 1.446460373699665e-08
+      },
+      "torch_router_overhead_fraction": 0.3203520842211414,
+      "vllm_topk_speedup_vs_torch": 2.433803385327659
+    },
+    {
+      "block_size_m": 64,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 64,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 8
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 0.9999999403953552,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 0.9999998807907104,
+        "max_abs_error": 0.001953125,
+        "mean_abs_error": 2.0489096641540527e-08,
+        "normalized_rmse": 1.4115815247350838e-05
+      },
+      "full_vllm_speedup_vs_torch_router": 1.1326750722376633,
+      "fused_router_overhead_fraction": 0.208653840631536,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 32,
+      "num_tokens": 512,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.6396063804626465,
+          "mean_ms": 0.6390195083618164,
+          "median_ms": 0.6394847869873047,
+          "min_ms": 0.6374720096588135,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.5691296100616455,
+          "mean_ms": 0.5648262405395508,
+          "median_ms": 0.5645792007446289,
+          "min_ms": 0.561734390258789,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.4501376152038574,
+          "mean_ms": 0.44728256225585933,
+          "median_ms": 0.4467775821685791,
+          "min_ms": 0.4453472137451172,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05014079809188843,
+          "mean_ms": 0.04660863995552063,
+          "median_ms": 0.045926401019096376,
+          "min_ms": 0.04531840085983276,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.057555198669433594,
+          "mean_ms": 0.05603263854980469,
+          "median_ms": 0.05614079833030701,
+          "min_ms": 0.05380799770355225,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.10418239831924439,
+          "mean_ms": 0.10269311904907226,
+          "median_ms": 0.10247999429702759,
+          "min_ms": 0.10183039903640748,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.04513919949531555,
+          "mean_ms": 0.04288191974163055,
+          "median_ms": 0.04201279878616333,
+          "min_ms": 0.040931200981140135,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 1.1920928955078125e-07,
+        "mean_weight_abs_error": 1.6938429325819016e-08
+      },
+      "torch_router_overhead_fraction": 0.30134759847313036,
+      "vllm_topk_speedup_vs_torch": 2.4392565422415697
+    },
+    {
+      "block_size_m": 128,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 1,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 8
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0078125,
+        "mean_abs_error": 2.468004822731018e-08,
+        "normalized_rmse": 2.261481677123811e-05
+      },
+      "full_vllm_speedup_vs_torch_router": 1.05983767362535,
+      "fused_router_overhead_fraction": 0.04996039271179945,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 32,
+      "num_tokens": 2048,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.7924543857574463,
+          "mean_ms": 0.7918291187286377,
+          "median_ms": 0.7917920112609863,
+          "min_ms": 0.7912799835205078,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.7485727787017822,
+          "mean_ms": 0.747003526687622,
+          "median_ms": 0.7470880031585694,
+          "min_ms": 0.7456096172332763,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.711520004272461,
+          "mean_ms": 0.7099238395690918,
+          "median_ms": 0.7097631931304932,
+          "min_ms": 0.709123182296753,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.06054400205612183,
+          "mean_ms": 0.05876415967941284,
+          "median_ms": 0.059571200609207155,
+          "min_ms": 0.05664640069007874,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.06363199949264527,
+          "mean_ms": 0.06108863949775696,
+          "median_ms": 0.06070079803466797,
+          "min_ms": 0.05910080075263977,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.13790719509124755,
+          "mean_ms": 0.1360761570930481,
+          "median_ms": 0.13566399812698365,
+          "min_ms": 0.13415999412536622,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.054864001274108884,
+          "mean_ms": 0.051991679668426515,
+          "median_ms": 0.05061759948730469,
+          "min_ms": 0.050172799825668336,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 1.1920928955078125e-07,
+        "mean_weight_abs_error": 1.636180968489498e-08
+      },
+      "torch_router_overhead_fraction": 0.10359894639484461,
+      "vllm_topk_speedup_vs_torch": 2.6801744749078686
+    },
+    {
+      "block_size_m": 128,
+      "config": {
+        "BLOCK_SIZE_K": 64,
+        "BLOCK_SIZE_M": 128,
+        "BLOCK_SIZE_N": 128,
+        "GROUP_SIZE_M": 16,
+        "SPLIT_K": 1,
+        "num_stages": 3,
+        "num_warps": 8
+      },
+      "dtype": "torch.bfloat16",
+      "full_fused_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "full_torch_quality_vs_precomputed": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0078125,
+        "mean_abs_error": 1.5366822481155396e-08,
+        "normalized_rmse": 1.5025615539343562e-05
+      },
+      "full_vllm_speedup_vs_torch_router": 1.0319050442376192,
+      "fused_router_overhead_fraction": 0.033925405032747415,
+      "hidden": 1024,
+      "intermediate": 2816,
+      "num_experts": 32,
+      "num_tokens": 8192,
+      "timings": {
+        "full_torch_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 2.146019172668457,
+          "mean_ms": 2.140862731933594,
+          "median_ms": 2.1411584854125976,
+          "min_ms": 2.1346303939819338,
+          "warmup": 5
+        },
+        "full_vllm_router_experts": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 2.077872085571289,
+          "mean_ms": 2.0757177734375,
+          "median_ms": 2.0749568939208984,
+          "min_ms": 2.0741024017333984,
+          "warmup": 5
+        },
+        "fused_experts_precomputed": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 2.0309696197509766,
+          "mean_ms": 2.014301414489746,
+          "median_ms": 2.0045631408691404,
+          "min_ms": 2.0028287887573244,
+          "warmup": 5
+        },
+        "moe_align_block_size": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.06035839915275574,
+          "mean_ms": 0.059121919870376585,
+          "median_ms": 0.059913599491119386,
+          "min_ms": 0.05714240074157715,
+          "warmup": 5
+        },
+        "router_projection": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.06444799900054932,
+          "mean_ms": 0.06209536075592041,
+          "median_ms": 0.062428802251815796,
+          "min_ms": 0.05972800254821777,
+          "warmup": 5
+        },
+        "torch_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.14044480323791503,
+          "mean_ms": 0.1376364827156067,
+          "median_ms": 0.13703360557556152,
+          "min_ms": 0.13566720485687256,
+          "warmup": 5
+        },
+        "vllm_fused_topk": {
+          "groups": 5,
+          "iterations_per_group": 10,
+          "max_ms": 0.05416640043258667,
+          "mean_ms": 0.05255103945732117,
+          "median_ms": 0.05356159806251526,
+          "min_ms": 0.0502623975276947,
+          "warmup": 5
+        }
+      },
+      "top_k": 2,
+      "topk_correctness": {
+        "ids_equal": true,
+        "max_weight_abs_error": 1.1920928955078125e-07,
+        "mean_weight_abs_error": 1.6781314116087742e-08
+      },
+      "torch_router_overhead_fraction": 0.0637950649025102,
+      "vllm_topk_speedup_vs_torch": 2.558430116585032
+    }
+  ],
+  "suite": "moe_router"
+}

@@ -1,0 +1,71 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 8,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Each rank sends an equal BF16 token payload to every rank.",
+    "Per-rank injection bandwidth divides all bytes sent by one rank by the slowest-rank median latency.",
+    "Aggregate cluster payload bandwidth is a logical sum, not a physical fabric bus-bandwidth normalization."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "aggregate_cluster_payload_gb_s": 3.5023512597821465,
+      "bytes_per_token": 8192,
+      "critical_path_ms": 0.1496960073709488,
+      "dtype": "torch.bfloat16",
+      "hidden": 4096,
+      "iterations": 5,
+      "max_validation_error": 0.015625,
+      "per_peer_bytes": 8192,
+      "per_rank_injection_gb_s": 0.4377939074727683,
+      "per_rank_send_bytes": 65536,
+      "rank_median_cv": 0.05998331152730005,
+      "rank_median_ms": [
+        0.14102399349212646,
+        0.13769599795341492,
+        0.14246399700641632,
+        0.1233920007944107,
+        0.1496960073709488,
+        0.12556800246238708,
+        0.1398400068283081,
+        0.14099200069904327
+      ],
+      "rank_median_spread_ms": 0.026304006576538086,
+      "tokens_per_peer": 1,
+      "warmup": 3
+    },
+    {
+      "aggregate_cluster_payload_gb_s": 74.53625238938551,
+      "bytes_per_token": 8192,
+      "critical_path_ms": 0.1125440001487732,
+      "dtype": "torch.bfloat16",
+      "hidden": 4096,
+      "iterations": 5,
+      "max_validation_error": 0.015625,
+      "per_peer_bytes": 131072,
+      "per_rank_injection_gb_s": 9.317031548673189,
+      "per_rank_send_bytes": 1048576,
+      "rank_median_cv": 0.027223317563963307,
+      "rank_median_ms": [
+        0.1037760004401207,
+        0.1032319962978363,
+        0.10438399761915207,
+        0.10787200182676315,
+        0.10601600259542465,
+        0.10409600287675858,
+        0.1125440001487732,
+        0.10735999792814255
+      ],
+      "rank_median_spread_ms": 0.00931200385093689,
+      "tokens_per_peer": 16,
+      "warmup": 3
+    }
+  ],
+  "suite": "distributed_alltoall",
+  "timestamp_utc": "2026-11-10T15:18:46Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "world_size": 8
+}

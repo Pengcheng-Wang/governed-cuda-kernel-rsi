@@ -1,0 +1,1901 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 8,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Real fused-router outputs determine variable send and receive counts for every microbatch.",
+    "Router projection, top-k, token permutation, count exchange, and CPU count extraction are prepared outside the timed region.",
+    "The timed path includes metadata-packed BF16 hidden/ID/weight dispatch, local fused experts, BF16 or compressed return, dequantization, and weighted inverse permutation.",
+    "The pipeline overlaps return of chunk i-1 and dispatch of chunk i+1 with expert compute and return quantization for chunk i.",
+    "BF16 distributed output must match the global-expert reference exactly; packet and two-collective INT8 must match bit-for-bit."
+  ],
+  "profile": "full",
+  "records": [
+    {
+      "chunks": 4,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_vs_two_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_vs_two_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "two_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 6,
+      "num_experts": 16,
+      "payload": {
+        "bf16_return_bytes_per_assignment": 2048,
+        "count_exchange_in_timed_region": false,
+        "packet_alignment": 16,
+        "packet_byte_reduction_fraction": 0.4921875,
+        "packet_return_bytes_per_assignment": 1040,
+        "router_pack_in_timed_region": false,
+        "two_collective_return_bytes_per_assignment": 1026
+      },
+      "quality_vs_reference": {
+        "bf16_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        },
+        "packet_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        },
+        "two_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        },
+        "two_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        }
+      },
+      "route": "balanced",
+      "routing": {
+        "aggregate_max_to_mean": 1.038818359375,
+        "aggregate_receive_assignments": [
+          4093,
+          4126,
+          3987,
+          4067,
+          4255,
+          4064,
+          3989,
+          4187
+        ],
+        "max_step_max_to_mean": 1.08203125,
+        "median_step_max_to_mean": 1.05078125,
+        "rank0_fraction_per_chunk": [
+          0.1275634765625,
+          0.1217041015625,
+          0.125244140625,
+          0.1251220703125
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            1045,
+            1019,
+            982,
+            1022,
+            1081,
+            1021,
+            991,
+            1031
+          ],
+          [
+            997,
+            1000,
+            929,
+            1063,
+            1036,
+            1031,
+            1028,
+            1108
+          ],
+          [
+            1026,
+            1057,
+            1027,
+            997,
+            1067,
+            975,
+            1018,
+            1025
+          ],
+          [
+            1025,
+            1050,
+            1049,
+            985,
+            1071,
+            1037,
+            952,
+            1023
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              132,
+              118,
+              138,
+              102,
+              146,
+              127,
+              133,
+              128
+            ],
+            [
+              134,
+              111,
+              120,
+              137,
+              141,
+              154,
+              106,
+              121
+            ],
+            [
+              125,
+              121,
+              121,
+              130,
+              139,
+              127,
+              120,
+              141
+            ],
+            [
+              125,
+              126,
+              123,
+              129,
+              135,
+              134,
+              149,
+              103
+            ],
+            [
+              144,
+              138,
+              120,
+              120,
+              138,
+              123,
+              118,
+              123
+            ],
+            [
+              113,
+              136,
+              107,
+              153,
+              131,
+              118,
+              133,
+              133
+            ],
+            [
+              126,
+              140,
+              127,
+              116,
+              131,
+              114,
+              121,
+              149
+            ],
+            [
+              146,
+              129,
+              126,
+              135,
+              120,
+              124,
+              111,
+              133
+            ]
+          ],
+          [
+            [
+              126,
+              132,
+              116,
+              115,
+              139,
+              128,
+              133,
+              135
+            ],
+            [
+              121,
+              117,
+              106,
+              139,
+              134,
+              131,
+              132,
+              144
+            ],
+            [
+              136,
+              119,
+              108,
+              133,
+              125,
+              135,
+              137,
+              131
+            ],
+            [
+              114,
+              126,
+              113,
+              140,
+              135,
+              120,
+              124,
+              152
+            ],
+            [
+              137,
+              126,
+              111,
+              138,
+              126,
+              113,
+              135,
+              138
+            ],
+            [
+              117,
+              124,
+              125,
+              126,
+              141,
+              123,
+              133,
+              135
+            ],
+            [
+              123,
+              130,
+              122,
+              151,
+              121,
+              137,
+              112,
+              128
+            ],
+            [
+              123,
+              126,
+              128,
+              121,
+              115,
+              144,
+              122,
+              145
+            ]
+          ],
+          [
+            [
+              132,
+              142,
+              121,
+              122,
+              135,
+              117,
+              118,
+              137
+            ],
+            [
+              117,
+              139,
+              128,
+              110,
+              141,
+              129,
+              125,
+              135
+            ],
+            [
+              129,
+              127,
+              147,
+              122,
+              131,
+              115,
+              127,
+              126
+            ],
+            [
+              146,
+              117,
+              119,
+              131,
+              121,
+              110,
+              149,
+              131
+            ],
+            [
+              137,
+              136,
+              118,
+              123,
+              142,
+              125,
+              110,
+              133
+            ],
+            [
+              111,
+              114,
+              136,
+              139,
+              139,
+              126,
+              131,
+              128
+            ],
+            [
+              124,
+              142,
+              138,
+              130,
+              124,
+              128,
+              121,
+              117
+            ],
+            [
+              130,
+              140,
+              120,
+              120,
+              134,
+              125,
+              137,
+              118
+            ]
+          ],
+          [
+            [
+              135,
+              116,
+              140,
+              114,
+              144,
+              124,
+              117,
+              134
+            ],
+            [
+              137,
+              138,
+              137,
+              122,
+              122,
+              109,
+              118,
+              141
+            ],
+            [
+              151,
+              116,
+              127,
+              125,
+              142,
+              143,
+              107,
+              113
+            ],
+            [
+              109,
+              150,
+              135,
+              122,
+              139,
+              121,
+              121,
+              127
+            ],
+            [
+              139,
+              123,
+              122,
+              113,
+              139,
+              144,
+              125,
+              119
+            ],
+            [
+              112,
+              137,
+              133,
+              123,
+              141,
+              128,
+              103,
+              147
+            ],
+            [
+              120,
+              133,
+              122,
+              127,
+              128,
+              142,
+              134,
+              118
+            ],
+            [
+              122,
+              137,
+              133,
+              139,
+              116,
+              126,
+              127,
+              124
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_pipeline": 1.0408442915543035,
+        "packet_pipeline": 1.4966209568074684,
+        "packet_pipelined_vs_bf16": 0.8280817641349194,
+        "packet_pipelined_vs_bf16_sequential": 0.861904177140048,
+        "packet_pipelined_vs_two": 1.0295800777241588,
+        "packet_sequential_vs_bf16": 0.575900112329462,
+        "packet_sequential_vs_two": 0.6815168939252175,
+        "two_pipeline": 0.9906684170904094
+      },
+      "timings": {
+        "bf16_pipelined": {
+          "critical_path_ms": 3.4242745023220778,
+          "local_samples_ms": [
+            3.409327007830143,
+            3.3147200010716915,
+            3.298589028418064,
+            3.311102744191885,
+            3.3080270513892174,
+            3.306254744529724
+          ],
+          "rank_median_cv": 0.015214937149222799,
+          "rank_median_ms": [
+            3.309564897790551,
+            3.3676689490675926,
+            3.4241194371134043,
+            3.4242745023220778,
+            3.3039450645446777,
+            3.320731222629547,
+            3.398180939257145,
+            3.296605311334133
+          ],
+          "rank_median_spread_ms": 0.1276691909879446
+        },
+        "bf16_sequential": {
+          "critical_path_ms": 3.564136568456888,
+          "local_samples_ms": [
+            3.38280713185668,
+            3.445554990321398,
+            3.5083116963505745,
+            3.500116989016533,
+            3.55087174102664,
+            4.452327731996775
+          ],
+          "rank_median_cv": 0.0049057941689390734,
+          "rank_median_ms": [
+            3.5042143426835537,
+            3.522838931530714,
+            3.543662838637829,
+            3.5460167564451694,
+            3.5258240532130003,
+            3.5230901557952166,
+            3.564136568456888,
+            3.5240408033132553
+          ],
+          "rank_median_spread_ms": 0.0599222257733345
+        },
+        "packet_pipelined": {
+          "critical_path_ms": 4.135188879445195,
+          "local_samples_ms": [
+            3.983569797128439,
+            3.9869267493486404,
+            5.972409620881081,
+            4.0763141587376595,
+            3.9961542934179306,
+            4.018025007098913
+          ],
+          "rank_median_cv": 0.014841822195453363,
+          "rank_median_ms": [
+            4.007089650258422,
+            4.06083557754755,
+            4.135188879445195,
+            4.12822631187737,
+            4.021526547148824,
+            4.00456041097641,
+            4.123603226616979,
+            3.9741327054798603
+          ],
+          "rank_median_spread_ms": 0.1610561739653349
+        },
+        "packet_sequential": {
+          "critical_path_ms": 6.188810337334871,
+          "local_samples_ms": [
+            5.362129304558039,
+            4.035477992147207,
+            4.035608377307653,
+            10.991918854415417,
+            6.759483367204666,
+            7.491732016205788
+          ],
+          "rank_median_cv": 0.04848536648987098,
+          "rank_median_ms": [
+            6.060806335881352,
+            6.063961889594793,
+            6.065240129828453,
+            6.068349815905094,
+            5.224027903750539,
+            6.129383808001876,
+            6.188810337334871,
+            6.06534956023097
+          ],
+          "rank_median_spread_ms": 0.9647824335843325
+        },
+        "two_pipelined": {
+          "critical_path_ms": 4.257508087903261,
+          "local_samples_ms": [
+            4.342723172158003,
+            4.109977278858423,
+            4.060253966599703,
+            6.646392401307821,
+            4.037562292069197,
+            4.026411101222038
+          ],
+          "rank_median_cv": 0.01956541707087997,
+          "rank_median_ms": [
+            4.085115622729063,
+            4.189737141132355,
+            4.215379478409886,
+            4.257508087903261,
+            4.0342905558645725,
+            4.093791591003537,
+            4.204518860206008,
+            4.039796069264412
+          ],
+          "rank_median_spread_ms": 0.22321753203868866
+        },
+        "two_sequential": {
+          "critical_path_ms": 4.2177787981927395,
+          "local_samples_ms": [
+            4.1073220781981945,
+            6.8001593463122845,
+            4.306233953684568,
+            4.119264893233776,
+            4.1207182221114635,
+            4.144230857491493
+          ],
+          "rank_median_cv": 0.010451938517173668,
+          "rank_median_ms": [
+            4.132474539801478,
+            4.170064814388752,
+            4.2177787981927395,
+            4.188239108771086,
+            4.084419459104538,
+            4.127310123294592,
+            4.193724831566215,
+            4.10940614528954
+          ],
+          "rank_median_spread_ms": 0.13335933908820152
+        }
+      },
+      "tokens_per_chunk": 512,
+      "top_k": 2,
+      "total_tokens_per_rank": 2048,
+      "warmup": 2
+    },
+    {
+      "chunks": 4,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_vs_two_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_vs_two_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "two_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 6,
+      "num_experts": 16,
+      "payload": {
+        "bf16_return_bytes_per_assignment": 2048,
+        "count_exchange_in_timed_region": false,
+        "packet_alignment": 16,
+        "packet_byte_reduction_fraction": 0.4921875,
+        "packet_return_bytes_per_assignment": 1040,
+        "router_pack_in_timed_region": false,
+        "two_collective_return_bytes_per_assignment": 1026
+      },
+      "quality_vs_reference": {
+        "bf16_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        },
+        "packet_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        },
+        "two_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        },
+        "two_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        }
+      },
+      "route": "global_bias1",
+      "routing": {
+        "aggregate_max_to_mean": 3.011474609375,
+        "aggregate_receive_assignments": [
+          12335,
+          2913,
+          2880,
+          2932,
+          2963,
+          3020,
+          2917,
+          2808
+        ],
+        "max_step_max_to_mean": 3.0546875,
+        "median_step_max_to_mean": 3.00146484375,
+        "rank0_fraction_per_chunk": [
+          0.3818359375,
+          0.376220703125,
+          0.37353515625,
+          0.3741455078125
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            3128,
+            723,
+            686,
+            739,
+            738,
+            766,
+            714,
+            698
+          ],
+          [
+            3082,
+            742,
+            746,
+            725,
+            715,
+            767,
+            709,
+            706
+          ],
+          [
+            3060,
+            718,
+            718,
+            758,
+            748,
+            757,
+            755,
+            678
+          ],
+          [
+            3065,
+            730,
+            730,
+            710,
+            762,
+            730,
+            739,
+            726
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              387,
+              97,
+              65,
+              86,
+              102,
+              106,
+              100,
+              81
+            ],
+            [
+              395,
+              100,
+              85,
+              95,
+              87,
+              86,
+              93,
+              83
+            ],
+            [
+              378,
+              89,
+              95,
+              99,
+              92,
+              98,
+              89,
+              84
+            ],
+            [
+              403,
+              85,
+              85,
+              102,
+              86,
+              96,
+              84,
+              83
+            ],
+            [
+              401,
+              81,
+              87,
+              85,
+              94,
+              97,
+              90,
+              89
+            ],
+            [
+              400,
+              85,
+              98,
+              91,
+              92,
+              92,
+              89,
+              77
+            ],
+            [
+              381,
+              83,
+              81,
+              88,
+              95,
+              104,
+              84,
+              108
+            ],
+            [
+              383,
+              103,
+              90,
+              93,
+              90,
+              87,
+              85,
+              93
+            ]
+          ],
+          [
+            [
+              381,
+              110,
+              90,
+              101,
+              87,
+              87,
+              79,
+              89
+            ],
+            [
+              386,
+              88,
+              97,
+              89,
+              92,
+              107,
+              85,
+              80
+            ],
+            [
+              401,
+              91,
+              92,
+              81,
+              85,
+              106,
+              87,
+              81
+            ],
+            [
+              401,
+              103,
+              75,
+              83,
+              94,
+              80,
+              95,
+              93
+            ],
+            [
+              391,
+              95,
+              88,
+              105,
+              87,
+              92,
+              84,
+              82
+            ],
+            [
+              388,
+              75,
+              107,
+              90,
+              91,
+              95,
+              90,
+              88
+            ],
+            [
+              368,
+              101,
+              94,
+              91,
+              87,
+              87,
+              105,
+              91
+            ],
+            [
+              366,
+              79,
+              103,
+              85,
+              92,
+              113,
+              84,
+              102
+            ]
+          ],
+          [
+            [
+              371,
+              105,
+              86,
+              97,
+              94,
+              100,
+              84,
+              87
+            ],
+            [
+              389,
+              82,
+              96,
+              95,
+              87,
+              103,
+              91,
+              81
+            ],
+            [
+              395,
+              75,
+              93,
+              80,
+              89,
+              97,
+              108,
+              87
+            ],
+            [
+              383,
+              97,
+              87,
+              82,
+              96,
+              90,
+              99,
+              90
+            ],
+            [
+              384,
+              94,
+              80,
+              113,
+              91,
+              93,
+              84,
+              85
+            ],
+            [
+              355,
+              83,
+              104,
+              94,
+              108,
+              98,
+              100,
+              82
+            ],
+            [
+              406,
+              80,
+              86,
+              103,
+              78,
+              102,
+              89,
+              80
+            ],
+            [
+              377,
+              102,
+              86,
+              94,
+              105,
+              74,
+              100,
+              86
+            ]
+          ],
+          [
+            [
+              396,
+              84,
+              98,
+              76,
+              91,
+              98,
+              86,
+              95
+            ],
+            [
+              400,
+              90,
+              90,
+              88,
+              95,
+              99,
+              89,
+              73
+            ],
+            [
+              389,
+              93,
+              89,
+              75,
+              98,
+              79,
+              97,
+              104
+            ],
+            [
+              375,
+              89,
+              83,
+              100,
+              98,
+              88,
+              97,
+              94
+            ],
+            [
+              385,
+              85,
+              98,
+              79,
+              97,
+              90,
+              94,
+              96
+            ],
+            [
+              375,
+              97,
+              79,
+              112,
+              86,
+              93,
+              97,
+              85
+            ],
+            [
+              364,
+              105,
+              99,
+              90,
+              94,
+              88,
+              92,
+              92
+            ],
+            [
+              381,
+              87,
+              94,
+              90,
+              103,
+              95,
+              87,
+              87
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_pipeline": 1.067488557765417,
+        "packet_pipeline": 1.0176526946668534,
+        "packet_pipelined_vs_bf16": 0.8408862674826059,
+        "packet_pipelined_vs_bf16_sequential": 0.8976364689197516,
+        "packet_pipelined_vs_two": 1.0207928358210319,
+        "packet_sequential_vs_bf16": 0.8820656336134488,
+        "packet_sequential_vs_two": 1.0106731226367416,
+        "two_pipeline": 1.0075641115284681
+      },
+      "timings": {
+        "bf16_pipelined": {
+          "critical_path_ms": 3.4287485759705305,
+          "local_samples_ms": [
+            3.33955604583025,
+            5.445824936032295,
+            3.365845885127783,
+            3.3812648616731167,
+            3.3237668685615063,
+            3.3587119542062283
+          ],
+          "rank_median_cv": 0.008270186279348841,
+          "rank_median_ms": [
+            3.3622789196670055,
+            3.3763349056243896,
+            3.4287485759705305,
+            3.399874083697796,
+            3.355486551299691,
+            3.3542835153639317,
+            3.4180080983787775,
+            3.3582416363060474
+          ],
+          "rank_median_spread_ms": 0.07446506060659885
+        },
+        "bf16_sequential": {
+          "critical_path_ms": 3.660149872303009,
+          "local_samples_ms": [
+            4.7542629763484,
+            4.776123911142349,
+            3.4344540908932686,
+            3.4441621974110603,
+            3.439153078943491,
+            3.79246287047863
+          ],
+          "rank_median_cv": 0.015809636633919544,
+          "rank_median_ms": [
+            3.618312533944845,
+            3.4848428331315517,
+            3.5828922409564257,
+            3.6335510667413473,
+            3.660149872303009,
+            3.6295985337346792,
+            3.527011489495635,
+            3.6337068304419518
+          ],
+          "rank_median_spread_ms": 0.1753070391714573
+        },
+        "packet_pipelined": {
+          "critical_path_ms": 4.077541409060359,
+          "local_samples_ms": [
+            4.017152823507786,
+            3.9923270232975483,
+            3.992317244410515,
+            3.98210808634758,
+            4.0082368068397045,
+            3.9841216057538986
+          ],
+          "rank_median_cv": 0.013796022447676779,
+          "rank_median_ms": [
+            3.9923221338540316,
+            4.0113425347954035,
+            4.065168322995305,
+            4.011081997305155,
+            3.9012120105326176,
+            3.9712830912321806,
+            4.077541409060359,
+            3.942909650504589
+          ],
+          "rank_median_spread_ms": 0.17632939852774143
+        },
+        "packet_sequential": {
+          "critical_path_ms": 4.149521002545953,
+          "local_samples_ms": [
+            4.034855868667364,
+            4.048010800033808,
+            5.410911049693823,
+            6.019237916916609,
+            4.133201204240322,
+            4.064371809363365
+          ],
+          "rank_median_cv": 0.008463593410971816,
+          "rank_median_ms": [
+            4.098786506801844,
+            4.068049369379878,
+            4.126333631575108,
+            4.085316322743893,
+            4.047986585646868,
+            4.062192980200052,
+            4.149521002545953,
+            4.048487404361367
+          ],
+          "rank_median_spread_ms": 0.10153441689908504
+        },
+        "two_pipelined": {
+          "critical_path_ms": 4.16232505813241,
+          "local_samples_ms": [
+            7.289133965969086,
+            5.174919031560421,
+            4.049614071846008,
+            4.029747098684311,
+            4.04165918007493,
+            4.066364839673042
+          ],
+          "rank_median_cv": 0.01602658815573533,
+          "rank_median_ms": [
+            4.057989455759525,
+            4.033884732052684,
+            4.138170043006539,
+            4.121098201721907,
+            3.9859293028712273,
+            4.0531016420573,
+            4.16232505813241,
+            3.9723545778542757
+          ],
+          "rank_median_spread_ms": 0.18997048027813435
+        },
+        "two_sequential": {
+          "critical_path_ms": 4.193809349089861,
+          "local_samples_ms": [
+            4.099797923117876,
+            4.130566027015448,
+            4.098887089639902,
+            4.112891852855682,
+            4.127250052988529,
+            4.110938869416714
+          ],
+          "rank_median_cv": 0.01122331834046852,
+          "rank_median_ms": [
+            4.111915361136198,
+            4.115727497264743,
+            4.146761493757367,
+            4.193658474832773,
+            4.086793400347233,
+            4.093691473826766,
+            4.193809349089861,
+            4.05771448276937
+          ],
+          "rank_median_spread_ms": 0.13609486632049084
+        }
+      },
+      "tokens_per_chunk": 512,
+      "top_k": 2,
+      "total_tokens_per_rank": 2048,
+      "warmup": 2
+    },
+    {
+      "chunks": 4,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "packet_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_vs_two_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_vs_two_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "two_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 4.0,
+      "intermediate": 2816,
+      "iterations": 6,
+      "num_experts": 16,
+      "payload": {
+        "bf16_return_bytes_per_assignment": 2048,
+        "count_exchange_in_timed_region": false,
+        "packet_alignment": 16,
+        "packet_byte_reduction_fraction": 0.4921875,
+        "packet_return_bytes_per_assignment": 1040,
+        "router_pack_in_timed_region": false,
+        "two_collective_return_bytes_per_assignment": 1026
+      },
+      "quality_vs_reference": {
+        "bf16_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "bf16_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "packet_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        },
+        "packet_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        },
+        "two_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        },
+        "two_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        }
+      },
+      "route": "global_bias4",
+      "routing": {
+        "aggregate_max_to_mean": 7.8193359375,
+        "aggregate_receive_assignments": [
+          32028,
+          115,
+          111,
+          99,
+          114,
+          125,
+          97,
+          79
+        ],
+        "max_step_max_to_mean": 7.83203125,
+        "median_step_max_to_mean": 7.82177734375,
+        "rank0_fraction_per_chunk": [
+          0.97900390625,
+          0.9766845703125,
+          0.9752197265625,
+          0.978759765625
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            8020,
+            24,
+            24,
+            29,
+            30,
+            28,
+            18,
+            19
+          ],
+          [
+            8001,
+            28,
+            21,
+            26,
+            30,
+            36,
+            27,
+            23
+          ],
+          [
+            7989,
+            34,
+            34,
+            22,
+            28,
+            30,
+            31,
+            24
+          ],
+          [
+            8018,
+            29,
+            32,
+            22,
+            26,
+            31,
+            21,
+            13
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              1004,
+              4,
+              0,
+              4,
+              3,
+              3,
+              3,
+              3
+            ],
+            [
+              1006,
+              3,
+              6,
+              0,
+              2,
+              2,
+              1,
+              4
+            ],
+            [
+              1003,
+              2,
+              5,
+              2,
+              5,
+              2,
+              3,
+              2
+            ],
+            [
+              1001,
+              3,
+              1,
+              6,
+              5,
+              3,
+              2,
+              3
+            ],
+            [
+              1005,
+              3,
+              3,
+              2,
+              4,
+              2,
+              4,
+              1
+            ],
+            [
+              1007,
+              1,
+              1,
+              2,
+              4,
+              5,
+              2,
+              2
+            ],
+            [
+              998,
+              3,
+              6,
+              6,
+              3,
+              6,
+              1,
+              1
+            ],
+            [
+              996,
+              5,
+              2,
+              7,
+              4,
+              5,
+              2,
+              3
+            ]
+          ],
+          [
+            [
+              1000,
+              2,
+              1,
+              6,
+              7,
+              2,
+              2,
+              4
+            ],
+            [
+              1004,
+              4,
+              0,
+              0,
+              4,
+              5,
+              5,
+              2
+            ],
+            [
+              1001,
+              3,
+              2,
+              2,
+              3,
+              9,
+              2,
+              2
+            ],
+            [
+              1006,
+              1,
+              6,
+              5,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              994,
+              8,
+              4,
+              1,
+              4,
+              6,
+              5,
+              2
+            ],
+            [
+              997,
+              2,
+              2,
+              8,
+              2,
+              4,
+              4,
+              5
+            ],
+            [
+              1000,
+              4,
+              3,
+              0,
+              8,
+              1,
+              5,
+              3
+            ],
+            [
+              999,
+              4,
+              3,
+              4,
+              1,
+              6,
+              4,
+              3
+            ]
+          ],
+          [
+            [
+              1003,
+              6,
+              2,
+              1,
+              2,
+              6,
+              2,
+              2
+            ],
+            [
+              1002,
+              5,
+              6,
+              2,
+              4,
+              2,
+              1,
+              2
+            ],
+            [
+              1001,
+              3,
+              6,
+              2,
+              4,
+              2,
+              5,
+              1
+            ],
+            [
+              1001,
+              6,
+              2,
+              4,
+              3,
+              0,
+              4,
+              4
+            ],
+            [
+              996,
+              8,
+              4,
+              2,
+              2,
+              4,
+              5,
+              3
+            ],
+            [
+              998,
+              1,
+              4,
+              4,
+              4,
+              4,
+              4,
+              5
+            ],
+            [
+              994,
+              3,
+              5,
+              5,
+              6,
+              3,
+              3,
+              5
+            ],
+            [
+              994,
+              2,
+              5,
+              2,
+              3,
+              9,
+              7,
+              2
+            ]
+          ],
+          [
+            [
+              1001,
+              4,
+              5,
+              3,
+              2,
+              3,
+              4,
+              2
+            ],
+            [
+              996,
+              4,
+              6,
+              1,
+              4,
+              8,
+              3,
+              2
+            ],
+            [
+              1008,
+              4,
+              1,
+              1,
+              5,
+              1,
+              3,
+              1
+            ],
+            [
+              1001,
+              1,
+              7,
+              4,
+              3,
+              3,
+              2,
+              3
+            ],
+            [
+              1003,
+              6,
+              1,
+              4,
+              3,
+              2,
+              2,
+              3
+            ],
+            [
+              1003,
+              2,
+              4,
+              4,
+              3,
+              3,
+              3,
+              2
+            ],
+            [
+              1002,
+              2,
+              5,
+              4,
+              5,
+              6,
+              0,
+              0
+            ],
+            [
+              1004,
+              6,
+              3,
+              1,
+              1,
+              5,
+              4,
+              0
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_pipeline": 1.0789649878673246,
+        "packet_pipeline": 1.0670151089642668,
+        "packet_pipelined_vs_bf16": 0.9991720332893691,
+        "packet_pipelined_vs_bf16_sequential": 1.0780716407754343,
+        "packet_pipelined_vs_two": 0.9974143435064304,
+        "packet_sequential_vs_bf16": 1.0103621136367038,
+        "packet_sequential_vs_two": 1.0036437925223338,
+        "two_pipeline": 1.0736792563808
+      },
+      "timings": {
+        "bf16_pipelined": {
+          "critical_path_ms": 4.764491459354758,
+          "local_samples_ms": [
+            4.7344546765089035,
+            4.6509988605976105,
+            4.696673713624477,
+            4.646129906177521,
+            6.519363261759281,
+            4.737280309200287
+          ],
+          "rank_median_cv": 0.0033208762801404334,
+          "rank_median_ms": [
+            4.7155641950666904,
+            4.7639100812375546,
+            4.762588068842888,
+            4.763429751619697,
+            4.763489589095116,
+            4.762481898069382,
+            4.762662574648857,
+            4.764491459354758
+          ],
+          "rank_median_spread_ms": 0.04892726428806782
+        },
+        "bf16_sequential": {
+          "critical_path_ms": 5.140719469636679,
+          "local_samples_ms": [
+            5.055384710431099,
+            5.031992215663195,
+            5.104627925902605,
+            9.346762206405401,
+            5.07796835154295,
+            5.058149807155132
+          ],
+          "rank_median_cv": 0.004575172600015259,
+          "rank_median_ms": [
+            5.068059079349041,
+            5.140719469636679,
+            5.138646112754941,
+            5.1394987385720015,
+            5.137744592502713,
+            5.139473592862487,
+            5.137518979609013,
+            5.139187444001436
+          ],
+          "rank_median_spread_ms": 0.07266039028763771
+        },
+        "packet_pipelined": {
+          "critical_path_ms": 4.768439568579197,
+          "local_samples_ms": [
+            4.723626188933849,
+            4.7165220603346825,
+            4.742689896374941,
+            6.498103961348534,
+            4.7403061762452126,
+            4.739925730973482
+          ],
+          "rank_median_cv": 0.0016979636331679348,
+          "rank_median_ms": [
+            4.740115953609347,
+            4.763088887557387,
+            4.762823227792978,
+            4.75587067194283,
+            4.763554316014051,
+            4.768439568579197,
+            4.7584951389580965,
+            4.763008328154683
+          ],
+          "rank_median_spread_ms": 0.028323614969849586
+        },
+        "packet_sequential": {
+          "critical_path_ms": 5.087997065857053,
+          "local_samples_ms": [
+            5.0131771713495255,
+            5.319700110703707,
+            6.190377753227949,
+            5.019377917051315,
+            4.999510943889618,
+            5.0613759085536
+          ],
+          "rank_median_cv": 0.0033197760682226467,
+          "rank_median_ms": [
+            5.040376912802458,
+            5.085962591692805,
+            5.086959805339575,
+            5.086984485387802,
+            5.087997065857053,
+            5.085712065920234,
+            5.085597513243556,
+            5.057464586570859
+          ],
+          "rank_median_spread_ms": 0.047620153054594994
+        },
+        "two_pipelined": {
+          "critical_path_ms": 4.756110021844506,
+          "local_samples_ms": [
+            9.039165917783976,
+            4.770442843437195,
+            4.755354020744562,
+            4.75686602294445,
+            4.730558022856712,
+            4.721401259303093
+          ],
+          "rank_median_cv": 0.0002472283481964314,
+          "rank_median_ms": [
+            4.756110021844506,
+            4.754592897370458,
+            4.752564709633589,
+            4.753660876303911,
+            4.754628520458937,
+            4.752603825181723,
+            4.752609645947814,
+            4.753931658342481
+          ],
+          "rank_median_spread_ms": 0.003545312210917473
+        },
+        "two_sequential": {
+          "critical_path_ms": 5.1065366715192795,
+          "local_samples_ms": [
+            5.185408983379602,
+            5.094108171761036,
+            5.099939182400703,
+            5.146475974470377,
+            5.110098049044609,
+            5.10297529399395
+          ],
+          "rank_median_cv": 0.00035799197886320517,
+          "rank_median_ms": [
+            5.1065366715192795,
+            5.099833710119128,
+            5.103796254843473,
+            5.102974595502019,
+            5.1040558610111475,
+            5.102192983031273,
+            5.104036536067724,
+            5.102023016661406
+          ],
+          "rank_median_spread_ms": 0.006702961400151253
+        }
+      },
+      "tokens_per_chunk": 512,
+      "top_k": 2,
+      "total_tokens_per_rank": 2048,
+      "warmup": 2
+    }
+  ],
+  "suite": "distributed_moe_variable_int8_overlap",
+  "timestamp_utc": "2026-11-11T09:56:15Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 8
+}

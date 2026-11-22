@@ -1,0 +1,576 @@
+{
+  "experiment": "E118_optimizer_kernels_and_fsdp2_muon",
+  "repetitions": 3,
+  "world_size": 8,
+  "environment": {
+    "timestamp_utc": "2026-11-15T13:14:42Z",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "cuda_driver": "580.178.04",
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "gpu_count": 8,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "gpu_memory_bytes": 85093777408,
+    "allow_tf32_matmul": false,
+    "allow_tf32_cudnn": true,
+    "triton": "3.7.1",
+    "flash_attn": "2.8.3.post1"
+  },
+  "clock_telemetry": {
+    "median_sm_clock_mhz": 1410.0,
+    "min_sm_clock_mhz": 1410.0
+  },
+  "validation_gates": {
+    "all_gates_passed": true,
+    "gates": {
+      "smoke_present": true,
+      "env_parity_and_8gpu": true,
+      "clocks_locked_1410": true,
+      "pytorch_grad_dtype_adamw_audit": true,
+      "sub_ulp_sr_bf16_unbiased_proof": true,
+      "single_gpu_batched_muon_parity_and_speedup": true,
+      "suite_a_lowbit_triton_beats_fused_adamw": true,
+      "suite_b_sr_and_int8_converge_while_rtn_stagnates": true,
+      "fsdp2_muon_parity_and_e2e_wins": true
+    }
+  },
+  "suite_0_audits": {
+    "grad_dtype_audit": {
+      "all_3_pytorch_adamw_backends_rejected": true,
+      "backends": {
+        "single_tensor": {
+          "rejected_fp32w_bf16_grad_dtype": true,
+          "error_excerpt": "expected dtype float for `end` but got dtype c10::BFloat16"
+        },
+        "foreach": {
+          "rejected_fp32w_bf16_grad_dtype": true,
+          "error_excerpt": "expected dtype float for `end` but got dtype c10::BFloat16"
+        },
+        "fused": {
+          "rejected_fp32w_bf16_grad_dtype": true,
+          "error_excerpt": "params, grads, exp_avgs, and exp_avg_sqs must have same dtype, device, and layout"
+        }
+      },
+      "triton_fp32w_bf16g_max_rel_l2": 0.0,
+      "triton_int8mv_min_step1_delta_cosine": 1.0
+    },
+    "sub_ulp_stochastic_rounding_proof": {
+      "num_elements": 1048576,
+      "steps": 1000,
+      "lr_sub_ulp": 0.0001,
+      "bf16_ulp_at_1p0": 0.0078125,
+      "target_magnitude": 0.9,
+      "rtn_final_magnitude_mean": 1.0,
+      "rtn_stagnant_fraction": 1.0,
+      "sr_final_pos_mean": 0.900176,
+      "sr_final_neg_mean": -0.900162,
+      "sr_final_magnitude_mean": 0.900169,
+      "sr_stagnant_fraction": 0.0,
+      "sr_accumulated_delta_rel_err": 0.00169,
+      "max_sr_accumulated_delta_rel_err_across_reps": 0.00169
+    },
+    "single_gpu_muon_launch_audit": {
+      "num_2d_matrices": 112,
+      "foreach_rejected": true,
+      "pytorch_muon_cuda_launches": 4048,
+      "batched_triton_muon_cuda_launches": 126,
+      "launch_reduction_factor": 32.13,
+      "max_param_rel_l2_vs_pytorch_muon": 7.88e-05,
+      "pytorch_muon_ms_median": 288.5762,
+      "batched_triton_muon_ms_median": 244.5193,
+      "speedup_vs_pytorch_muon": 1.1802
+    }
+  },
+  "suite_a_adamw_roofline": {
+    "slm_67m": {
+      "num_tensors": 64,
+      "tensor_shape": [
+        1024,
+        1024
+      ],
+      "total_params": 67108864,
+      "modes": {
+        "pytorch_single_tensor_fp32_clip": {
+          "ms_median": 10.579,
+          "ms_iqr": 0.2504,
+          "gparams_per_s_median": 6.344,
+          "achieved_hbm_gbps_median": 380.62,
+          "physical_hbm_bytes_per_param": 60.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 0.2018,
+          "speedup_vs_pytorch_single_tensor": 1.0
+        },
+        "pytorch_foreach_fp32_clip": {
+          "ms_median": 4.5485,
+          "ms_iqr": 0.0113,
+          "gparams_per_s_median": 14.754,
+          "achieved_hbm_gbps_median": 826.23,
+          "physical_hbm_bytes_per_param": 56.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 0.4693,
+          "speedup_vs_pytorch_single_tensor": 2.3258
+        },
+        "pytorch_fused_fp32_clip": {
+          "ms_median": 2.1344,
+          "ms_iqr": 0.0042,
+          "gparams_per_s_median": 31.442,
+          "achieved_hbm_gbps_median": 1257.66,
+          "physical_hbm_bytes_per_param": 40.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.0,
+          "speedup_vs_pytorch_single_tensor": 4.9564
+        },
+        "triton_fp32w_bf16g_fp32mv_inclip": {
+          "ms_median": 1.4203,
+          "ms_iqr": 0.003,
+          "gparams_per_s_median": 47.25,
+          "achieved_hbm_gbps_median": 1322.99,
+          "physical_hbm_bytes_per_param": 28.0,
+          "resident_bytes_per_param": 14.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.5028,
+          "speedup_vs_pytorch_single_tensor": 7.4484
+        },
+        "triton_fp32w_bf16g_bf16mv_inclip": {
+          "ms_median": 1.0869,
+          "ms_iqr": 0.0174,
+          "gparams_per_s_median": 61.743,
+          "achieved_hbm_gbps_median": 1234.87,
+          "physical_hbm_bytes_per_param": 20.0,
+          "resident_bytes_per_param": 10.0,
+          "optimizer_state_bytes_per_param": 4.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.9638,
+          "speedup_vs_pytorch_single_tensor": 9.7332
+        },
+        "triton_fp32w_bf16g_int8mv_inclip": {
+          "ms_median": 1.1363,
+          "ms_iqr": 0.0035,
+          "gparams_per_s_median": 59.059,
+          "achieved_hbm_gbps_median": 952.33,
+          "physical_hbm_bytes_per_param": 16.125,
+          "resident_bytes_per_param": 8.0625,
+          "optimizer_state_bytes_per_param": 2.0625,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.8784,
+          "speedup_vs_pytorch_single_tensor": 9.31
+        },
+        "triton_sr_bf16_inclip": {
+          "ms_median": 1.1548,
+          "ms_iqr": 0.0071,
+          "gparams_per_s_median": 58.113,
+          "achieved_hbm_gbps_median": 929.81,
+          "physical_hbm_bytes_per_param": 16.0,
+          "resident_bytes_per_param": 8.0,
+          "optimizer_state_bytes_per_param": 4.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.8483,
+          "speedup_vs_pytorch_single_tensor": 9.1609
+        }
+      }
+    },
+    "mid_268m": {
+      "num_tensors": 64,
+      "tensor_shape": [
+        2048,
+        2048
+      ],
+      "total_params": 268435456,
+      "modes": {
+        "pytorch_single_tensor_fp32_clip": {
+          "ms_median": 14.6812,
+          "ms_iqr": 0.0043,
+          "gparams_per_s_median": 18.284,
+          "achieved_hbm_gbps_median": 1097.06,
+          "physical_hbm_bytes_per_param": 60.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 0.4781,
+          "speedup_vs_pytorch_single_tensor": 1.0
+        },
+        "pytorch_foreach_fp32_clip": {
+          "ms_median": 15.9724,
+          "ms_iqr": 0.007,
+          "gparams_per_s_median": 16.806,
+          "achieved_hbm_gbps_median": 941.15,
+          "physical_hbm_bytes_per_param": 56.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 0.4394,
+          "speedup_vs_pytorch_single_tensor": 0.9192
+        },
+        "pytorch_fused_fp32_clip": {
+          "ms_median": 7.0188,
+          "ms_iqr": 0.0015,
+          "gparams_per_s_median": 38.245,
+          "achieved_hbm_gbps_median": 1529.81,
+          "physical_hbm_bytes_per_param": 40.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.0,
+          "speedup_vs_pytorch_single_tensor": 2.0917
+        },
+        "triton_fp32w_bf16g_fp32mv_inclip": {
+          "ms_median": 5.2628,
+          "ms_iqr": 0.0112,
+          "gparams_per_s_median": 51.006,
+          "achieved_hbm_gbps_median": 1428.17,
+          "physical_hbm_bytes_per_param": 28.0,
+          "resident_bytes_per_param": 14.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.3337,
+          "speedup_vs_pytorch_single_tensor": 2.7896
+        },
+        "triton_fp32w_bf16g_bf16mv_inclip": {
+          "ms_median": 3.9529,
+          "ms_iqr": 0.007,
+          "gparams_per_s_median": 67.908,
+          "achieved_hbm_gbps_median": 1358.17,
+          "physical_hbm_bytes_per_param": 20.0,
+          "resident_bytes_per_param": 10.0,
+          "optimizer_state_bytes_per_param": 4.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.7756,
+          "speedup_vs_pytorch_single_tensor": 3.714
+        },
+        "triton_fp32w_bf16g_int8mv_inclip": {
+          "ms_median": 4.1614,
+          "ms_iqr": 0.0004,
+          "gparams_per_s_median": 64.506,
+          "achieved_hbm_gbps_median": 1040.16,
+          "physical_hbm_bytes_per_param": 16.125,
+          "resident_bytes_per_param": 8.0625,
+          "optimizer_state_bytes_per_param": 2.0625,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.6866,
+          "speedup_vs_pytorch_single_tensor": 3.5279
+        },
+        "triton_sr_bf16_inclip": {
+          "ms_median": 4.2554,
+          "ms_iqr": 0.0061,
+          "gparams_per_s_median": 63.081,
+          "achieved_hbm_gbps_median": 1009.3,
+          "physical_hbm_bytes_per_param": 16.0,
+          "resident_bytes_per_param": 8.0,
+          "optimizer_state_bytes_per_param": 4.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.6494,
+          "speedup_vs_pytorch_single_tensor": 3.45
+        }
+      }
+    },
+    "llm_1p07b": {
+      "num_tensors": 64,
+      "tensor_shape": [
+        4096,
+        4096
+      ],
+      "total_params": 1073741824,
+      "modes": {
+        "pytorch_single_tensor_fp32_clip": {
+          "ms_median": 60.4288,
+          "ms_iqr": 0.0122,
+          "gparams_per_s_median": 17.769,
+          "achieved_hbm_gbps_median": 1066.12,
+          "physical_hbm_bytes_per_param": 60.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 0.4558,
+          "speedup_vs_pytorch_single_tensor": 1.0
+        },
+        "pytorch_foreach_fp32_clip": {
+          "ms_median": 63.5497,
+          "ms_iqr": 0.0195,
+          "gparams_per_s_median": 16.896,
+          "achieved_hbm_gbps_median": 946.18,
+          "physical_hbm_bytes_per_param": 56.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 0.4334,
+          "speedup_vs_pytorch_single_tensor": 0.9509
+        },
+        "pytorch_fused_fp32_clip": {
+          "ms_median": 27.541,
+          "ms_iqr": 0.0093,
+          "gparams_per_s_median": 38.987,
+          "achieved_hbm_gbps_median": 1559.48,
+          "physical_hbm_bytes_per_param": 40.0,
+          "resident_bytes_per_param": 16.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.0,
+          "speedup_vs_pytorch_single_tensor": 2.1941
+        },
+        "triton_fp32w_bf16g_fp32mv_inclip": {
+          "ms_median": 20.7403,
+          "ms_iqr": 0.0037,
+          "gparams_per_s_median": 51.771,
+          "achieved_hbm_gbps_median": 1449.58,
+          "physical_hbm_bytes_per_param": 28.0,
+          "resident_bytes_per_param": 14.0,
+          "optimizer_state_bytes_per_param": 8.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.3279,
+          "speedup_vs_pytorch_single_tensor": 2.9136
+        },
+        "triton_fp32w_bf16g_bf16mv_inclip": {
+          "ms_median": 15.5149,
+          "ms_iqr": 0.0004,
+          "gparams_per_s_median": 69.207,
+          "achieved_hbm_gbps_median": 1384.14,
+          "physical_hbm_bytes_per_param": 20.0,
+          "resident_bytes_per_param": 10.0,
+          "optimizer_state_bytes_per_param": 4.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.7751,
+          "speedup_vs_pytorch_single_tensor": 3.8949
+        },
+        "triton_fp32w_bf16g_int8mv_inclip": {
+          "ms_median": 16.2682,
+          "ms_iqr": 0.0008,
+          "gparams_per_s_median": 66.002,
+          "achieved_hbm_gbps_median": 1064.29,
+          "physical_hbm_bytes_per_param": 16.125,
+          "resident_bytes_per_param": 8.0625,
+          "optimizer_state_bytes_per_param": 2.0625,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.6929,
+          "speedup_vs_pytorch_single_tensor": 3.7145
+        },
+        "triton_sr_bf16_inclip": {
+          "ms_median": 16.7022,
+          "ms_iqr": 0.0053,
+          "gparams_per_s_median": 64.287,
+          "achieved_hbm_gbps_median": 1028.6,
+          "physical_hbm_bytes_per_param": 16.0,
+          "resident_bytes_per_param": 8.0,
+          "optimizer_state_bytes_per_param": 4.0,
+          "speedup_vs_pytorch_fused_fp32_clip": 1.6489,
+          "speedup_vs_pytorch_single_tensor": 3.618
+        }
+      }
+    }
+  },
+  "suite_b_convergence_and_stagnation": {
+    "steps": 120,
+    "lr_peak": 0.00011,
+    "lr_min": 4e-05,
+    "optimizers": {
+      "fp32_master_adamw_ref": {
+        "initial_loss_median": 5.269565,
+        "mid_loss_median": 0.001904,
+        "final_loss_median": 0.000759,
+        "loss_reduction_ratio_median": 6939.2094,
+        "mean_step_stagnant_param_fraction_median": 0.00029,
+        "tail_step_stagnant_param_fraction_median": 0.00052
+      },
+      "triton_fp32w_bf16mv": {
+        "initial_loss_median": 5.269565,
+        "mid_loss_median": 0.00197,
+        "final_loss_median": 0.000773,
+        "loss_reduction_ratio_median": 6812.9459,
+        "mean_step_stagnant_param_fraction_median": 0.00028,
+        "tail_step_stagnant_param_fraction_median": 0.00051
+      },
+      "triton_fp32w_int8mv": {
+        "initial_loss_median": 5.269565,
+        "mid_loss_median": 0.001961,
+        "final_loss_median": 0.00077,
+        "loss_reduction_ratio_median": 6842.2407,
+        "mean_step_stagnant_param_fraction_median": 0.00029,
+        "tail_step_stagnant_param_fraction_median": 0.00053
+      },
+      "triton_bf16_rtn_stagnant": {
+        "initial_loss_median": 5.269319,
+        "mid_loss_median": 0.012068,
+        "final_loss_median": 0.006473,
+        "loss_reduction_ratio_median": 814.0412,
+        "mean_step_stagnant_param_fraction_median": 0.80603,
+        "tail_step_stagnant_param_fraction_median": 0.92885
+      },
+      "triton_sr_bf16": {
+        "initial_loss_median": 5.269319,
+        "mid_loss_median": 0.001932,
+        "final_loss_median": 0.000755,
+        "loss_reduction_ratio_median": 6976.9854,
+        "mean_step_stagnant_param_fraction_median": 0.81827,
+        "tail_step_stagnant_param_fraction_median": 0.95842
+      },
+      "batched_muon_plus_adamw": {
+        "initial_loss_median": 5.269565,
+        "mid_loss_median": 0.001622,
+        "final_loss_median": 0.0001,
+        "loss_reduction_ratio_median": 52508.3683,
+        "mean_step_stagnant_param_fraction_median": 3e-05,
+        "tail_step_stagnant_param_fraction_median": 4e-05
+      }
+    }
+  },
+  "suite_c_fsdp2_muon_and_adamw": {
+    "muon_8gpu_vs_1gpu_verification": {
+      "max_pytorch_dtensor_muon_rel_l2": 0.0003042,
+      "max_owner_seq_muon_rel_l2": 6.8e-05,
+      "max_owner_pipelined_muon_rel_l2": 6.8e-05,
+      "max_owner_pipelined_update_delta_rel_l2": 0.0036714,
+      "min_shard_local_wrong_param_rel_l2": 0.007265,
+      "min_shard_local_wrong_update_delta_rel_l2": 0.3927
+    },
+    "isolated_3p49b_fsdp2_optimizer_step": {
+      "num_layers": 16,
+      "hidden": 4096,
+      "inter_dim": 14336,
+      "total_params": 3489796096,
+      "modes": {
+        "fsdp2_adamw_foreach_clip": {
+          "step_ms_median": 27.6327,
+          "step_ms_iqr": 0.0064,
+          "cluster_gparams_per_s_median": 126.292,
+          "nccl_collective_launches": 1,
+          "per_rank_state_mib": 3328.13,
+          "per_rank_param_grad_state_mib": 6656.26,
+          "speedup_vs_pytorch_dtensor_muon": 30.7456,
+          "speedup_vs_fsdp2_adamw_fused": 0.5206
+        },
+        "fsdp2_adamw_fused_clip": {
+          "step_ms_median": 14.3865,
+          "step_ms_iqr": 0.0872,
+          "cluster_gparams_per_s_median": 242.574,
+          "nccl_collective_launches": 1,
+          "per_rank_state_mib": 3328.13,
+          "per_rank_param_grad_state_mib": 6656.26,
+          "speedup_vs_pytorch_dtensor_muon": 59.0543,
+          "speedup_vs_fsdp2_adamw_fused": 1.0
+        },
+        "fsdp2_triton_int8mv_inclip": {
+          "step_ms_median": 7.161,
+          "step_ms_iqr": 0.0375,
+          "cluster_gparams_per_s_median": 487.334,
+          "nccl_collective_launches": 0,
+          "per_rank_state_mib": 858.03,
+          "per_rank_param_grad_state_mib": 4186.16,
+          "speedup_vs_pytorch_dtensor_muon": 118.6406,
+          "speedup_vs_fsdp2_adamw_fused": 2.009
+        },
+        "fsdp2_triton_sr_bf16_inclip": {
+          "step_ms_median": 7.0151,
+          "step_ms_iqr": 0.0026,
+          "cluster_gparams_per_s_median": 497.467,
+          "nccl_collective_launches": 0,
+          "per_rank_state_mib": 1664.06,
+          "per_rank_param_grad_state_mib": 3328.13,
+          "speedup_vs_pytorch_dtensor_muon": 121.108,
+          "speedup_vs_fsdp2_adamw_fused": 2.0508
+        },
+        "fsdp2_pytorch_dtensor_muon": {
+          "step_ms_median": 849.585,
+          "step_ms_iqr": 0.1491,
+          "cluster_gparams_per_s_median": 4.108,
+          "nccl_collective_launches": 1952,
+          "per_rank_state_mib": 1664.13,
+          "per_rank_param_grad_state_mib": 4992.26,
+          "speedup_vs_pytorch_dtensor_muon": 1.0,
+          "speedup_vs_fsdp2_adamw_fused": 0.0169
+        },
+        "fsdp2_owner_seq_muon": {
+          "step_ms_median": 218.9634,
+          "step_ms_iqr": 0.2233,
+          "cluster_gparams_per_s_median": 15.938,
+          "nccl_collective_launches": 7,
+          "per_rank_state_mib": 832.13,
+          "per_rank_param_grad_state_mib": 4160.26,
+          "speedup_vs_pytorch_dtensor_muon": 3.88,
+          "speedup_vs_fsdp2_adamw_fused": 0.0657
+        },
+        "fsdp2_owner_pipelined_muon": {
+          "step_ms_median": 215.5519,
+          "step_ms_iqr": 0.1353,
+          "cluster_gparams_per_s_median": 16.19,
+          "nccl_collective_launches": 7,
+          "per_rank_state_mib": 832.13,
+          "per_rank_param_grad_state_mib": 4160.26,
+          "speedup_vs_pytorch_dtensor_muon": 3.9414,
+          "speedup_vs_fsdp2_adamw_fused": 0.0667
+        }
+      }
+    },
+    "end_to_end_1p01b_fsdp2_training_step": {
+      "num_layers": 16,
+      "hidden": 2048,
+      "inter_dim": 8192,
+      "total_params": 973146112,
+      "global_tokens_per_step": 32768,
+      "modes": {
+        "e2e_fsdp2_adamw_foreach": {
+          "total_step_ms_median": 168.5917,
+          "total_step_ms_iqr": 0.2142,
+          "opt_clip_ms_median": 7.2849,
+          "opt_fraction_of_step": 0.0432,
+          "cluster_tokens_per_s_median": 194363.1,
+          "peak_allocated_mib_median": 10005.39,
+          "steady_post_step_mib_median": 3832.35,
+          "speedup_vs_pytorch_dtensor_muon": 5.7271,
+          "speedup_vs_adamw_foreach": 1.0
+        },
+        "e2e_fsdp2_adamw_fused": {
+          "total_step_ms_median": 164.8938,
+          "total_step_ms_iqr": 0.2642,
+          "opt_clip_ms_median": 3.2051,
+          "opt_fraction_of_step": 0.0194,
+          "cluster_tokens_per_s_median": 198721.8,
+          "peak_allocated_mib_median": 10005.46,
+          "steady_post_step_mib_median": 3832.42,
+          "speedup_vs_pytorch_dtensor_muon": 5.8556,
+          "speedup_vs_adamw_foreach": 1.0224
+        },
+        "e2e_fsdp2_triton_int8mv": {
+          "total_step_ms_median": 158.3051,
+          "total_step_ms_iqr": 0.1918,
+          "opt_clip_ms_median": 2.0961,
+          "opt_fraction_of_step": 0.0132,
+          "cluster_tokens_per_s_median": 206992.7,
+          "peak_allocated_mib_median": 9316.65,
+          "steady_post_step_mib_median": 3143.61,
+          "speedup_vs_pytorch_dtensor_muon": 6.0993,
+          "speedup_vs_adamw_foreach": 1.065
+        },
+        "e2e_fsdp2_triton_sr_bf16": {
+          "total_step_ms_median": 156.7698,
+          "total_step_ms_iqr": 0.0571,
+          "opt_clip_ms_median": 2.0175,
+          "opt_fraction_of_step": 0.0129,
+          "cluster_tokens_per_s_median": 209019.8,
+          "peak_allocated_mib_median": 9309.35,
+          "steady_post_step_mib_median": 3136.31,
+          "speedup_vs_pytorch_dtensor_muon": 6.159,
+          "speedup_vs_adamw_foreach": 1.0754
+        },
+        "e2e_fsdp2_pytorch_dtensor_muon": {
+          "total_step_ms_median": 965.5455,
+          "total_step_ms_iqr": 0.1467,
+          "opt_clip_ms_median": 804.8671,
+          "opt_fraction_of_step": 0.8336,
+          "cluster_tokens_per_s_median": 33937.3,
+          "peak_allocated_mib_median": 9540.91,
+          "steady_post_step_mib_median": 3368.37,
+          "speedup_vs_pytorch_dtensor_muon": 1.0,
+          "speedup_vs_adamw_foreach": 0.1746
+        },
+        "e2e_fsdp2_owner_pipelined_muon": {
+          "total_step_ms_median": 190.1827,
+          "total_step_ms_iqr": 0.3369,
+          "opt_clip_ms_median": 31.9534,
+          "opt_fraction_of_step": 0.168,
+          "cluster_tokens_per_s_median": 172297.5,
+          "peak_allocated_mib_median": 10237.41,
+          "steady_post_step_mib_median": 4064.37,
+          "speedup_vs_pytorch_dtensor_muon": 5.0769,
+          "speedup_vs_adamw_foreach": 0.8865
+        }
+      }
+    }
+  },
+  "rep_elapsed_seconds": [
+    157.86,
+    156.58,
+    158.02
+  ]
+}

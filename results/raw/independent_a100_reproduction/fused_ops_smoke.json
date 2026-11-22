@@ -1,0 +1,167 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-14T20:36:18Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "profile": "smoke",
+  "records": [
+    {
+      "compile_seconds": 0.0,
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "effective_gb_s": 252.4499176847331,
+      "experiment": "swiglu",
+      "groups": 3,
+      "implementation": "torch_eager",
+      "iterations_per_group": 5,
+      "max_ms": 0.026144000887870788,
+      "mean_ms": 0.024838400383790333,
+      "median_ms": 0.02492160052061081,
+      "min_ms": 0.023449599742889404,
+      "shape": [
+        1048576
+      ],
+      "warmup": 5
+    },
+    {
+      "compile_seconds": 3.1352206838782877,
+      "correctness": {
+        "max_abs_error": 0.0625,
+        "max_rel_error": 0.0078125,
+        "mean_abs_error": 0.0004756313282996416,
+        "mean_rel_error": 0.0014858704525977373
+      },
+      "dtype": "torch.bfloat16",
+      "effective_gb_s": 72.13384000694323,
+      "experiment": "swiglu",
+      "groups": 3,
+      "implementation": "torch_compile",
+      "iterations_per_group": 5,
+      "max_ms": 0.09017599821090698,
+      "mean_ms": 0.0855829338232676,
+      "median_ms": 0.08721920251846313,
+      "min_ms": 0.07935360074043274,
+      "shape": [
+        1048576
+      ],
+      "warmup": 5
+    },
+    {
+      "compile_seconds": 0.0,
+      "correctness": {
+        "max_abs_error": 0.0625,
+        "max_rel_error": 0.0078125,
+        "mean_abs_error": 0.0004756313282996416,
+        "mean_rel_error": 0.0014858704525977373
+      },
+      "dtype": "torch.bfloat16",
+      "effective_gb_s": 180.9054125995503,
+      "experiment": "swiglu",
+      "groups": 3,
+      "implementation": "triton",
+      "iterations_per_group": 5,
+      "max_ms": 0.039955198764801025,
+      "mean_ms": 0.035980799794197084,
+      "median_ms": 0.03477759957313538,
+      "min_ms": 0.03320960104465485,
+      "shape": [
+        1048576
+      ],
+      "warmup": 5
+    },
+    {
+      "compile_seconds": 0.0,
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "effective_gb_s": 31.246253273981594,
+      "experiment": "rmsnorm",
+      "groups": 3,
+      "implementation": "torch_eager",
+      "iterations_per_group": 5,
+      "max_ms": 0.13608319759368898,
+      "mean_ms": 0.13248213132222494,
+      "median_ms": 0.13449599742889404,
+      "min_ms": 0.1268671989440918,
+      "shape": [
+        256,
+        4096
+      ],
+      "warmup": 5
+    },
+    {
+      "compile_seconds": 0.06695563113316894,
+      "correctness": {
+        "max_abs_error": 0.00390625,
+        "max_rel_error": 0.004115226212888956,
+        "mean_abs_error": 3.725290298461914e-09,
+        "mean_rel_error": 3.924585545433956e-09
+      },
+      "dtype": "torch.bfloat16",
+      "effective_gb_s": 53.76565911881009,
+      "experiment": "rmsnorm",
+      "groups": 3,
+      "implementation": "torch_compile",
+      "iterations_per_group": 5,
+      "max_ms": 0.08618239760398864,
+      "mean_ms": 0.08023039897282919,
+      "median_ms": 0.07816320061683654,
+      "min_ms": 0.07634559869766236,
+      "shape": [
+        256,
+        4096
+      ],
+      "warmup": 5
+    },
+    {
+      "compile_seconds": 0.0,
+      "correctness": {
+        "max_abs_error": 0.00390625,
+        "max_rel_error": 0.005347593687474728,
+        "mean_abs_error": 6.51925802230835e-09,
+        "mean_rel_error": 1.2981603347839155e-08
+      },
+      "dtype": "torch.bfloat16",
+      "effective_gb_s": 107.17153836060471,
+      "experiment": "rmsnorm",
+      "groups": 3,
+      "implementation": "triton",
+      "iterations_per_group": 5,
+      "max_ms": 0.045459198951721194,
+      "mean_ms": 0.0406634658575058,
+      "median_ms": 0.039212799072265624,
+      "min_ms": 0.03731839954853058,
+      "shape": [
+        256,
+        4096
+      ],
+      "warmup": 5
+    }
+  ],
+  "suite": "fused_ops"
+}

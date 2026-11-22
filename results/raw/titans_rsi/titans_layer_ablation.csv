@@ -1,0 +1,11 @@
+config,D,K,stage_id,stage_name,fwd_ms_mean,fwd_ms_std,bwd_ms_mean,bwd_ms_std,total_ms_mean,total_ms_std,speedup_vs_a0,tokens_per_sec_mean
+"D=1024,H=16,K=64",1024,64,A0,A0_vectorized_pytorch_titans_block_baseline,156.0693,0.9519,507.4975,16.206,663.5668,17.1338,1.0,6175.4
+"D=1024,H=16,K=64",1024,64,A1,A1_zero_spill_titans_kernel_bi_triangular_decay,2.0979,0.0004,4.2017,0.0014,6.2996,0.0015,105.335,650200.5
+"D=1024,H=16,K=64",1024,64,A2,A2_plus_fused_in_kernel_output_ln_residual,1.9066,0.0008,3.8042,0.0037,5.7108,0.0032,116.195,717237.6
+"D=1024,H=16,K=64",1024,64,A3,A3_plus_fused_qkv_gates_single_gemm,1.8509,0.0025,3.5621,0.0029,5.413,0.0004,122.587,756694.9
+"D=1024,H=16,K=64",1024,64,A4,A4_plus_persistent_2d_triton_rmsnorm,1.7593,0.0008,3.3727,0.0003,5.132,0.0006,129.299,798123.7
+"D=2048,H=16,K=128",2048,128,A0,A0_vectorized_pytorch_titans_block_baseline,155.3963,0.877,511.1895,3.9898,666.5859,3.6779,1.0,6144.9
+"D=2048,H=16,K=128",2048,128,A1,A1_zero_spill_titans_kernel_bi_triangular_decay,4.6787,0.0017,10.0504,0.0031,14.7292,0.0027,45.256,278087.6
+"D=2048,H=16,K=128",2048,128,A2,A2_plus_fused_in_kernel_output_ln_residual,4.2831,0.0008,9.319,0.0021,13.602,0.0027,49.006,301131.6
+"D=2048,H=16,K=128",2048,128,A3,A3_plus_fused_qkv_gates_single_gemm,4.2451,0.0006,8.7845,0.0254,13.0296,0.0258,51.159,314362.5
+"D=2048,H=16,K=128",2048,128,A4,A4_plus_persistent_2d_triton_rmsnorm,4.0402,0.0017,8.3099,0.003,12.3502,0.0014,53.974,331655.4

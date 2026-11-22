@@ -1,0 +1,80 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-14T20:37:01Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "profile": "smoke",
+  "records": [
+    {
+      "dtype": "torch.bfloat16",
+      "experiment": "transformer_block_training",
+      "gradient_l2_norm": 0.08032848431977607,
+      "gradient_l2_relative_error": 0.0,
+      "gradient_max_abs": 0.0003986358642578125,
+      "groups": 2,
+      "implementation": "torch_eager",
+      "iterations_per_group": 2,
+      "loss": 1.0143239498138428,
+      "loss_abs_error": 0.0,
+      "max_ms": 1.5285760164260864,
+      "mean_ms": 1.5092880129814148,
+      "median_ms": 1.5092880129814148,
+      "min_ms": 1.4900000095367432,
+      "peak_incremental_memory_bytes": 786944,
+      "setup_seconds": 0.0,
+      "shape": [
+        1,
+        128,
+        512,
+        8,
+        1408
+      ],
+      "tokens_per_second": 84808.20022359521,
+      "warmup": 1
+    },
+    {
+      "dtype": "torch.bfloat16",
+      "experiment": "transformer_block_training",
+      "gradient_l2_norm": 0.0803404160565281,
+      "gradient_l2_relative_error": 0.0001485368092410243,
+      "gradient_max_abs": 0.0003986358642578125,
+      "groups": 2,
+      "implementation": "torch_compile",
+      "iterations_per_group": 2,
+      "loss": 1.0143601894378662,
+      "loss_abs_error": 3.62396240234375e-05,
+      "max_ms": 1.344480037689209,
+      "mean_ms": 1.3437920212745667,
+      "median_ms": 1.3437920212745667,
+      "min_ms": 1.3431040048599243,
+      "peak_incremental_memory_bytes": 656384,
+      "setup_seconds": 3.343775602057576,
+      "shape": [
+        1,
+        128,
+        512,
+        8,
+        1408
+      ],
+      "tokens_per_second": 95252.83524052621,
+      "warmup": 1
+    }
+  ],
+  "suite": "transformer_training"
+}

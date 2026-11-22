@@ -1,0 +1,162 @@
+{
+  "adaptive_window": 48,
+  "additive_margin": 18,
+  "calibration_steps": 96,
+  "correctness": {
+    "cases": {
+      "additive_spill_layer0_step96": {
+        "cosine_similarity": 0.9999998807907104,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "additive_spill_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "risk0_spill_layer0_step96": {
+        "cosine_similarity": 0.9999998807907104,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "risk0_spill_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "risk8_spill_layer0_step96": {
+        "cosine_similarity": 0.9999998807907104,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "risk8_spill_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      }
+    },
+    "max_abs_error": 0.0,
+    "max_allowed_abs_error": 0.03125,
+    "min_cosine_similarity": 0.9999998807907104,
+    "partition_exact": true
+  },
+  "cuda": "12.9",
+  "experts_per_rank": 32,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hidden": 2048,
+  "hostname": "node-0",
+  "intermediate": 1024,
+  "method_order": "ascending",
+  "nodes": 1,
+  "notes": [
+    "Router assignments are reconstructed from compact OLMoE trained-router count traces; hidden rows and expert weights are deterministic synthetic tensors.",
+    "Fixed profiles use tile-512 packing and fixed metadata-packed transport. Assignments beyond capacity are preserved in a variable-split metadata-packed spill side channel.",
+    "A global overflow all-reduce guards the spill path. Profile construction is causal but precomputed outside timed execution.",
+    "Dynamic and spill paths use the same reconstructed top-k assignments and expert weights."
+  ],
+  "num_cycle_cases": 2,
+  "num_tokens": 128,
+  "profile": "smoke",
+  "profile_rows": {
+    "additive_spill": {
+      "mean_fixed_row_ratio": 1.076171875,
+      "mean_spill_fraction": 0.003662109375,
+      "mean_total_row_ratio": 1.079833984375,
+      "spill_step_fraction": 0.5
+    },
+    "risk0_spill": {
+      "mean_fixed_row_ratio": 1.053466796875,
+      "mean_spill_fraction": 0.012451171875,
+      "mean_total_row_ratio": 1.06591796875,
+      "spill_step_fraction": 0.5
+    },
+    "risk8_spill": {
+      "mean_fixed_row_ratio": 1.133544921875,
+      "mean_spill_fraction": 0.0,
+      "mean_total_row_ratio": 1.133544921875,
+      "spill_step_fraction": 0.0
+    }
+  },
+  "selected_domains": [
+    "biology",
+    "biology"
+  ],
+  "selected_layers": [
+    0
+  ],
+  "selected_steps": [
+    96,
+    97
+  ],
+  "speedup_vs_dynamic": {
+    "additive_spill": 0.6388259364088142,
+    "risk0_spill": 0.6342647004682749,
+    "risk8_spill": 0.7212355903872276
+  },
+  "suite": "distributed_moe_profiled_spill",
+  "tile_size": 512,
+  "timestamp_utc": "2026-11-11T19:14:16Z",
+  "timings": {
+    "additive_spill": {
+      "critical_path_ms": 4.784644581377506,
+      "local_samples_ms": [
+        4.833280108869076,
+        4.736009053885937
+      ],
+      "rank_median_cv": 0.002486447763290973,
+      "rank_median_ms": [
+        4.784644581377506,
+        4.760910058394074
+      ],
+      "rank_median_spread_ms": 0.023734522983431816
+    },
+    "dynamic": {
+      "critical_path_ms": 3.0565550550818443,
+      "local_samples_ms": [
+        3.085559234023094,
+        3.0275508761405945
+      ],
+      "rank_median_cv": 0.001566000202330339,
+      "rank_median_ms": [
+        3.0565550550818443,
+        3.0469968914985657
+      ],
+      "rank_median_spread_ms": 0.009558163583278656
+    },
+    "risk0_spill": {
+      "critical_path_ms": 4.819052759557962,
+      "local_samples_ms": [
+        4.889663774520159,
+        4.748441744595766
+      ],
+      "rank_median_cv": 0.0010425796816060848,
+      "rank_median_ms": [
+        4.819052759557962,
+        4.809014732018113
+      ],
+      "rank_median_spread_ms": 0.010038027539849281
+    },
+    "risk8_spill": {
+      "critical_path_ms": 4.237942630425096,
+      "local_samples_ms": [
+        3.567185252904892,
+        4.908700007945299
+      ],
+      "rank_median_cv": 0.0006440587946982947,
+      "rank_median_ms": [
+        4.237942630425096,
+        4.232487175613642
+      ],
+      "rank_median_spread_ms": 0.005455454811453819
+    }
+  },
+  "top_k": 8,
+  "torch": "2.13.0+cu129",
+  "trace_corpus_sha256": "08008e65c5d919ac8c45bef7d07b0b1c9ea260d257d36e9d1c3c8b93257d5ad5",
+  "trace_experts": 64,
+  "trace_model": "allenai/OLMoE-1B-7B-0924",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

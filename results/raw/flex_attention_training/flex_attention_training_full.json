@@ -1,0 +1,1463 @@
+{
+  "correctness_summary": {
+    "max_dk_l2_rel_error_vs_fp32": 0.00666308433850499,
+    "max_dq_l2_rel_error_vs_fp32": 0.006780499628585725,
+    "max_dv_l2_rel_error_vs_fp32": 0.0022100287303187024,
+    "max_out_l2_rel_error_vs_fp32": 0.003973673873350048,
+    "max_scaled_backward_chain_rule_rel_error": 0.004930212005551449
+  },
+  "cuda_kernel_attribution": {
+    "packed_doc_packed_16docs_mixed": {
+      "flash_attn_varlen_cu_seqlens": {
+        "category_us_per_step": {
+          "flash_cuda_attention": 1469.145,
+          "mask_softmax_pointwise": 1302.473
+        },
+        "cuda_kernels_per_step": 16.0,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 1.0,
+            "category": "flash_cuda_attention",
+            "cuda_us_per_step": 792.098,
+            "kernel": "void flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "flash_cuda_attention",
+            "cuda_us_per_step": 368.382,
+            "kernel": "void flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 128, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 128, 64, 4"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 231.156,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 174.607,
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "flash_cuda_attention",
+            "cuda_us_per_step": 171.813,
+            "kernel": "void flash::flash_bwd_dot_do_o_kernel<true, Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kerne"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 2771.617
+      },
+      "flex_blockmask_default": {
+        "category_us_per_step": {
+          "flex_triton_attention": 2556.47,
+          "mask_softmax_pointwise": 1185.832
+        },
+        "cuda_kernels_per_step": 13.0,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 1.0,
+            "category": "flex_triton_attention",
+            "cuda_us_per_step": 1973.229,
+            "kernel": "triton_tem_fused_flex_attention_backward_1"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "flex_triton_attention",
+            "cuda_us_per_step": 505.177,
+            "kernel": "triton_tem_fused_flex_attention_0"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 230.932,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 174.298,
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 156.271,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 3742.23
+      },
+      "sdpa_expanded_kv_efficient": {
+        "category_us_per_step": {
+          "cutlass_fmha_attention": 57435.398,
+          "mask_softmax_pointwise": 2216.064
+        },
+        "cuda_kernels_per_step": 22.0,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 1.0,
+            "category": "cutlass_fmha_attention",
+            "cuda_us_per_step": 43997.339,
+            "kernel": "fmha_cutlassB_bf16_aligned_128x128_k128_seqaligned_sm80(PyTorchMemEffAttention::AttentionBackwardKernel<cutlass::arch::Sm80, cutlass::bfloat"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "cutlass_fmha_attention",
+            "cuda_us_per_step": 13455.476,
+            "kernel": "fmha_cutlassF_bf16_aligned_64x128_rf_sm80(PyTorchMemEffAttention::AttentionKernel<cutlass::bfloat16_t, cutlass::arch::Sm80, true, 64, 128, 1"
+          },
+          {
+            "calls_per_step": 4.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 540.184,
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&):"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 265.583,
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::where_kernel_impl(at::Tens"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 261.935,
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::bi"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 59650.01
+      },
+      "sdpa_gqa_bool_mask_auto": {
+        "category_us_per_step": {
+          "mask_softmax_pointwise": 94801.854,
+          "materialized_gemm": 175791.407
+        },
+        "cuda_kernels_per_step": 60.0,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 2.0,
+            "category": "materialized_gemm",
+            "cuda_us_per_step": 60972.837,
+            "kernel": "ampere_sgemm_128x128_tn"
+          },
+          {
+            "calls_per_step": 2.0,
+            "category": "materialized_gemm",
+            "cuda_us_per_step": 57551.057,
+            "kernel": "ampere_sgemm_128x128_nn"
+          },
+          {
+            "calls_per_step": 2.0,
+            "category": "materialized_gemm",
+            "cuda_us_per_step": 57266.45,
+            "kernel": "ampere_sgemm_128x128_nt"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 18944.527,
+            "kernel": "void at::native::(anonymous namespace)::cunn_SoftMaxForwardReg<float, float, float, at::native::(anonymous namespace)::SoftMaxForwardEpilogu"
+          },
+          {
+            "calls_per_step": 4.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 15475.622,
+            "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl<at::native::CUDAFunctor_add<float> >(at::TensorIteratorBase&, at::na"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 270592.199
+      }
+    },
+    "score_mod_sw512_softcap30": {
+      "compiled_materialized_score_mod": {
+        "category_us_per_step": {
+          "mask_softmax_pointwise": 15297.494,
+          "materialized_gemm": 10804.702
+        },
+        "cuda_kernels_per_step": 20.5,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 1.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 7801.504,
+            "kernel": "triton_red_fused__softmax__softmax_backward_data__to_copy_bitwise_not_div_masked_fill_mul_tanh_tanh_backward_view_1"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 6191.427,
+            "kernel": "triton_red_fused__softmax__to_copy_bitwise_not_div_masked_fill_mul_prepare_softmax_online_tanh_view_1"
+          },
+          {
+            "calls_per_step": 1.83,
+            "category": "materialized_gemm",
+            "cuda_us_per_step": 5360.904,
+            "kernel": "ampere_bf16_s1688gemm_bf16_256x128_ldg8_f2f_stages_32x1_tn"
+          },
+          {
+            "calls_per_step": 1.83,
+            "category": "materialized_gemm",
+            "cuda_us_per_step": 2619.361,
+            "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_nn"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "materialized_gemm",
+            "cuda_us_per_step": 1612.951,
+            "kernel": "ampere_bf16_s16816gemm_bf16_256x64_ldg8_f2f_stages_64x3_nt"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 26123.807
+      },
+      "eager_materialized_score_mod": {
+        "category_us_per_step": {
+          "mask_softmax_pointwise": 103211.629,
+          "materialized_gemm": 11052.307
+        },
+        "cuda_kernels_per_step": 53.5,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 8.67,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 18897.07,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          },
+          {
+            "calls_per_step": 4.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 12326.828,
+            "kernel": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::(anonymous namespace)::masked_fill_kernel(at::Ten"
+          },
+          {
+            "calls_per_step": 4.67,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 10236.077,
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+          },
+          {
+            "calls_per_step": 3.0,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 9939.641,
+            "kernel": "Memcpy DtoD (Device -> Device)"
+          },
+          {
+            "calls_per_step": 3.67,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 9104.505,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 114263.936
+      },
+      "flash_attn_native_cuda": {
+        "category_us_per_step": {
+          "flash_cuda_attention": 2262.437,
+          "mask_softmax_pointwise": 1125.552
+        },
+        "cuda_kernels_per_step": 14.33,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 1.0,
+            "category": "flash_cuda_attention",
+            "cuda_us_per_step": 1477.459,
+            "kernel": "void flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "flash_cuda_attention",
+            "cuda_us_per_step": 489.4,
+            "kernel": "void flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 128, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 128, 64, 4"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 192.452,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          },
+          {
+            "calls_per_step": 1.0,
+            "category": "flash_cuda_attention",
+            "cuda_us_per_step": 166.506,
+            "kernel": "void flash::flash_bwd_dot_do_o_kernel<true, Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kerne"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 145.546,
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 3387.989
+      },
+      "flex_attention_default": {
+        "category_us_per_step": {
+          "flex_triton_attention": 4326.93,
+          "mask_softmax_pointwise": 1008.849
+        },
+        "cuda_kernels_per_step": 11.33,
+        "top_cuda_kernels_rep1": [
+          {
+            "calls_per_step": 1.0,
+            "category": "flex_triton_attention",
+            "cuda_us_per_step": 3448.12,
+            "kernel": "triton_tem_fused_flex_attention_backward_1"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "flex_triton_attention",
+            "cuda_us_per_step": 787.817,
+            "kernel": "triton_tem_fused_flex_attention_0"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 192.573,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 145.113,
+            "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+          },
+          {
+            "calls_per_step": 0.83,
+            "category": "mask_softmax_pointwise",
+            "cuda_us_per_step": 130.99,
+            "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<flo"
+          }
+        ],
+        "total_cuda_kernel_us_per_step": 5335.779
+      }
+    }
+  },
+  "experiment": "E113_flex_attention_training",
+  "hardware": {
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "nvml_max_clocks": {
+      "default_app_sm_clock_mhz": 1140,
+      "max_mem_clock_mhz": 1593,
+      "max_sm_clock_mhz": 1410
+    },
+    "repetition_count": 3,
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "key_findings": {
+    "compiled_create_block_mask_16docs_ms": 0.5397493441899617,
+    "create_block_mask_compile_speedup_16docs": 10.975277247978521,
+    "packed_16docs_flex_speedups": {
+      "blockmask_speedup_over_no_blockmask": 9.66043424831103,
+      "flash_varlen_speedup_over_flex_default": 1.3506007200586356,
+      "flex_autotune_over_flex_default_speedup": 0.9995408865922326,
+      "flex_default_speedup_over_sdpa_auto": 71.4482058724327,
+      "flex_default_speedup_over_sdpa_efficient": 15.782774694212632
+    },
+    "packed_64docs_sft_subtile_crossover": {
+      "blockmask_speedup_over_no_blockmask": 13.711755524867593,
+      "flash_varlen_speedup_over_flex_default": 1.0776316256198573,
+      "flex_autotune_over_flex_default_speedup": 0.9999328563059119,
+      "flex_default_speedup_over_sdpa_auto": 101.54196908760679,
+      "flex_default_speedup_over_sdpa_efficient": 22.479454154705696
+    },
+    "sdpa_gqa_bool_mask_silent_fallback_memory_mib": 33152.0009765625,
+    "sw512_log_decay_flex_only_comparisons": {
+      "flex_autotune_speedup_over_compiled_materialized": 5.256964577270349,
+      "flex_default_memory_reduction_vs_compiled_materialized": 11.736155341096879,
+      "flex_default_memory_reduction_vs_eager_materialized": 23.443940541970658,
+      "flex_default_speedup_over_compiled_materialized": 4.936576383095715,
+      "flex_default_speedup_over_eager_materialized": 16.506551415679198,
+      "flex_default_transient_reduction_vs_compiled_materialized": 13.428551498756448,
+      "flex_default_transient_reduction_vs_eager_materialized": 26.98189593933456,
+      "online_fp32_dk_accuracy_gain_vs_materialized_bf16": 2.696938594949869
+    },
+    "sw512_softcap30_comparisons": {
+      "flash_native_speedup_over_flex_autotune": 1.4781621549020676,
+      "flash_native_speedup_over_flex_default": 1.5424844857741922,
+      "flex_autotune_speedup_over_compiled_materialized": 5.080040024133923,
+      "flex_default_memory_reduction_vs_compiled_materialized": 14.641115856167087,
+      "flex_default_memory_reduction_vs_eager_materialized": 29.253861572111077,
+      "flex_default_speedup_over_compiled_materialized": 4.868199958130294,
+      "flex_default_speedup_over_eager_materialized": 20.52097518671299,
+      "flex_default_transient_reduction_vs_compiled_materialized": 16.791436089779463,
+      "flex_default_transient_reduction_vs_eager_materialized": 33.70766512138059,
+      "online_fp32_dk_accuracy_gain_vs_materialized_bf16": 2.4974288549474126
+    }
+  },
+  "packed_document_gqa": {
+    "packed_16docs_mixed": {
+      "active_pair_fraction": 0.0326,
+      "blockmask_active_tile_fraction": 0.054932,
+      "blockmask_construction": {
+        "compile_speedup": 10.975277247978521,
+        "compiled_32L_amortized_fraction_of_flex_step": 0.004470570977711721,
+        "compiled_amortized_per_layer_32L_ms": 0.016867167005936302,
+        "compiled_ms": 0.5397493441899617,
+        "eager_ms": 5.923898696899414
+      },
+      "blockmask_sparsity_percent": 94.5068,
+      "comparisons": {
+        "blockmask_speedup_over_no_blockmask": 9.66043424831103,
+        "flash_varlen_speedup_over_flex_default": 1.3506007200586356,
+        "flex_autotune_over_flex_default_speedup": 0.9995408865922326,
+        "flex_default_speedup_over_sdpa_auto": 71.4482058724327,
+        "flex_default_speedup_over_sdpa_efficient": 15.782774694212632
+      },
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0016993951645527926,
+          "dq_l2_rel_error_vs_fp32_max": 0.0017139588843194228,
+          "dv_l2_rel_error_vs_fp32_max": 0.0016871527439091406,
+          "effective_valid_attn_tflop_s_median": 0.46549634955874813,
+          "implementation": "sdpa_gqa_bool_mask_auto",
+          "incremental_memory_reduction_vs_sdpa_auto": 1.0,
+          "median_ms": 269.502899,
+          "out_l2_rel_error_vs_fp32_max": 0.001593792721900072,
+          "peak_incremental_memory_mib_median": 33152.0009765625,
+          "peak_transient_workspace_mib_median": 33056.0009765625,
+          "repeat_spread": 0.001388920124380616,
+          "repetition_medians_ms": [
+            269.44890350000003,
+            269.82322150000005,
+            269.502899
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.002443431169238521,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 1.0,
+          "speedup_over_sdpa_efficient_expanded_median": 0.22089812475336348,
+          "tokens_per_second_median": 30396.704563834763
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0033360604958253505,
+          "dq_l2_rel_error_vs_fp32_max": 0.00320307948560437,
+          "dv_l2_rel_error_vs_fp32_max": 0.001971879608758281,
+          "effective_valid_attn_tflop_s_median": 2.1077120142498185,
+          "implementation": "sdpa_expanded_kv_efficient",
+          "incremental_memory_reduction_vs_sdpa_auto": 34.497364503361055,
+          "median_ms": 59.5207575,
+          "out_l2_rel_error_vs_fp32_max": 0.001967931716068514,
+          "peak_incremental_memory_mib_median": 961.0009765625,
+          "peak_transient_workspace_mib_median": 865.0009765625,
+          "repeat_spread": 0.0015729890534407545,
+          "repetition_medians_ms": [
+            59.5207575,
+            59.6059495,
+            59.512324
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038696793120954072,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 4.52697369484923,
+          "speedup_over_sdpa_efficient_expanded_median": 1.0,
+          "tokens_per_second_median": 137632.65697685382
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0025608117689586893,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027441108100035366,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017178716194971696,
+          "effective_valid_attn_tflop_s_median": 3.441944959879473,
+          "implementation": "flex_score_mod_no_blockmask",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02391944847304,
+          "median_ms": 36.448176000000004,
+          "out_l2_rel_error_vs_fp32_max": 0.0019587771865675735,
+          "peak_incremental_memory_mib_median": 705.0029296875,
+          "peak_transient_workspace_mib_median": 609.0029296875,
+          "repeat_spread": 9.01828393278243e-05,
+          "repetition_medians_ms": [
+            36.4490205,
+            36.448176000000004,
+            36.4457335
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003350195531484053,
+          "setup_seconds_median": 0.04225987009704113,
+          "speedup_over_sdpa_auto_median": 7.394635067503854,
+          "speedup_over_sdpa_efficient_expanded_median": 1.6329864749040375,
+          "tokens_per_second_median": 224757.47483221104
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00256106293316643,
+          "dq_l2_rel_error_vs_fp32_max": 0.002744068103390737,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017178835721772176,
+          "effective_valid_attn_tflop_s_median": 33.2506829712212,
+          "implementation": "flex_blockmask_default",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 3.7729334999999997,
+          "out_l2_rel_error_vs_fp32_max": 0.0019585404610701724,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0007272855458491007,
+          "repetition_medians_ms": [
+            3.771248,
+            3.773992,
+            3.7729334999999997
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003350277082397678,
+          "setup_seconds_median": 0.004254338098689914,
+          "speedup_over_sdpa_auto_median": 71.4482058724327,
+          "speedup_over_sdpa_efficient_expanded_median": 15.782774694212632,
+          "tokens_per_second_median": 2171254.807432996
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0025610520312141743,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027440695190795593,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017178835721772176,
+          "effective_valid_attn_tflop_s_median": 33.235417136851694,
+          "implementation": "flex_blockmask_max_autotune",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 3.7746665,
+          "out_l2_rel_error_vs_fp32_max": 0.0019585404610701724,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0020275963452665237,
+          "repetition_medians_ms": [
+            3.771944,
+            3.7795975,
+            3.7746665
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033503118674619204,
+          "setup_seconds_median": 0.00421463418751955,
+          "speedup_over_sdpa_auto_median": 71.39780401791788,
+          "speedup_over_sdpa_efficient_expanded_median": 15.770448969764638,
+          "tokens_per_second_median": 2170257.9552392242
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.003001313116668091,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027515596926890656,
+          "dv_l2_rel_error_vs_fp32_max": 0.0019721220774106844,
+          "effective_valid_attn_tflop_s_median": 44.908396363372766,
+          "implementation": "flash_attn_varlen_cu_seqlens",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02401715421968,
+          "median_ms": 2.7935225,
+          "out_l2_rel_error_vs_fp32_max": 0.001964843229788413,
+          "peak_incremental_memory_mib_median": 705.00146484375,
+          "peak_transient_workspace_mib_median": 609.00146484375,
+          "repeat_spread": 0.000622332556834637,
+          "repetition_medians_ms": [
+            2.7935225,
+            2.7947385000000002,
+            2.793
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038480937516331016,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 96.49226602219835,
+          "speedup_over_sdpa_efficient_expanded_median": 21.307670605084137,
+          "tokens_per_second_median": 2932498.306349779
+        }
+      ],
+      "max_doc_len": 700,
+      "mean_doc_len": 512.0,
+      "num_documents": 16,
+      "shape_b_s_hq_hkv_d": [
+        1,
+        8192,
+        32,
+        8,
+        128
+      ],
+      "subtile_valid_density": 0.593457
+    },
+    "packed_4docs_long": {
+      "active_pair_fraction": 0.131409,
+      "blockmask_active_tile_fraction": 0.13916,
+      "blockmask_construction": {
+        "compile_speedup": 10.985639530155387,
+        "compiled_32L_amortized_fraction_of_flex_step": 0.00250787836147271,
+        "compiled_amortized_per_layer_32L_ms": 0.016933000336090725,
+        "compiled_ms": 0.5418560107549032,
+        "eager_ms": 5.952634811401367
+      },
+      "blockmask_sparsity_percent": 86.084,
+      "comparisons": {
+        "blockmask_speedup_over_no_blockmask": 5.400605309080487,
+        "flash_varlen_speedup_over_flex_default": 1.4816621359001727,
+        "flex_autotune_over_flex_default_speedup": 0.998575770875106,
+        "flex_default_speedup_over_sdpa_auto": 39.8670089889213,
+        "flex_default_speedup_over_sdpa_efficient": 8.833675816036099
+      },
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00170955119535295,
+          "dq_l2_rel_error_vs_fp32_max": 0.0017161248444601165,
+          "dv_l2_rel_error_vs_fp32_max": 0.0016844277517880904,
+          "effective_valid_attn_tflop_s_median": 1.8794154645243297,
+          "implementation": "sdpa_gqa_bool_mask_auto",
+          "incremental_memory_reduction_vs_sdpa_auto": 1.0,
+          "median_ms": 269.072408,
+          "out_l2_rel_error_vs_fp32_max": 0.001610884713450074,
+          "peak_incremental_memory_mib_median": 33152.0009765625,
+          "peak_transient_workspace_mib_median": 33056.0009765625,
+          "repeat_spread": 0.0004486431771181651,
+          "repetition_medians_ms": [
+            269.072408,
+            269.178955,
+            269.0582375
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.002411401540637945,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 1.0,
+          "speedup_over_sdpa_efficient_expanded_median": 0.22157859443358047,
+          "tokens_per_second_median": 30445.33648355353
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0033561385298479206,
+          "dq_l2_rel_error_vs_fp32_max": 0.0032605617464776878,
+          "dv_l2_rel_error_vs_fp32_max": 0.001962798640709876,
+          "effective_valid_attn_tflop_s_median": 8.478578695771144,
+          "implementation": "sdpa_expanded_kv_efficient",
+          "incremental_memory_reduction_vs_sdpa_auto": 34.497364503361055,
+          "median_ms": 59.6442945,
+          "out_l2_rel_error_vs_fp32_max": 0.002037144809418846,
+          "peak_incremental_memory_mib_median": 961.0009765625,
+          "peak_transient_workspace_mib_median": 865.0009765625,
+          "repeat_spread": 0.0024948069425148258,
+          "repetition_medians_ms": [
+            59.532689500000004,
+            59.6442945,
+            59.6814905
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038294967594311026,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 4.513071321515924,
+          "speedup_over_sdpa_efficient_expanded_median": 1.0,
+          "tokens_per_second_median": 137347.58820896104
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0025876816195153935,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027937750480456955,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017142738884854119,
+          "effective_valid_attn_tflop_s_median": 13.868263146959077,
+          "implementation": "flex_score_mod_no_blockmask",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02391944847304,
+          "median_ms": 36.464468499999995,
+          "out_l2_rel_error_vs_fp32_max": 0.00202925981075506,
+          "peak_incremental_memory_mib_median": 705.0029296875,
+          "peak_transient_workspace_mib_median": 609.0029296875,
+          "repeat_spread": 0.00025083321864406027,
+          "repetition_medians_ms": [
+            36.464468499999995,
+            36.467949000000004,
+            36.458802500000004
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033518225564046016,
+          "setup_seconds_median": 0.04384475504048169,
+          "speedup_over_sdpa_auto_median": 7.379788118383757,
+          "speedup_over_sdpa_efficient_expanded_median": 1.635526431716793,
+          "tokens_per_second_median": 224657.0521108789
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0025888260808118514,
+          "dq_l2_rel_error_vs_fp32_max": 0.002793703694658714,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017142595661173217,
+          "effective_valid_attn_tflop_s_median": 74.89701557919244,
+          "implementation": "flex_blockmask_default",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 6.7519225,
+          "out_l2_rel_error_vs_fp32_max": 0.00202840594220741,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.004229610159180634,
+          "repetition_medians_ms": [
+            6.7673045,
+            6.7519225,
+            6.7387464999999995
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033513960736620764,
+          "setup_seconds_median": 0.007231672992929816,
+          "speedup_over_sdpa_auto_median": 39.8670089889213,
+          "speedup_over_sdpa_efficient_expanded_median": 8.833675816036099,
+          "tokens_per_second_median": 1213284.068352384
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0025888460411245305,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027937032173785334,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017142595661173217,
+          "effective_valid_attn_tflop_s_median": 74.79034506823692,
+          "implementation": "flex_blockmask_max_autotune",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 6.7615525000000005,
+          "out_l2_rel_error_vs_fp32_max": 0.00202840594220741,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.002384881282811802,
+          "repetition_medians_ms": [
+            6.7615525000000005,
+            6.7624055,
+            6.7462800000000005
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003351323246660087,
+          "setup_seconds_median": 0.007192735094577074,
+          "speedup_over_sdpa_auto_median": 39.80520762914912,
+          "speedup_over_sdpa_efficient_expanded_median": 8.819981957603696,
+          "tokens_per_second_median": 1211556.0738454666
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002995754664208206,
+          "dq_l2_rel_error_vs_fp32_max": 0.002793316859072435,
+          "dv_l2_rel_error_vs_fp32_max": 0.001962821019410017,
+          "effective_valid_attn_tflop_s_median": 110.97207207561478,
+          "implementation": "flash_attn_varlen_cu_seqlens",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02401715421968,
+          "median_ms": 4.556992,
+          "out_l2_rel_error_vs_fp32_max": 0.00202687519368765,
+          "peak_incremental_memory_mib_median": 705.00146484375,
+          "peak_transient_workspace_mib_median": 609.00146484375,
+          "repeat_spread": 0.0005629810190582341,
+          "repetition_medians_ms": [
+            4.558288,
+            4.5557225,
+            4.556992
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003818344370646163,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 59.04294708000366,
+          "speedup_over_sdpa_efficient_expanded_median": 13.092170232054302,
+          "tokens_per_second_median": 1797677.0641686446
+        }
+      ],
+      "max_doc_len": 2688,
+      "mean_doc_len": 2048.0,
+      "num_documents": 4,
+      "shape_b_s_hq_hkv_d": [
+        1,
+        8192,
+        32,
+        8,
+        128
+      ],
+      "subtile_valid_density": 0.944298
+    },
+    "packed_64docs_sft": {
+      "active_pair_fraction": 0.008179,
+      "blockmask_active_tile_fraction": 0.027344,
+      "blockmask_construction": {
+        "compile_speedup": 9.515521050293975,
+        "compiled_32L_amortized_fraction_of_flex_step": 0.007763987361701513,
+        "compiled_amortized_per_layer_32L_ms": 0.02063899983962377,
+        "compiled_ms": 0.6604479948679607,
+        "eager_ms": 6.284506797790527
+      },
+      "blockmask_sparsity_percent": 97.2656,
+      "comparisons": {
+        "blockmask_speedup_over_no_blockmask": 13.711755524867593,
+        "flash_varlen_speedup_over_flex_default": 1.0776316256198573,
+        "flex_autotune_over_flex_default_speedup": 0.9999328563059119,
+        "flex_default_speedup_over_sdpa_auto": 101.54196908760679,
+        "flex_default_speedup_over_sdpa_efficient": 22.479454154705696
+      },
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.001698885090235613,
+          "dq_l2_rel_error_vs_fp32_max": 0.0017130849152751477,
+          "dv_l2_rel_error_vs_fp32_max": 0.001698204783550406,
+          "effective_valid_attn_tflop_s_median": 0.11659400925666362,
+          "implementation": "sdpa_gqa_bool_mask_auto",
+          "incremental_memory_reduction_vs_sdpa_auto": 1.0,
+          "median_ms": 269.9457495,
+          "out_l2_rel_error_vs_fp32_max": 0.0015719034904387713,
+          "peak_incremental_memory_mib_median": 33152.0009765625,
+          "peak_transient_workspace_mib_median": 33056.0009765625,
+          "repeat_spread": 0.0013716848688516893,
+          "repetition_medians_ms": [
+            269.7446085,
+            270.114889,
+            269.9457495
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0024463668024900273,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 1.0,
+          "speedup_over_sdpa_efficient_expanded_median": 0.22153217753747984,
+          "tokens_per_second_median": 30346.838263515612
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0034345762937221065,
+          "dq_l2_rel_error_vs_fp32_max": 0.003261919262408483,
+          "dv_l2_rel_error_vs_fp32_max": 0.0019880182772780697,
+          "effective_valid_attn_tflop_s_median": 0.5266997843880019,
+          "implementation": "sdpa_expanded_kv_efficient",
+          "incremental_memory_reduction_vs_sdpa_auto": 34.497364503361055,
+          "median_ms": 59.757110499999996,
+          "out_l2_rel_error_vs_fp32_max": 0.0018880626427967692,
+          "peak_incremental_memory_mib_median": 961.0009765625,
+          "peak_transient_workspace_mib_median": 865.0009765625,
+          "repeat_spread": 0.0018777347007097244,
+          "repetition_medians_ms": [
+            59.757110499999996,
+            59.8413925,
+            59.7291845
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003925766612792337,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 4.514016930253012,
+          "speedup_over_sdpa_efficient_expanded_median": 1.0,
+          "tokens_per_second_median": 137088.28843054586
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0026415711923699885,
+          "dq_l2_rel_error_vs_fp32_max": 0.002799131267625598,
+          "dv_l2_rel_error_vs_fp32_max": 0.001734241765893331,
+          "effective_valid_attn_tflop_s_median": 0.8634870739177503,
+          "implementation": "flex_score_mod_no_blockmask",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02391944847304,
+          "median_ms": 36.449946,
+          "out_l2_rel_error_vs_fp32_max": 0.0018870964951603563,
+          "peak_incremental_memory_mib_median": 705.0029296875,
+          "peak_transient_workspace_mib_median": 609.0029296875,
+          "repeat_spread": 6.875181653229045e-05,
+          "repetition_medians_ms": [
+            36.449946,
+            36.450449500000005,
+            36.4479435
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003347941081231791,
+          "setup_seconds_median": 0.04830811498686671,
+          "speedup_over_sdpa_auto_median": 7.406336917198085,
+          "speedup_over_sdpa_efficient_expanded_median": 1.6394293286470163,
+          "tokens_per_second_median": 224746.56066705834
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0026415711923699885,
+          "dq_l2_rel_error_vs_fp32_max": 0.002799131267625598,
+          "dv_l2_rel_error_vs_fp32_max": 0.001734241765893331,
+          "effective_valid_attn_tflop_s_median": 11.839923656443462,
+          "implementation": "flex_blockmask_default",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 2.658299,
+          "out_l2_rel_error_vs_fp32_max": 0.0018870964951603563,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0009718620817297346,
+          "repetition_medians_ms": [
+            2.658299,
+            2.6601305,
+            2.657547
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003347941081231791,
+          "setup_seconds_median": 0.0031459368765354156,
+          "speedup_over_sdpa_auto_median": 101.54196908760679,
+          "speedup_over_sdpa_efficient_expanded_median": 22.479454154705696,
+          "tokens_per_second_median": 3081669.8949215272
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0026415436377690968,
+          "dq_l2_rel_error_vs_fp32_max": 0.002799131508887069,
+          "dv_l2_rel_error_vs_fp32_max": 0.001734241765893331,
+          "effective_valid_attn_tflop_s_median": 11.839128680231449,
+          "implementation": "flex_blockmask_max_autotune",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 2.6584775,
+          "out_l2_rel_error_vs_fp32_max": 0.0018870964951603563,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0020261597098339868,
+          "repetition_medians_ms": [
+            2.6584775,
+            2.6630265,
+            2.65764
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003347943562760395,
+          "setup_seconds_median": 0.0031037679873406887,
+          "speedup_over_sdpa_auto_median": 101.46582338951525,
+          "speedup_over_sdpa_efficient_expanded_median": 22.474520439186648,
+          "tokens_per_second_median": 3081462.9802208217
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0030744114280817614,
+          "dq_l2_rel_error_vs_fp32_max": 0.002800282326103364,
+          "dv_l2_rel_error_vs_fp32_max": 0.001988166616509835,
+          "effective_valid_attn_tflop_s_median": 12.759076177108172,
+          "implementation": "flash_attn_varlen_cu_seqlens",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02401715421968,
+          "median_ms": 2.4667975,
+          "out_l2_rel_error_vs_fp32_max": 0.0018897088811368153,
+          "peak_incremental_memory_mib_median": 705.00146484375,
+          "peak_transient_workspace_mib_median": 609.00146484375,
+          "repeat_spread": 0.0006226696759664138,
+          "repetition_medians_ms": [
+            2.467949,
+            2.466413,
+            2.4667975
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038966502580620238,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 109.43166169902473,
+          "speedup_over_sdpa_efficient_expanded_median": 24.21326798082132,
+          "tokens_per_second_median": 3320904.9384880597
+        }
+      ],
+      "max_doc_len": 160,
+      "mean_doc_len": 128.0,
+      "num_documents": 64,
+      "shape_b_s_hq_hkv_d": [
+        1,
+        8192,
+        32,
+        8,
+        128
+      ],
+      "subtile_valid_density": 0.299107
+    },
+    "single_doc_8192": {
+      "active_pair_fraction": 0.500061,
+      "blockmask_active_tile_fraction": 0.507812,
+      "blockmask_construction": {
+        "compile_speedup": 11.03444109182412,
+        "compiled_32L_amortized_fraction_of_flex_step": 0.0008544519495454069,
+        "compiled_amortized_per_layer_32L_ms": 0.016927666341265045,
+        "compiled_ms": 0.5416853229204814,
+        "eager_ms": 5.977194786071777
+      },
+      "blockmask_sparsity_percent": 49.2188,
+      "comparisons": {
+        "blockmask_speedup_over_no_blockmask": 1.8435853435786809,
+        "flash_varlen_speedup_over_flex_default": 1.7022878343941876,
+        "flex_autotune_over_flex_default_speedup": 1.0000532052235012,
+        "flex_default_speedup_over_sdpa_auto": 13.488146093484032,
+        "flex_default_speedup_over_sdpa_efficient": 3.0043918193092747
+      },
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0016879546097670942,
+          "dq_l2_rel_error_vs_fp32_max": 0.0017049238933853014,
+          "dv_l2_rel_error_vs_fp32_max": 0.0016658395399843826,
+          "effective_valid_attn_tflop_s_median": 7.201687553529046,
+          "implementation": "sdpa_gqa_bool_mask_auto",
+          "incremental_memory_reduction_vs_sdpa_auto": 1.0,
+          "median_ms": 267.212402,
+          "out_l2_rel_error_vs_fp32_max": 0.0016159836825514555,
+          "peak_incremental_memory_mib_median": 33152.0009765625,
+          "peak_transient_workspace_mib_median": 33056.0009765625,
+          "repeat_spread": 0.0011678069493198516,
+          "repetition_medians_ms": [
+            267.19575,
+            267.212402,
+            267.5078025
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.002422256463660711,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 1.0,
+          "speedup_over_sdpa_efficient_expanded_median": 0.22274940292629083,
+          "tokens_per_second_median": 30657.259688118815
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.003375962098605212,
+          "dq_l2_rel_error_vs_fp32_max": 0.0032825870217579553,
+          "dv_l2_rel_error_vs_fp32_max": 0.001954556375904864,
+          "effective_valid_attn_tflop_s_median": 32.330894982969404,
+          "implementation": "sdpa_expanded_kv_efficient",
+          "incremental_memory_reduction_vs_sdpa_auto": 34.497364503361055,
+          "median_ms": 59.521403,
+          "out_l2_rel_error_vs_fp32_max": 0.0020823652628733647,
+          "peak_incremental_memory_mib_median": 961.0009765625,
+          "peak_transient_workspace_mib_median": 865.0009765625,
+          "repeat_spread": 0.0015533572016103283,
+          "repetition_medians_ms": [
+            59.5160165,
+            59.521403,
+            59.6084745
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003773680868306582,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 4.489349856218947,
+          "speedup_over_sdpa_efficient_expanded_median": 1.0,
+          "tokens_per_second_median": 137631.16437292314
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002508861164162529,
+          "dq_l2_rel_error_vs_fp32_max": 0.002733412773426579,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017055148476637163,
+          "effective_valid_attn_tflop_s_median": 52.68878629014057,
+          "implementation": "flex_score_mod_no_blockmask",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02391944847304,
+          "median_ms": 36.523525500000005,
+          "out_l2_rel_error_vs_fp32_max": 0.002075571766870461,
+          "peak_incremental_memory_mib_median": 705.0029296875,
+          "peak_transient_workspace_mib_median": 609.0029296875,
+          "repeat_spread": 0.0001124480713120242,
+          "repetition_medians_ms": [
+            36.526720499999996,
+            36.523525500000005,
+            36.522613500000006
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.003302019802368807,
+          "setup_seconds_median": 4.941708763828501,
+          "speedup_over_sdpa_auto_median": 7.316172202489049,
+          "speedup_over_sdpa_efficient_expanded_median": 1.629672989810362,
+          "tokens_per_second_median": 224293.79113470297
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002512520521779919,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027332933417771655,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017063763758771886,
+          "effective_valid_attn_tflop_s_median": 97.1362741754525,
+          "implementation": "flex_blockmask_default",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 19.811139,
+          "out_l2_rel_error_vs_fp32_max": 0.0020749068220280334,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.00017512874953839588,
+          "repetition_medians_ms": [
+            19.809672,
+            19.8131415,
+            19.811139
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033013326542052895,
+          "setup_seconds_median": 5.233752920059487,
+          "speedup_over_sdpa_auto_median": 13.488146093484032,
+          "speedup_over_sdpa_efficient_expanded_median": 3.0043918193092747,
+          "tokens_per_second_median": 413504.7459916363
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002512574030363693,
+          "dq_l2_rel_error_vs_fp32_max": 0.002733297410590873,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017063763758771886,
+          "effective_valid_attn_tflop_s_median": 97.14144233263006,
+          "implementation": "flex_blockmask_max_autotune",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.024049722892116,
+          "median_ms": 19.810085,
+          "out_l2_rel_error_vs_fp32_max": 0.0020749068220280334,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.002025332046783432,
+          "repetition_medians_ms": [
+            19.790909499999998,
+            19.8310315,
+            19.810085
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033013362102046685,
+          "setup_seconds_median": 24.240248917834833,
+          "speedup_over_sdpa_auto_median": 13.500933345180524,
+          "speedup_over_sdpa_efficient_expanded_median": 3.007240091719888,
+          "tokens_per_second_median": 413526.7466040655
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002939865881821729,
+          "dq_l2_rel_error_vs_fp32_max": 0.002732488434689034,
+          "dv_l2_rel_error_vs_fp32_max": 0.0019633252944656863,
+          "effective_valid_attn_tflop_s_median": 165.35389780725112,
+          "implementation": "flash_attn_varlen_cu_seqlens",
+          "incremental_memory_reduction_vs_sdpa_auto": 47.02401715421968,
+          "median_ms": 11.637948999999999,
+          "out_l2_rel_error_vs_fp32_max": 0.00207359876391671,
+          "peak_incremental_memory_mib_median": 705.00146484375,
+          "peak_transient_workspace_mib_median": 609.00146484375,
+          "repeat_spread": 0.00037949126602989736,
+          "repetition_medians_ms": [
+            11.640064500000001,
+            11.635648,
+            11.637948999999999
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038045658495858376,
+          "setup_seconds_median": 0.0,
+          "speedup_over_sdpa_auto_median": 22.964978143030798,
+          "speedup_over_sdpa_efficient_expanded_median": 5.115435169575429,
+          "tokens_per_second_median": 703904.0985658213
+        }
+      ],
+      "max_doc_len": 8192,
+      "mean_doc_len": 8192.0,
+      "num_documents": 1,
+      "shape_b_s_hq_hkv_d": [
+        1,
+        8192,
+        32,
+        8,
+        128
+      ],
+      "subtile_valid_density": 0.984736
+    }
+  },
+  "score_modified_gqa": {
+    "causal_softcap30": {
+      "active_pair_fraction": 0.500122,
+      "blockmask_sparsity_percent": 48.4375,
+      "comparisons": {
+        "flash_native_speedup_over_flex_autotune": 1.9246544610123906,
+        "flash_native_speedup_over_flex_default": 1.881793291772012,
+        "flex_autotune_speedup_over_compiled_materialized": 1.7967070264402119,
+        "flex_default_memory_reduction_vs_compiled_materialized": 14.641115856167087,
+        "flex_default_memory_reduction_vs_eager_materialized": 29.253861572111077,
+        "flex_default_speedup_over_compiled_materialized": 1.8376302055547016,
+        "flex_default_speedup_over_eager_materialized": 7.6538408074381215,
+        "flex_default_transient_reduction_vs_compiled_materialized": 16.791436089779463,
+        "flex_default_transient_reduction_vs_eager_materialized": 33.70766512138059,
+        "online_fp32_dk_accuracy_gain_vs_materialized_bf16": 2.353464210047199
+      },
+      "flash_attn_native_supported": true,
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.005946277389377631,
+          "dq_l2_rel_error_vs_fp32_max": 0.0064584121298967645,
+          "dv_l2_rel_error_vs_fp32_max": 0.0020385301578598474,
+          "effective_valid_attn_tflop_s_median": 8.306616942115578,
+          "implementation": "eager_materialized_score_mod",
+          "incremental_memory_reduction_vs_eager": 1.0,
+          "median_ms": 115.84831249999999,
+          "out_l2_rel_error_vs_fp32_max": 0.0037433436737087503,
+          "peak_incremental_memory_mib_median": 20624.0009765625,
+          "peak_transient_workspace_mib_median": 20528.0009765625,
+          "repeat_spread": 0.0011992103898794092,
+          "repetition_medians_ms": [
+            115.84831249999999,
+            115.713104,
+            115.8520305
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.004859309751981378,
+          "setup_seconds_median": 0.0,
+          "speedup_over_eager_materialized_median": 1.0
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.005946243095343868,
+          "dq_l2_rel_error_vs_fp32_max": 0.006458406818365694,
+          "dv_l2_rel_error_vs_fp32_max": 0.002038555665330421,
+          "effective_valid_attn_tflop_s_median": 34.59756132171857,
+          "implementation": "compiled_materialized_score_mod",
+          "incremental_memory_reduction_vs_eager": 1.9980622965830062,
+          "median_ms": 27.8143175,
+          "out_l2_rel_error_vs_fp32_max": 0.0037433554623499767,
+          "peak_incremental_memory_mib_median": 10322.0009765625,
+          "peak_transient_workspace_mib_median": 10226.0009765625,
+          "repeat_spread": 0.00032555175944894144,
+          "repetition_medians_ms": [
+            27.820583499999998,
+            27.8115285,
+            27.8143175
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0048588561486534974,
+          "setup_seconds_median": 2.4368063928559422,
+          "speedup_over_eager_materialized_median": 4.164122312531655
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00252660625302578,
+          "dq_l2_rel_error_vs_fp32_max": 0.002719173597258638,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017132509028095697,
+          "effective_valid_attn_tflop_s_median": 63.577523723321086,
+          "implementation": "flex_attention_default",
+          "incremental_memory_reduction_vs_eager": 29.253861572111077,
+          "median_ms": 15.135971,
+          "out_l2_rel_error_vs_fp32_max": 0.0020527089422156452,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0016125823708303432,
+          "repetition_medians_ms": [
+            15.135971,
+            15.153557,
+            15.129149
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.00336588106889727,
+          "setup_seconds_median": 6.652078133076429,
+          "speedup_over_eager_materialized_median": 7.6538408074381215
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0025266068342805897,
+          "dq_l2_rel_error_vs_fp32_max": 0.002719174095214676,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017132509028095697,
+          "effective_valid_attn_tflop_s_median": 62.16168152442785,
+          "implementation": "flex_attention_max_autotune",
+          "incremental_memory_reduction_vs_eager": 29.253861572111077,
+          "median_ms": 15.4807195,
+          "out_l2_rel_error_vs_fp32_max": 0.0020527089422156452,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0019375391434485498,
+          "repetition_medians_ms": [
+            15.498159999999999,
+            15.4807195,
+            15.468165500000001
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.00336588106889727,
+          "setup_seconds_median": 21.22452338715084,
+          "speedup_over_eager_materialized_median": 7.4749720289376285
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00295219811829311,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027263146188122363,
+          "dv_l2_rel_error_vs_fp32_max": 0.0019791917910129838,
+          "effective_valid_attn_tflop_s_median": 119.6397576500216,
+          "implementation": "flash_attn_native_cuda",
+          "incremental_memory_reduction_vs_eager": 29.253841311001267,
+          "median_ms": 8.043376,
+          "out_l2_rel_error_vs_fp32_max": 0.0020512581836626487,
+          "peak_incremental_memory_mib_median": 705.00146484375,
+          "peak_transient_workspace_mib_median": 609.00146484375,
+          "repeat_spread": 0.0005585962909106922,
+          "repetition_medians_ms": [
+            8.043323000000001,
+            8.047816000000001,
+            8.043376
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038365785380302473,
+          "setup_seconds_median": 0.0,
+          "speedup_over_eager_materialized_median": 14.403041193297842
+        }
+      ],
+      "shape_b_s_hq_hkv_d": [
+        2,
+        4096,
+        32,
+        8,
+        128
+      ]
+    },
+    "sw512_log_decay_bias": {
+      "active_pair_fraction": 0.117416,
+      "blockmask_sparsity_percent": 85.3516,
+      "comparisons": {
+        "flex_autotune_speedup_over_compiled_materialized": 5.256964577270349,
+        "flex_default_memory_reduction_vs_compiled_materialized": 11.736155341096879,
+        "flex_default_memory_reduction_vs_eager_materialized": 23.443940541970658,
+        "flex_default_speedup_over_compiled_materialized": 4.936576383095715,
+        "flex_default_speedup_over_eager_materialized": 16.506551415679198,
+        "flex_default_transient_reduction_vs_compiled_materialized": 13.428551498756448,
+        "flex_default_transient_reduction_vs_eager_materialized": 26.98189593933456,
+        "online_fp32_dk_accuracy_gain_vs_materialized_bf16": 2.696938594949869
+      },
+      "flash_attn_native_supported": false,
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00666308433850499,
+          "dq_l2_rel_error_vs_fp32_max": 0.006685988400428022,
+          "dv_l2_rel_error_vs_fp32_max": 0.00221001445818088,
+          "effective_valid_attn_tflop_s_median": 2.37899381288476,
+          "implementation": "eager_materialized_score_mod",
+          "incremental_memory_reduction_vs_eager": 1.0,
+          "median_ms": 94.9671175,
+          "out_l2_rel_error_vs_fp32_max": 0.0038573686046080745,
+          "peak_incremental_memory_mib_median": 16528.0009765625,
+          "peak_transient_workspace_mib_median": 16432.0009765625,
+          "repeat_spread": 0.0003828325104212684,
+          "repetition_medians_ms": [
+            94.991404,
+            94.9550475,
+            94.9671175
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.004930190982270204,
+          "setup_seconds_median": 0.0,
+          "speedup_over_eager_materialized_median": 1.0
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00666273825961359,
+          "dq_l2_rel_error_vs_fp32_max": 0.00668581475223302,
+          "dv_l2_rel_error_vs_fp32_max": 0.0022100287303187024,
+          "effective_valid_attn_tflop_s_median": 7.954699905876773,
+          "implementation": "compiled_materialized_score_mod",
+          "incremental_memory_reduction_vs_eager": 1.9975826717184157,
+          "median_ms": 28.4015975,
+          "out_l2_rel_error_vs_fp32_max": 0.003857373139866699,
+          "peak_incremental_memory_mib_median": 8274.0009765625,
+          "peak_transient_workspace_mib_median": 8178.0009765625,
+          "repeat_spread": 0.0007062630896027373,
+          "repetition_medians_ms": [
+            28.4015975,
+            28.4116135,
+            28.391554499999998
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.004930212005551449,
+          "setup_seconds_median": 5.3060878070537,
+          "speedup_over_eager_materialized_median": 3.3445796138755925
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00247061032497436,
+          "dq_l2_rel_error_vs_fp32_max": 0.002553673342765351,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017445472204894133,
+          "effective_valid_attn_tflop_s_median": 39.26898368996498,
+          "implementation": "flex_attention_default",
+          "incremental_memory_reduction_vs_eager": 23.443940541970658,
+          "median_ms": 5.7532985,
+          "out_l2_rel_error_vs_fp32_max": 0.002037827568729365,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0017076291105006425,
+          "repetition_medians_ms": [
+            5.752269500000001,
+            5.762094,
+            5.7532985
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.00342229912794312,
+          "setup_seconds_median": 7.407154261134565,
+          "speedup_over_eager_materialized_median": 16.506551415679198
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.00247061032497436,
+          "dq_l2_rel_error_vs_fp32_max": 0.002553673342765351,
+          "dv_l2_rel_error_vs_fp32_max": 0.0017445472204894133,
+          "effective_valid_attn_tflop_s_median": 41.81757562800997,
+          "implementation": "flex_attention_max_autotune",
+          "incremental_memory_reduction_vs_eager": 23.443940541970658,
+          "median_ms": 5.402661,
+          "out_l2_rel_error_vs_fp32_max": 0.002037827568729365,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.004406717356502789,
+          "repetition_medians_ms": [
+            5.4015545,
+            5.4253625,
+            5.402661
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0034222998107077776,
+          "setup_seconds_median": 29.047582782804966,
+          "speedup_over_eager_materialized_median": 17.577841271180997
+        }
+      ],
+      "shape_b_s_hq_hkv_d": [
+        2,
+        4096,
+        32,
+        8,
+        128
+      ]
+    },
+    "sw512_softcap30": {
+      "active_pair_fraction": 0.117416,
+      "blockmask_sparsity_percent": 85.3516,
+      "comparisons": {
+        "flash_native_speedup_over_flex_autotune": 1.4781621549020676,
+        "flash_native_speedup_over_flex_default": 1.5424844857741922,
+        "flex_autotune_speedup_over_compiled_materialized": 5.080040024133923,
+        "flex_default_memory_reduction_vs_compiled_materialized": 14.641115856167087,
+        "flex_default_memory_reduction_vs_eager_materialized": 29.253861572111077,
+        "flex_default_speedup_over_compiled_materialized": 4.868199958130294,
+        "flex_default_speedup_over_eager_materialized": 20.52097518671299,
+        "flex_default_transient_reduction_vs_compiled_materialized": 16.791436089779463,
+        "flex_default_transient_reduction_vs_eager_materialized": 33.70766512138059,
+        "online_fp32_dk_accuracy_gain_vs_materialized_bf16": 2.4974288549474126
+      },
+      "flash_attn_native_supported": true,
+      "implementations": [
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0062540613160775235,
+          "dq_l2_rel_error_vs_fp32_max": 0.006780499628585725,
+          "dv_l2_rel_error_vs_fp32_max": 0.0020268696820960126,
+          "effective_valid_attn_tflop_s_median": 1.9327696786852389,
+          "implementation": "eager_materialized_score_mod",
+          "incremental_memory_reduction_vs_eager": 1.0,
+          "median_ms": 116.892451,
+          "out_l2_rel_error_vs_fp32_max": 0.003973671082800068,
+          "peak_incremental_memory_mib_median": 20624.0009765625,
+          "peak_transient_workspace_mib_median": 20528.0009765625,
+          "repeat_spread": 0.003630675003982894,
+          "repetition_medians_ms": [
+            116.892451,
+            116.75087450000001,
+            117.175273
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0048364496446458025,
+          "setup_seconds_median": 0.0,
+          "speedup_over_eager_materialized_median": 1.0
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0062539463323572145,
+          "dq_l2_rel_error_vs_fp32_max": 0.006780483456063029,
+          "dv_l2_rel_error_vs_fp32_max": 0.002026883527668993,
+          "effective_valid_attn_tflop_s_median": 8.14722463314016,
+          "implementation": "compiled_materialized_score_mod",
+          "incremental_memory_reduction_vs_eager": 1.9980622965830062,
+          "median_ms": 27.7304475,
+          "out_l2_rel_error_vs_fp32_max": 0.003973673873350048,
+          "peak_incremental_memory_mib_median": 10322.0009765625,
+          "peak_transient_workspace_mib_median": 10226.0009765625,
+          "repeat_spread": 0.0017844104391029506,
+          "repetition_medians_ms": [
+            27.718192000000002,
+            27.7676745,
+            27.7304475
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.004836283364411627,
+          "setup_seconds_median": 0.03886867896653712,
+          "speedup_over_eager_materialized_median": 4.217174446298661
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002504199990998027,
+          "dq_l2_rel_error_vs_fp32_max": 0.002709954587763276,
+          "dv_l2_rel_error_vs_fp32_max": 0.0016995020951361827,
+          "effective_valid_attn_tflop_s_median": 39.66231861793103,
+          "implementation": "flex_attention_default",
+          "incremental_memory_reduction_vs_eager": 29.253861572111077,
+          "median_ms": 5.6962425,
+          "out_l2_rel_error_vs_fp32_max": 0.0021033723967666174,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0014973028272585358,
+          "repetition_medians_ms": [
+            5.6962425,
+            5.700563,
+            5.692034
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033662619080458028,
+          "setup_seconds_median": 6.222750058863312,
+          "speedup_over_eager_materialized_median": 20.52097518671299
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.002504199990998027,
+          "dq_l2_rel_error_vs_fp32_max": 0.002709955234664184,
+          "dv_l2_rel_error_vs_fp32_max": 0.0016995020951361827,
+          "effective_valid_attn_tflop_s_median": 41.388227221961834,
+          "implementation": "flex_attention_max_autotune",
+          "incremental_memory_reduction_vs_eager": 29.253861572111077,
+          "median_ms": 5.4587065,
+          "out_l2_rel_error_vs_fp32_max": 0.0021033723967666174,
+          "peak_incremental_memory_mib_median": 705.0009765625,
+          "peak_transient_workspace_mib_median": 609.0009765625,
+          "repeat_spread": 0.0024773268172597618,
+          "repetition_medians_ms": [
+            5.4567115,
+            5.4702345,
+            5.4587065
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0033662619080458028,
+          "setup_seconds_median": 21.276910590939224,
+          "speedup_over_eager_materialized_median": 21.421775917601654
+        },
+        {
+          "dk_l2_rel_error_vs_fp32_max": 0.0029645771610983035,
+          "dq_l2_rel_error_vs_fp32_max": 0.0027152653207663845,
+          "dv_l2_rel_error_vs_fp32_max": 0.0019636616315334247,
+          "effective_valid_attn_tflop_s_median": 61.17851113799151,
+          "implementation": "flash_attn_native_cuda",
+          "incremental_memory_reduction_vs_eager": 29.253841311001267,
+          "median_ms": 3.692901,
+          "out_l2_rel_error_vs_fp32_max": 0.0021028107985830735,
+          "peak_incremental_memory_mib_median": 705.00146484375,
+          "peak_transient_workspace_mib_median": 609.00146484375,
+          "repeat_spread": 0.002971512098483,
+          "repetition_medians_ms": [
+            3.695579,
+            3.6846055,
+            3.692901
+          ],
+          "scaled_backward_chain_rule_rel_error_max": 0.0038375146906624216,
+          "setup_seconds_median": 0.0,
+          "speedup_over_eager_materialized_median": 31.68612609952409
+        }
+      ],
+      "shape_b_s_hq_hkv_d": [
+        2,
+        4096,
+        32,
+        8,
+        128
+      ]
+    }
+  },
+  "suite": "flex_attention_training",
+  "validation": {
+    "all_gates_passed": true,
+    "blockmask_sparsity_speedup_verified": true,
+    "clock_restore_verified": true,
+    "compiled_materialized_s2_memory_wall_verified": true,
+    "correctness_and_chain_rule_gate_passed": true,
+    "custom_log_decay_flex_only_fused_verified": true,
+    "environment_parity_verified": true,
+    "sdpa_gqa_mask_silent_math_fallback_verified": true,
+    "smoke_present_and_valid": true,
+    "three_full_process_repetitions": true
+  }
+}

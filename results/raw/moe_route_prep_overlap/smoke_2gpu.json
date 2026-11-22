@@ -1,0 +1,471 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Online schedules include router projection, fused top-k, token permutation, metadata packing, count exchange, CPU split extraction, variable dispatch, local experts, return, and weighted combine.",
+    "Send counts use a pinned nonblocking copy; count exchange and receive-count extraction run after the route event because NCCL did not inherit the external prep-stream dependency reliably.",
+    "The overlapped schedule double-buffers future device router/packing work while count exchange and Python split extraction remain exposed.",
+    "Precomputed schedules reproduce the v23 payload-only lower bound; staged schedules expose all online preparation before payload pipelining.",
+    "BF16 online outputs must match the global-expert reference exactly, and online preparation must not change either BF16 or packet output."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "chunks": 2,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "preparation": {
+        "count_collective_group": "dedicated_nccl",
+        "count_collective_overlap": false,
+        "count_exchange_in_timed_region": true,
+        "prepare_only_timing": {
+          "critical_path_ms": 1.6968974377959967,
+          "local_samples_ms": [
+            1.6831508837640285,
+            1.647474244236946
+          ],
+          "rank_median_cv": 0.009394081208084272,
+          "rank_median_ms": [
+            1.6653125640004873,
+            1.6968974377959967
+          ],
+          "rank_median_spread_ms": 0.03158487379550934
+        },
+        "recv_count_host_copy": "blocking_tensor_cpu",
+        "router_pack_in_timed_region": true,
+        "send_count_host_copy": "pinned_nonblocking"
+      },
+      "quality_vs_reference": {
+        "bf16_online_overlapped": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_online_staged": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_online_overlapped": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        },
+        "packet_online_staged": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        },
+        "packet_precomputed": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        }
+      },
+      "route": "balanced",
+      "routing": {
+        "aggregate_max_to_mean": 1.041015625,
+        "aggregate_receive_assignments": [
+          533,
+          491
+        ],
+        "max_step_max_to_mean": 1.0859375,
+        "median_step_max_to_mean": 1.044921875,
+        "rank0_fraction_per_chunk": [
+          0.54296875,
+          0.498046875
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            278,
+            234
+          ],
+          [
+            255,
+            257
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              139,
+              117
+            ],
+            [
+              139,
+              117
+            ]
+          ],
+          [
+            [
+              129,
+              127
+            ],
+            [
+              126,
+              130
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_online_vs_precomputed": 0.47789591400906417,
+        "bf16_overlap_vs_staged": 1.012263081267831,
+        "bf16_recovery_fraction": 0.022948792551643876,
+        "packet_online_vs_bf16_online": 0.890981224084115,
+        "packet_online_vs_precomputed": 0.5317495738958661,
+        "packet_overlap_vs_staged": 0.9820499787790525,
+        "packet_recovery_fraction": -0.039862325297273425
+      },
+      "timings": {
+        "bf16_online_overlapped": {
+          "critical_path_ms": 3.3545009791851044,
+          "local_samples_ms": [
+            3.29130282625556,
+            3.315308131277561
+          ],
+          "rank_median_cv": 0.007689544708437587,
+          "rank_median_ms": [
+            3.3033054787665606,
+            3.3545009791851044
+          ],
+          "rank_median_spread_ms": 0.051195500418543816
+        },
+        "bf16_online_staged": {
+          "critical_path_ms": 3.39563749730587,
+          "local_samples_ms": [
+            3.3106300979852676,
+            3.3565140329301357
+          ],
+          "rank_median_cv": 0.0092232871140781,
+          "rank_median_ms": [
+            3.3335720654577017,
+            3.39563749730587
+          ],
+          "rank_median_spread_ms": 0.06206543184816837
+        },
+        "bf16_precomputed": {
+          "critical_path_ms": 1.6031023114919662,
+          "local_samples_ms": [
+            1.5973206609487534,
+            1.5944861806929111
+          ],
+          "rank_median_cv": 0.0022503525387337717,
+          "rank_median_ms": [
+            1.5959034208208323,
+            1.6031023114919662
+          ],
+          "rank_median_spread_ms": 0.007198890671133995
+        },
+        "packet_online_overlapped": {
+          "critical_path_ms": 3.764951368793845,
+          "local_samples_ms": [
+            3.747674636542797,
+            3.694003913551569
+          ],
+          "rank_median_cv": 0.005892776841542528,
+          "rank_median_ms": [
+            3.720839275047183,
+            3.764951368793845
+          ],
+          "rank_median_spread_ms": 0.04411209374666214
+        },
+        "packet_online_staged": {
+          "critical_path_ms": 3.6973704118281603,
+          "local_samples_ms": [
+            3.673916682600975,
+            3.638360183686018
+          ],
+          "rank_median_cv": 0.005607116215391279,
+          "rank_median_ms": [
+            3.6561384331434965,
+            3.6973704118281603
+          ],
+          "rank_median_spread_ms": 0.04123197868466377
+        },
+        "packet_precomputed": {
+          "critical_path_ms": 2.0020112860947847,
+          "local_samples_ms": [
+            1.972100231796503,
+            1.9754869863390923
+          ],
+          "rank_median_cv": 0.0070973495357681965,
+          "rank_median_ms": [
+            1.9737936090677977,
+            2.0020112860947847
+          ],
+          "rank_median_spread_ms": 0.028217677026987076
+        }
+      },
+      "tokens_per_chunk": 128,
+      "top_k": 2,
+      "total_tokens_per_rank": 256,
+      "warmup": 1
+    },
+    {
+      "chunks": 2,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "preparation": {
+        "count_collective_group": "dedicated_nccl",
+        "count_collective_overlap": false,
+        "count_exchange_in_timed_region": true,
+        "prepare_only_timing": {
+          "critical_path_ms": 1.641938928514719,
+          "local_samples_ms": [
+            1.617328729480505,
+            1.623230054974556
+          ],
+          "rank_median_cv": 0.006639511570844332,
+          "rank_median_ms": [
+            1.6202793922275305,
+            1.641938928514719
+          ],
+          "rank_median_spread_ms": 0.02165953628718853
+        },
+        "recv_count_host_copy": "blocking_tensor_cpu",
+        "router_pack_in_timed_region": true,
+        "send_count_host_copy": "pinned_nonblocking"
+      },
+      "quality_vs_reference": {
+        "bf16_online_overlapped": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_online_staged": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_online_overlapped": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        },
+        "packet_online_staged": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        },
+        "packet_precomputed": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        }
+      },
+      "route": "global_bias1",
+      "routing": {
+        "aggregate_max_to_mean": 1.404296875,
+        "aggregate_receive_assignments": [
+          719,
+          305
+        ],
+        "max_step_max_to_mean": 1.4296875,
+        "median_step_max_to_mean": 1.404296875,
+        "rank0_fraction_per_chunk": [
+          0.71484375,
+          0.689453125
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            366,
+            146
+          ],
+          [
+            353,
+            159
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              187,
+              69
+            ],
+            [
+              179,
+              77
+            ]
+          ],
+          [
+            [
+              181,
+              75
+            ],
+            [
+              172,
+              84
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_online_vs_precomputed": 0.48912557222636466,
+        "bf16_overlap_vs_staged": 0.990430842454027,
+        "bf16_recovery_fraction": -0.01908848383266988,
+        "packet_online_vs_bf16_online": 0.7502388472253456,
+        "packet_online_vs_precomputed": 0.44093690414597386,
+        "packet_overlap_vs_staged": 0.8274957006974124,
+        "packet_recovery_fraction": -0.44625630264148675
+      },
+      "timings": {
+        "bf16_online_overlapped": {
+          "critical_path_ms": 3.325221361592412,
+          "local_samples_ms": [
+            3.309165593236685,
+            3.2822461798787117
+          ],
+          "rank_median_cv": 0.00445790656330809,
+          "rank_median_ms": [
+            3.2957058865576982,
+            3.325221361592412
+          ],
+          "rank_median_spread_ms": 0.029515475034713745
+        },
+        "bf16_online_staged": {
+          "critical_path_ms": 3.2934017945080996,
+          "local_samples_ms": [
+            3.256618045270443,
+            3.266075626015663
+          ],
+          "rank_median_cv": 0.004890341441561477,
+          "rank_median_ms": [
+            3.261346835643053,
+            3.2934017945080996
+          ],
+          "rank_median_spread_ms": 0.0320549588650465
+        },
+        "bf16_precomputed": {
+          "critical_path_ms": 1.62645080126822,
+          "local_samples_ms": [
+            1.6193720512092113,
+            1.605296041816473
+          ],
+          "rank_median_cv": 0.004358657774087513,
+          "rank_median_ms": [
+            1.6123340465128422,
+            1.62645080126822
+          ],
+          "rank_median_spread_ms": 0.01411675475537777
+        },
+        "packet_online_overlapped": {
+          "critical_path_ms": 4.432216985151172,
+          "local_samples_ms": [
+            3.666013013571501,
+            5.177803803235292
+          ],
+          "rank_median_cv": 0.00116426821279031,
+          "rank_median_ms": [
+            4.421908408403397,
+            4.432216985151172
+          ],
+          "rank_median_spread_ms": 0.010308576747775078
+        },
+        "packet_online_staged": {
+          "critical_path_ms": 3.6676404997706413,
+          "local_samples_ms": [
+            3.64273926243186,
+            3.630767110735178
+          ],
+          "rank_median_cv": 0.004228593708581871,
+          "rank_median_ms": [
+            3.636753186583519,
+            3.6676404997706413
+          ],
+          "rank_median_spread_ms": 0.030887313187122345
+        },
+        "packet_precomputed": {
+          "critical_path_ms": 1.9543280359357595,
+          "local_samples_ms": [
+            1.9372650422155857,
+            1.9482760690152645
+          ],
+          "rank_median_cv": 0.002965662799855968,
+          "rank_median_ms": [
+            1.942770555615425,
+            1.9543280359357595
+          ],
+          "rank_median_spread_ms": 0.011557480320334435
+        }
+      },
+      "tokens_per_chunk": 128,
+      "top_k": 2,
+      "total_tokens_per_rank": 256,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_route_prep_overlap",
+  "timestamp_utc": "2026-11-11T11:40:23Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

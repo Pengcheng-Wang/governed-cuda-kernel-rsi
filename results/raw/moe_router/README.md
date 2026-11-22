@@ -1,0 +1,3 @@
+# MoE router, top-k, and assignment-preparation artifacts
+
+This directory preserves correctness-gated A100 measurements for BF16 router projection, PyTorch FP32 softmax/top-k, vLLM fused top-k, vLLM moe_align_block_size assignment sorting/padding, precomputed fused experts, and full router-plus-expert paths. A deterministic FP32 expert-index epsilon resolves exact BF16 router-logit ties for backend comparison. The full matrix has three process-level repetitions and compact profiler evidence. Separate alignment timing is explanatory because fused_experts performs its own internal alignment. Files are copied serially by node 0.

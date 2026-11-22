@@ -1,0 +1,196 @@
+{
+  "candidates": [
+    {
+      "multiplier": 1.4142135623730951,
+      "name": "sqrt2"
+    },
+    {
+      "multiplier": 1.428316903144539,
+      "name": "continuous"
+    }
+  ],
+  "headline": {
+    "candidate_relative_regret": {
+      "continuous": {
+        "geometric_mean": 1.0002888464318245,
+        "maximum": 1.0031491467820055,
+        "p90": 1.000681667712461,
+        "p99": 1.0012469295362816
+      },
+      "sqrt2": {
+        "geometric_mean": 1.0000512551765455,
+        "maximum": 1.0024862064198878,
+        "p90": 1.0001645820206226,
+        "p99": 1.0007763672957979
+      }
+    },
+    "condition_tie_count": 0,
+    "conditions_per_scenario": 36,
+    "continuous_lower_condition_count": 820,
+    "continuous_vs_sqrt2": {
+      "continuous_lower_count": 820,
+      "continuous_minus_sqrt2_ppm": {
+        "maximum": 0.07672923618570948,
+        "minimum": -0.03617006139968737,
+        "p10": -0.002711313164322604,
+        "p50": 0.002382691702393025,
+        "p90": 0.014383542432149454
+      },
+      "continuous_over_sqrt2": {
+        "maximum": 1.0031491467820055,
+        "minimum": 0.9975199594727924,
+        "p50": 1.0002103538240472,
+        "p90": 1.000681667712461
+      },
+      "sqrt2_lower_count": 3788,
+      "tie_count": 0
+    },
+    "convergence": [
+      {
+        "continuous_scenario_wins": 5,
+        "scenario_count": 32,
+        "sqrt2_scenario_wins": 27,
+        "sqrt2_win_rate": {
+          "fraction": 0.84375,
+          "lower": 0.6721212343179582,
+          "upper": 0.9472494355978659
+        },
+        "ties": 0
+      },
+      {
+        "continuous_scenario_wins": 11,
+        "scenario_count": 64,
+        "sqrt2_scenario_wins": 53,
+        "sqrt2_win_rate": {
+          "fraction": 0.828125,
+          "lower": 0.7132463421265287,
+          "upper": 0.9109510036708971
+        },
+        "ties": 0
+      },
+      {
+        "continuous_scenario_wins": 17,
+        "scenario_count": 96,
+        "sqrt2_scenario_wins": 79,
+        "sqrt2_win_rate": {
+          "fraction": 0.8229166666666666,
+          "lower": 0.7316814537399345,
+          "upper": 0.8933229640980846
+        },
+        "ties": 0
+      },
+      {
+        "continuous_scenario_wins": 26,
+        "scenario_count": 128,
+        "sqrt2_scenario_wins": 102,
+        "sqrt2_win_rate": {
+          "fraction": 0.796875,
+          "lower": 0.7167127633951638,
+          "upper": 0.8628136845472303
+        },
+        "ties": 0
+      }
+    ],
+    "pairwise_condition_count": 4608,
+    "scenario_count": 128,
+    "scenario_robust_wins": {
+      "continuous": 26,
+      "sqrt2": 102,
+      "ties": 0
+    },
+    "seed_blocks": [
+      {
+        "continuous_lower_condition_count": 218,
+        "continuous_scenario_wins": 5,
+        "scenario_count": 32,
+        "seed": 10720261115,
+        "sqrt2_lower_condition_count": 934,
+        "sqrt2_scenario_wins": 27,
+        "sqrt2_win_rate": {
+          "fraction": 0.84375,
+          "lower": 0.6721212343179582,
+          "upper": 0.9472494355978659
+        },
+        "ties": 0
+      },
+      {
+        "continuous_lower_condition_count": 218,
+        "continuous_scenario_wins": 6,
+        "scenario_count": 32,
+        "seed": 10720261116,
+        "sqrt2_lower_condition_count": 934,
+        "sqrt2_scenario_wins": 26,
+        "sqrt2_win_rate": {
+          "fraction": 0.8125,
+          "lower": 0.63560769013591,
+          "upper": 0.9279238345415024
+        },
+        "ties": 0
+      },
+      {
+        "continuous_lower_condition_count": 202,
+        "continuous_scenario_wins": 6,
+        "scenario_count": 32,
+        "seed": 10720261117,
+        "sqrt2_lower_condition_count": 950,
+        "sqrt2_scenario_wins": 26,
+        "sqrt2_win_rate": {
+          "fraction": 0.8125,
+          "lower": 0.63560769013591,
+          "upper": 0.9279238345415024
+        },
+        "ties": 0
+      },
+      {
+        "continuous_lower_condition_count": 182,
+        "continuous_scenario_wins": 9,
+        "scenario_count": 32,
+        "seed": 10720261118,
+        "sqrt2_lower_condition_count": 970,
+        "sqrt2_scenario_wins": 23,
+        "sqrt2_win_rate": {
+          "fraction": 0.71875,
+          "lower": 0.5325289003570653,
+          "upper": 0.8625430967044982
+        },
+        "ties": 0
+      }
+    ],
+    "sqrt2_lower_condition_count": 3788,
+    "sqrt2_scenario_win_rate": {
+      "fraction": 0.796875,
+      "lower": 0.7167127633951638,
+      "upper": 0.8628136845472303
+    }
+  },
+  "limitations": [
+    "The 128 scenarios reduce but do not eliminate Monte Carlo error. Confidence intervals summarize simulation frequency, not policy coverage.",
+    "The Jeffreys posterior treats E83 risk cells independently and inherits earlier binomial and rectangular limitations.",
+    "Only sqrt(2) and 1.428317 are compared. The study confirms the specific E107 recommendation; it does not reopen the five-candidate selection problem.",
+    "Both candidates remain post-hoc for E83 and apply only to a future independent pilot.",
+    "The audit is local statistical analysis and is not new GPU evidence."
+  ],
+  "model": "Compare sqrt(2) and 1.428317 across four independent fixed-seed blocks of 32 Jeffreys posterior-predictive future datasets. Batched interval inversion and regret propagation quantify Monte Carlo convergence of E107's recommendation.",
+  "scenario_design": {
+    "posterior": "Independent Jeffreys Beta(successes+0.5, failures+0.5) per E83 risk cell",
+    "replicates_per_seed": 32,
+    "scenario_count": 128,
+    "seeds": [
+      10720261115,
+      10720261116,
+      10720261117,
+      10720261118
+    ]
+  },
+  "source": {
+    "outcome_sensitivity": "pacing_coalescing_order_stage_weight_outcome_sensitivity_full.json",
+    "pilot": "pacing_coalescing_order_full.json"
+  },
+  "suite": "pacing_coalescing_order_stage_weight_predictive_convergence",
+  "validation": {
+    "all_success_counts_valid": true,
+    "e107_first_seed_block_maximum_error": 0.0,
+    "maximum_interval_root_residual": 0.0028047362121448316,
+    "single_scenario_evaluator_maximum_error": 0.0
+  }
+}

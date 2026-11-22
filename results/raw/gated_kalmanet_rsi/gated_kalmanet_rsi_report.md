@@ -1,0 +1,8 @@
+# E145 (`v136`, Round-19 RSI): Gated KalmaNet (`GKA`) Zero-Spill SM80 Triton Kernels (`arXiv:2511.21016`)
+
+## 1. Executive Summary (3-Repetition 8xA100-SXM4-80GB Hardware Medians)
+- **Frozen Cryptographic Evaluator**: `code/rsi_kernel_harness.py` (`SHA256 = 3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e`)
+- **Hardware**: `8x NVIDIA A100-SXM4-80GB` (`NV12` NVSwitch)
+- **SM80 Cubin Register & Spill Audit**: Upstream `fla/ops/gka` spills in **`193 / 219` (`88.1%`)** compiled specializations (`1,519,648` B total stack, `ptxas` `regs=32` allocator collapse with up to `47,864` B stack/thread, `262,144 > 166,912` B SMEM overflow, and `82.3-200.1 s` cold compile per shape). Round-19 RSI compiles all **`21` kernels (`121` specializations)** with **`0` cubin spills (`100%` spill elimination)** and **`max_regs == 168` (`<= 168`)**.
+- **Zero-Key Resilience & `FP64` Oracle Parity**: Upstream `fla/ops/gka` suffers **`32,768 / 65,536` `dk` `NaN`s** from a single $k_0 = 0$ token (`0.0 / 0.0` division by zero when $\|H_0\|_F = 0$), whereas Round-19 RSI produces **`0` `NaN`s** across all outputs and gradients and improves `FP32` forward output precision by **`3689.5x`** (`2.41e-03 -> 6.53e-07`).
+- **3-Rep Median Performance & Scaling**: `chunk_gka_rsi` (`fwd+bwd`) achieves **`1.98x`** (`K=64, T=2048`) to **`2.61x`** (`K=128, T=2048`, `3.32x` backward speedup) over upstream `fla.ops.gka.chunk_gka`; full `GatedKalmaNetBlockRSI` `Stage A4` achieves **`2.41x`** (`K=64`) and **`2.19x`** (`K=128`) speedup over `Stage A0`; fixed-`15s` autoresearch completes **`2.23x` more steps** (`-1.0849 val_bpb`); and 8-GPU NVSwitch Ulysses `GKA-CP = 8` achieves **`3.43x` vs 8-GPU Ring** and **`3.28x` vs 1x A100** at $T = 32,768$ (`4,505,564 tok/s`).

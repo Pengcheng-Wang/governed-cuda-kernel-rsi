@@ -1,0 +1,522 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "The sweep adds a common FP32 bias to rank 0's experts before fused top-k while keeping inputs, gate weights, and expert weights fixed.",
+    "Bias 0 is the balanced reference; increasing bias measures the onset of a learned-router destination hotspot rather than a hand-authored split vector.",
+    "The integrated path includes router projection, fused top-k, token duplication and sort, variable hidden/id/weight dispatch, local fused experts, return all-to-all, and weighted combine.",
+    "Route match and output drift are measured against bias 0. Distributed correctness is independently checked against a global-expert reference for every bias.",
+    "Separate stage timings reuse prepared tensors and are diagnostic rather than additive. distributed_end_to_end is authoritative."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999999403953552
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 0.0,
+      "intermediate": 512,
+      "iterations": 3,
+      "num_experts": 4,
+      "output_drift_vs_zero_bias": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999999403953552
+      },
+      "route_change_vs_zero_bias": {
+        "topk_set_match_fraction": 1.0,
+        "topk_slot_match_fraction": 1.0
+      },
+      "routing": {
+        "effective_destinations": 1.9990235169495665,
+        "expert_load_cv": 0.038273277230987154,
+        "hot_expert_fraction": 0.515625,
+        "locality_fraction": 0.46875,
+        "max_to_mean_expert_load": 1.03125,
+        "max_to_mean_receive": 1.03125,
+        "normalized_destination_entropy": 0.9992954443621548,
+        "rank0_receive_fraction": 0.515625,
+        "rank_receive_assignments": [
+          66,
+          62
+        ],
+        "receive_cv": 0.03125,
+        "send_matrix": [
+          [
+            31,
+            33
+          ],
+          [
+            35,
+            29
+          ]
+        ],
+        "total_assignments": 128
+      },
+      "routing_pattern": "global_bias_sweep",
+      "timings": {
+        "dispatch": {
+          "critical_path_ms": 0.349593348801136,
+          "local_samples_ms": [
+            0.349593348801136,
+            0.3439318388700485,
+            0.35794684663414955
+          ],
+          "rank_median_cv": 0.006346416911803638,
+          "rank_median_ms": [
+            0.349593348801136,
+            0.34518400207161903
+          ],
+          "rank_median_spread_ms": 0.004409346729516983
+        },
+        "distributed_end_to_end": {
+          "critical_path_ms": 1.5587592497467995,
+          "local_samples_ms": [
+            1.5587592497467995,
+            1.5850183553993702,
+            1.5341229736804962
+          ],
+          "rank_median_cv": 0.012119148750894983,
+          "rank_median_ms": [
+            1.5587592497467995,
+            1.5214299783110619
+          ],
+          "rank_median_spread_ms": 0.03732927143573761
+        },
+        "local_experts": {
+          "critical_path_ms": 0.4953453317284584,
+          "local_samples_ms": [
+            0.47681014984846115,
+            0.42544398456811905,
+            0.4470539279282093
+          ],
+          "rank_median_cv": 0.05124304089313747,
+          "rank_median_ms": [
+            0.4470539279282093,
+            0.4953453317284584
+          ],
+          "rank_median_spread_ms": 0.0482914038002491
+        },
+        "return_combine": {
+          "critical_path_ms": 0.18960284069180489,
+          "local_samples_ms": [
+            0.19321078434586525,
+            0.18960284069180489,
+            0.1832619309425354
+          ],
+          "rank_median_cv": 0.011920546259995403,
+          "rank_median_ms": [
+            0.18960284069180489,
+            0.18513575196266174
+          ],
+          "rank_median_spread_ms": 0.004467088729143143
+        },
+        "router_pack": {
+          "critical_path_ms": 0.6162701174616814,
+          "local_samples_ms": [
+            0.6227432750165462,
+            0.6162701174616814,
+            0.6061811000108719
+          ],
+          "rank_median_cv": 0.0010332328843384285,
+          "rank_median_ms": [
+            0.6162701174616814,
+            0.6149979308247566
+          ],
+          "rank_median_spread_ms": 0.0012721866369247437
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 1.0000001192092896
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 1.0,
+      "intermediate": 512,
+      "iterations": 3,
+      "num_experts": 4,
+      "output_drift_vs_zero_bias": {
+        "max_abs_error": 1.83203125,
+        "max_normalized_rmse": 0.6080867648124695,
+        "min_cosine_similarity": 0.8160234689712524
+      },
+      "route_change_vs_zero_bias": {
+        "topk_set_match_fraction": 0.59375,
+        "topk_slot_match_fraction": 0.609375
+      },
+      "routing": {
+        "effective_destinations": 1.7840010876714096,
+        "expert_load_cv": 0.47134697278119864,
+        "hot_expert_fraction": 0.734375,
+        "locality_fraction": 0.453125,
+        "max_to_mean_expert_load": 1.5,
+        "max_to_mean_receive": 1.46875,
+        "normalized_destination_entropy": 0.8351164948421137,
+        "rank0_receive_fraction": 0.734375,
+        "rank_receive_assignments": [
+          94,
+          34
+        ],
+        "receive_cv": 0.46875,
+        "send_matrix": [
+          [
+            44,
+            20
+          ],
+          [
+            50,
+            14
+          ]
+        ],
+        "total_assignments": 128
+      },
+      "routing_pattern": "global_bias_sweep",
+      "timings": {
+        "dispatch": {
+          "critical_path_ms": 0.33010588958859444,
+          "local_samples_ms": [
+            0.35411957651376724,
+            0.33010588958859444,
+            0.3167819231748581
+          ],
+          "rank_median_cv": 0.006813667670549404,
+          "rank_median_ms": [
+            0.33010588958859444,
+            0.3256378695368767
+          ],
+          "rank_median_spread_ms": 0.004468020051717758
+        },
+        "distributed_end_to_end": {
+          "critical_path_ms": 1.5623150393366814,
+          "local_samples_ms": [
+            1.5009213238954544,
+            1.57106202095747,
+            1.5623150393366814
+          ],
+          "rank_median_cv": 0.006398869249131749,
+          "rank_median_ms": [
+            1.5623150393366814,
+            1.542448066174984
+          ],
+          "rank_median_spread_ms": 0.019866973161697388
+        },
+        "local_experts": {
+          "critical_path_ms": 0.45496877282857895,
+          "local_samples_ms": [
+            0.426245853304863,
+            0.4457719624042511,
+            0.41634729132056236
+          ],
+          "rank_median_cv": 0.03259469222582612,
+          "rank_median_ms": [
+            0.426245853304863,
+            0.45496877282857895
+          ],
+          "rank_median_spread_ms": 0.028722919523715973
+        },
+        "return_combine": {
+          "critical_path_ms": 0.1776609569787979,
+          "local_samples_ms": [
+            0.1767394132912159,
+            0.17423508688807487,
+            0.2089599147439003
+          ],
+          "rank_median_cv": 0.0026002898554533162,
+          "rank_median_ms": [
+            0.1767394132912159,
+            0.1776609569787979
+          ],
+          "rank_median_spread_ms": 0.000921543687582016
+        },
+        "router_pack": {
+          "critical_path_ms": 0.5749617703258991,
+          "local_samples_ms": [
+            0.6132139824330807,
+            0.5718469619750977,
+            0.5718972533941269
+          ],
+          "rank_median_cv": 0.0026720955831449683,
+          "rank_median_ms": [
+            0.5718972533941269,
+            0.5749617703258991
+          ],
+          "rank_median_spread_ms": 0.003064516931772232
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999999403953552
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 2.0,
+      "intermediate": 512,
+      "iterations": 3,
+      "num_experts": 4,
+      "output_drift_vs_zero_bias": {
+        "max_abs_error": 2.05859375,
+        "max_normalized_rmse": 0.8012104034423828,
+        "min_cosine_similarity": 0.6904855370521545
+      },
+      "route_change_vs_zero_bias": {
+        "topk_set_match_fraction": 0.265625,
+        "topk_slot_match_fraction": 0.421875
+      },
+      "routing": {
+        "effective_destinations": 1.3404917531937048,
+        "expert_load_cv": 0.8335611667718212,
+        "hot_expert_fraction": 0.9140625,
+        "locality_fraction": 0.4921875,
+        "max_to_mean_expert_load": 1.90625,
+        "max_to_mean_receive": 1.828125,
+        "normalized_destination_entropy": 0.4227623437791517,
+        "rank0_receive_fraction": 0.9140625,
+        "rank_receive_assignments": [
+          117,
+          11
+        ],
+        "receive_cv": 0.828125,
+        "send_matrix": [
+          [
+            58,
+            6
+          ],
+          [
+            59,
+            5
+          ]
+        ],
+        "total_assignments": 128
+      },
+      "routing_pattern": "global_bias_sweep",
+      "timings": {
+        "dispatch": {
+          "critical_path_ms": 0.3296751528978348,
+          "local_samples_ms": [
+            0.3296751528978348,
+            0.3609233535826206,
+            0.32900506630539894
+          ],
+          "rank_median_cv": 0.018556297602845166,
+          "rank_median_ms": [
+            0.3296751528978348,
+            0.31766295433044434
+          ],
+          "rank_median_spread_ms": 0.012012198567390442
+        },
+        "distributed_end_to_end": {
+          "critical_path_ms": 1.5529678203165531,
+          "local_samples_ms": [
+            1.5169410035014153,
+            1.5648412518203259,
+            1.5529678203165531
+          ],
+          "rank_median_cv": 0.0013661928229537208,
+          "rank_median_ms": [
+            1.5529678203165531,
+            1.5487303026020527
+          ],
+          "rank_median_spread_ms": 0.004237517714500427
+        },
+        "local_experts": {
+          "critical_path_ms": 0.4663602448999882,
+          "local_samples_ms": [
+            0.4587671719491482,
+            0.4185517318546772,
+            0.46298420056700706
+          ],
+          "rank_median_cv": 0.008207596934810359,
+          "rank_median_ms": [
+            0.4587671719491482,
+            0.4663602448999882
+          ],
+          "rank_median_spread_ms": 0.007593072950839996
+        },
+        "return_combine": {
+          "critical_path_ms": 0.22965902462601662,
+          "local_samples_ms": [
+            0.18064677715301514,
+            0.269412063062191,
+            0.22965902462601662
+          ],
+          "rank_median_cv": 0.05344786523597908,
+          "rank_median_ms": [
+            0.22965902462601662,
+            0.2063550055027008
+          ],
+          "rank_median_spread_ms": 0.02330401912331581
+        },
+        "router_pack": {
+          "critical_path_ms": 0.603577122092247,
+          "local_samples_ms": [
+            0.6008916534483433,
+            0.5721482448279858,
+            0.6000390276312828
+          ],
+          "rank_median_cv": 0.0029395538284999762,
+          "rank_median_ms": [
+            0.6000390276312828,
+            0.603577122092247
+          ],
+          "rank_median_spread_ms": 0.003538094460964203
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999998807907104
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 4.0,
+      "intermediate": 512,
+      "iterations": 3,
+      "num_experts": 4,
+      "output_drift_vs_zero_bias": {
+        "max_abs_error": 2.296875,
+        "max_normalized_rmse": 0.8876931667327881,
+        "min_cosine_similarity": 0.6226077079772949
+      },
+      "route_change_vs_zero_bias": {
+        "topk_set_match_fraction": 0.15625,
+        "topk_slot_match_fraction": 0.375
+      },
+      "routing": {
+        "effective_destinations": 1.0,
+        "expert_load_cv": 1.0,
+        "hot_expert_fraction": 1.0,
+        "locality_fraction": 0.5,
+        "max_to_mean_expert_load": 2.0,
+        "max_to_mean_receive": 2.0,
+        "normalized_destination_entropy": -0.0,
+        "rank0_receive_fraction": 1.0,
+        "rank_receive_assignments": [
+          128,
+          0
+        ],
+        "receive_cv": 1.0,
+        "send_matrix": [
+          [
+            64,
+            0
+          ],
+          [
+            64,
+            0
+          ]
+        ],
+        "total_assignments": 128
+      },
+      "routing_pattern": "global_bias_sweep",
+      "timings": {
+        "dispatch": {
+          "critical_path_ms": 0.3572870045900345,
+          "local_samples_ms": [
+            0.36830687895417213,
+            0.3175931051373482,
+            0.3572870045900345
+          ],
+          "rank_median_cv": 0.01115772702083483,
+          "rank_median_ms": [
+            0.3572870045900345,
+            0.34940196201205254
+          ],
+          "rank_median_spread_ms": 0.007885042577981949
+        },
+        "distributed_end_to_end": {
+          "critical_path_ms": 1.4973939396440983,
+          "local_samples_ms": [
+            1.4973939396440983,
+            1.496972981840372,
+            1.5404638834297657
+          ],
+          "rank_median_cv": 0.02990627924569878,
+          "rank_median_ms": [
+            1.4973939396440983,
+            1.410431694239378
+          ],
+          "rank_median_spread_ms": 0.0869622454047203
+        },
+        "local_experts": {
+          "critical_path_ms": 0.4181195981800556,
+          "local_samples_ms": [
+            0.4181195981800556,
+            0.5246498622000217,
+            0.412830151617527
+          ],
+          "rank_median_cv": 0.9034440507370266,
+          "rank_median_ms": [
+            0.4181195981800556,
+            0.021209940314292908
+          ],
+          "rank_median_spread_ms": 0.3969096578657627
+        },
+        "return_combine": {
+          "critical_path_ms": 0.1769796945154667,
+          "local_samples_ms": [
+            0.1769796945154667,
+            0.2211020328104496,
+            0.1749470829963684
+          ],
+          "rank_median_cv": 0.010785746485091308,
+          "rank_median_ms": [
+            0.1769796945154667,
+            0.17320271581411362
+          ],
+          "rank_median_spread_ms": 0.003776978701353073
+        },
+        "router_pack": {
+          "critical_path_ms": 0.6084549240767956,
+          "local_samples_ms": [
+            0.6071021780371666,
+            0.6105289794504642,
+            0.5673188716173172
+          ],
+          "rank_median_cv": 0.0011128609567386317,
+          "rank_median_ms": [
+            0.6071021780371666,
+            0.6084549240767956
+          ],
+          "rank_median_spread_ms": 0.0013527460396289825
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_skew_sweep",
+  "timestamp_utc": "2026-11-11T00:43:26Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

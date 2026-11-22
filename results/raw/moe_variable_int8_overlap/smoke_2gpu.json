@@ -1,0 +1,459 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Real fused-router outputs determine variable send and receive counts for every microbatch.",
+    "Router projection, top-k, token permutation, count exchange, and CPU count extraction are prepared outside the timed region.",
+    "The timed path includes metadata-packed BF16 hidden/ID/weight dispatch, local fused experts, BF16 or compressed return, dequantization, and weighted inverse permutation.",
+    "The pipeline overlaps return of chunk i-1 and dispatch of chunk i+1 with expert compute and return quantization for chunk i.",
+    "BF16 distributed output must match the global-expert reference exactly; packet and two-collective INT8 must match bit-for-bit."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "chunks": 2,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_vs_two_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_vs_two_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "two_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "payload": {
+        "bf16_return_bytes_per_assignment": 2048,
+        "count_exchange_in_timed_region": false,
+        "packet_alignment": 16,
+        "packet_byte_reduction_fraction": 0.4921875,
+        "packet_return_bytes_per_assignment": 1040,
+        "router_pack_in_timed_region": false,
+        "two_collective_return_bytes_per_assignment": 1026
+      },
+      "quality_vs_reference": {
+        "bf16_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        },
+        "packet_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        },
+        "two_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        },
+        "two_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008407737128436565,
+          "min_cosine_similarity": 0.999964714050293
+        }
+      },
+      "route": "balanced",
+      "routing": {
+        "aggregate_max_to_mean": 1.041015625,
+        "aggregate_receive_assignments": [
+          533,
+          491
+        ],
+        "max_step_max_to_mean": 1.0859375,
+        "median_step_max_to_mean": 1.044921875,
+        "rank0_fraction_per_chunk": [
+          0.54296875,
+          0.498046875
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            278,
+            234
+          ],
+          [
+            255,
+            257
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              139,
+              117
+            ],
+            [
+              139,
+              117
+            ]
+          ],
+          [
+            [
+              129,
+              127
+            ],
+            [
+              126,
+              130
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_pipeline": 1.023388188408675,
+        "packet_pipeline": 0.816949901836886,
+        "packet_pipelined_vs_bf16": 0.6598675614044087,
+        "packet_pipelined_vs_bf16_sequential": 0.675300668255308,
+        "packet_pipelined_vs_two": 0.8095652376666558,
+        "packet_sequential_vs_bf16": 0.8266120930266542,
+        "packet_sequential_vs_two": 0.9902141678965981,
+        "two_pipeline": 0.9992466692273078
+      },
+      "timings": {
+        "bf16_pipelined": {
+          "critical_path_ms": 1.6472924035042524,
+          "local_samples_ms": [
+            1.6210582107305527,
+            1.6654906794428825
+          ],
+          "rank_median_cv": 0.0012210535759987157,
+          "rank_median_ms": [
+            1.6432744450867176,
+            1.6472924035042524
+          ],
+          "rank_median_spread_ms": 0.004017958417534828
+        },
+        "bf16_sequential": {
+          "critical_path_ms": 1.6858195886015892,
+          "local_samples_ms": [
+            1.6662930138409138,
+            1.6738371923565865
+          ],
+          "rank_median_cv": 0.004694584871107923,
+          "rank_median_ms": [
+            1.6700651030987501,
+            1.6858195886015892
+          ],
+          "rank_median_spread_ms": 0.01575448550283909
+        },
+        "packet_pipelined": {
+          "critical_path_ms": 2.4963985197246075,
+          "local_samples_ms": [
+            3.0265222303569317,
+            1.9662748090922832
+          ],
+          "rank_median_cv": 0.02571243077520908,
+          "rank_median_ms": [
+            2.4963985197246075,
+            2.371239708736539
+          ],
+          "rank_median_spread_ms": 0.12515881098806858
+        },
+        "packet_sequential": {
+          "critical_path_ms": 2.0394325256347656,
+          "local_samples_ms": [
+            2.030164934694767,
+            2.023042179644108
+          ],
+          "rank_median_cv": 0.00315515361990603,
+          "rank_median_ms": [
+            2.0266035571694374,
+            2.0394325256347656
+          ],
+          "rank_median_spread_ms": 0.012828968465328217
+        },
+        "two_pipelined": {
+          "critical_path_ms": 2.0209974609315395,
+          "local_samples_ms": [
+            1.9996482878923416,
+            2.0290231332182884
+          ],
+          "rank_median_cv": 0.0016508551074036685,
+          "rank_median_ms": [
+            2.014335710555315,
+            2.0209974609315395
+          ],
+          "rank_median_spread_ms": 0.006661750376224518
+        },
+        "two_sequential": {
+          "critical_path_ms": 2.019474981352687,
+          "local_samples_ms": [
+            1.9996380433440208,
+            2.0031454041600227
+          ],
+          "rank_median_cv": 0.004497353164606878,
+          "rank_median_ms": [
+            2.001391723752022,
+            2.019474981352687
+          ],
+          "rank_median_spread_ms": 0.018083257600665092
+        }
+      },
+      "tokens_per_chunk": 128,
+      "top_k": 2,
+      "total_tokens_per_rank": 256,
+      "warmup": 1
+    },
+    {
+      "chunks": 2,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_vs_two_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_vs_two_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "two_pipeline_vs_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "payload": {
+        "bf16_return_bytes_per_assignment": 2048,
+        "count_exchange_in_timed_region": false,
+        "packet_alignment": 16,
+        "packet_byte_reduction_fraction": 0.4921875,
+        "packet_return_bytes_per_assignment": 1040,
+        "router_pack_in_timed_region": false,
+        "two_collective_return_bytes_per_assignment": 1026
+      },
+      "quality_vs_reference": {
+        "bf16_pipelined": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "bf16_sequential": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 1.0
+        },
+        "packet_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        },
+        "packet_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        },
+        "two_pipelined": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        },
+        "two_sequential": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008428049273788929,
+          "min_cosine_similarity": 0.9999644756317139
+        }
+      },
+      "route": "global_bias1",
+      "routing": {
+        "aggregate_max_to_mean": 1.404296875,
+        "aggregate_receive_assignments": [
+          719,
+          305
+        ],
+        "max_step_max_to_mean": 1.4296875,
+        "median_step_max_to_mean": 1.404296875,
+        "rank0_fraction_per_chunk": [
+          0.71484375,
+          0.689453125
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            366,
+            146
+          ],
+          [
+            353,
+            159
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              187,
+              69
+            ],
+            [
+              179,
+              77
+            ]
+          ],
+          [
+            [
+              181,
+              75
+            ],
+            [
+              172,
+              84
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_pipeline": 1.033088077173655,
+        "packet_pipeline": 1.0143531736063272,
+        "packet_pipelined_vs_bf16": 0.8038542011278874,
+        "packet_pipelined_vs_bf16_sequential": 0.8304521909711737,
+        "packet_pipelined_vs_two": 0.9882411815555049,
+        "packet_sequential_vs_bf16": 0.8187012300840636,
+        "packet_sequential_vs_two": 0.9838747992282654,
+        "two_pipeline": 1.0098714197050753
+      },
+      "timings": {
+        "bf16_pipelined": {
+          "critical_path_ms": 1.6078280750662088,
+          "local_samples_ms": [
+            1.6103689558804035,
+            1.5775072388350964
+          ],
+          "rank_median_cv": 0.004338223642966165,
+          "rank_median_ms": [
+            1.59393809735775,
+            1.6078280750662088
+          ],
+          "rank_median_spread_ms": 0.0138899777084589
+        },
+        "bf16_sequential": {
+          "critical_path_ms": 1.6610280144959688,
+          "local_samples_ms": [
+            1.6541597433388233,
+            1.6618450172245502
+          ],
+          "rank_median_cv": 0.0009116018398152468,
+          "rank_median_ms": [
+            1.6580023802816868,
+            1.6610280144959688
+          ],
+          "rank_median_spread_ms": 0.003025634214282036
+        },
+        "packet_pipelined": {
+          "critical_path_ms": 2.0001488737761974,
+          "local_samples_ms": [
+            2.0023928955197334,
+            1.9979048520326614
+          ],
+          "rank_median_cv": 0.0007544182277508947,
+          "rank_median_ms": [
+            2.0001488737761974,
+            1.9971332512795925
+          ],
+          "rank_median_spread_ms": 0.0030156224966049194
+        },
+        "packet_sequential": {
+          "critical_path_ms": 2.028857357800007,
+          "local_samples_ms": [
+            2.019285224378109,
+            2.0263181068003178
+          ],
+          "rank_median_cv": 0.001494620395209836,
+          "rank_median_ms": [
+            2.0228016655892134,
+            2.028857357800007
+          ],
+          "rank_median_spread_ms": 0.006055692210793495
+        },
+        "two_pipelined": {
+          "critical_path_ms": 1.9766294863075018,
+          "local_samples_ms": [
+            1.9363891333341599,
+            1.958651002496481
+          ],
+          "rank_median_cv": 0.007418019621820075,
+          "rank_median_ms": [
+            1.9475200679153204,
+            1.9766294863075018
+          ],
+          "rank_median_spread_ms": 0.029109418392181396
+        },
+        "two_sequential": {
+          "critical_path_ms": 1.9961416255682707,
+          "local_samples_ms": [
+            1.994948834180832,
+            1.9973344169557095
+          ],
+          "rank_median_cv": 0.00021845675498327857,
+          "rank_median_ms": [
+            1.9961416255682707,
+            1.995269674807787
+          ],
+          "rank_median_spread_ms": 0.0008719507604837418
+        }
+      },
+      "tokens_per_chunk": 128,
+      "top_k": 2,
+      "total_tokens_per_rank": 256,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_variable_int8_overlap",
+  "timestamp_utc": "2026-11-11T09:53:39Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

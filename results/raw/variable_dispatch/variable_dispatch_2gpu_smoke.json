@@ -1,0 +1,267 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "balanced sends equal counts to every destination.",
+    "global_hot80 sends 80% of every source rank's tokens to destination rank 0.",
+    "rotated_hot80 sends 80% to the source rank's matching destination, preserving global receiver balance while skewing each sender's split vector.",
+    "Capacity clipping uses a deterministic source-rank order and a per-destination capacity equal to ceil(capacity_factor * average planned receive count).",
+    "Aggregate logical payload bandwidth counts accepted BF16 token bytes once and is not a physical fabric bus-bandwidth normalization."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "accepted_assignments": 64,
+      "aggregate_logical_payload_gb_s": 0.9720664956413912,
+      "capacity_factor": null,
+      "critical_path_ms": 0.13483851216733456,
+      "destination_capacity": null,
+      "dropped_assignments": 0,
+      "dropped_fraction": 0.0,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "iterations": 4,
+      "max_to_mean_receive": 1.0,
+      "max_validation_error": 0.0,
+      "planned_assignments": 64,
+      "rank_median_cv": 0.01967865157262825,
+      "rank_median_ms": [
+        0.1296340487897396,
+        0.13483851216733456
+      ],
+      "rank_median_spread_ms": 0.005204463377594948,
+      "rank_recv_tokens": [
+        32.0,
+        32.0
+      ],
+      "rank_send_tokens": [
+        32.0,
+        32.0
+      ],
+      "receive_cv": 0.0,
+      "recv_counts": [
+        16,
+        16
+      ],
+      "routing_pattern": "balanced",
+      "send_counts": [
+        16,
+        16
+      ],
+      "tokens_per_rank": 32,
+      "warmup": 2
+    },
+    {
+      "accepted_assignments": 64,
+      "aggregate_logical_payload_gb_s": 1.4064993377155521,
+      "capacity_factor": 1.25,
+      "critical_path_ms": 0.09319023229181767,
+      "destination_capacity": 40,
+      "dropped_assignments": 0,
+      "dropped_fraction": 0.0,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "iterations": 4,
+      "max_to_mean_receive": 1.0,
+      "max_validation_error": 0.0,
+      "planned_assignments": 64,
+      "rank_median_cv": 0.018476391136625036,
+      "rank_median_ms": [
+        0.09319023229181767,
+        0.08980906568467617
+      ],
+      "rank_median_spread_ms": 0.0033811666071414948,
+      "rank_recv_tokens": [
+        32.0,
+        32.0
+      ],
+      "rank_send_tokens": [
+        32.0,
+        32.0
+      ],
+      "receive_cv": 0.0,
+      "recv_counts": [
+        16,
+        16
+      ],
+      "routing_pattern": "balanced",
+      "send_counts": [
+        16,
+        16
+      ],
+      "tokens_per_rank": 32,
+      "warmup": 2
+    },
+    {
+      "accepted_assignments": 64,
+      "aggregate_logical_payload_gb_s": 1.481852805560764,
+      "capacity_factor": null,
+      "critical_path_ms": 0.08845143020153046,
+      "destination_capacity": null,
+      "dropped_assignments": 0,
+      "dropped_fraction": 0.0,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "iterations": 4,
+      "max_to_mean_receive": 1.625,
+      "max_validation_error": 0.0,
+      "planned_assignments": 64,
+      "rank_median_cv": 0.01366149379896258,
+      "rank_median_ms": [
+        0.08845143020153046,
+        0.08606724441051483
+      ],
+      "rank_median_spread_ms": 0.002384185791015625,
+      "rank_recv_tokens": [
+        52.0,
+        12.0
+      ],
+      "rank_send_tokens": [
+        32.0,
+        32.0
+      ],
+      "receive_cv": 0.625,
+      "recv_counts": [
+        26,
+        26
+      ],
+      "routing_pattern": "global_hot80",
+      "send_counts": [
+        26,
+        6
+      ],
+      "tokens_per_rank": 32,
+      "warmup": 2
+    },
+    {
+      "accepted_assignments": 52,
+      "aggregate_logical_payload_gb_s": 1.2451864720601962,
+      "capacity_factor": 1.25,
+      "critical_path_ms": 0.08552614599466324,
+      "destination_capacity": 40,
+      "dropped_assignments": 12,
+      "dropped_fraction": 0.1875,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "iterations": 4,
+      "max_to_mean_receive": 1.5384615384615385,
+      "max_validation_error": 0.0,
+      "planned_assignments": 64,
+      "rank_median_cv": 0.049293652369274625,
+      "rank_median_ms": [
+        0.08552614599466324,
+        0.07749046199023724
+      ],
+      "rank_median_spread_ms": 0.008035684004426003,
+      "rank_recv_tokens": [
+        40.0,
+        12.0
+      ],
+      "rank_send_tokens": [
+        32.0,
+        20.0
+      ],
+      "receive_cv": 0.5384615384615384,
+      "recv_counts": [
+        26,
+        14
+      ],
+      "routing_pattern": "global_hot80",
+      "send_counts": [
+        26,
+        6
+      ],
+      "tokens_per_rank": 32,
+      "warmup": 2
+    },
+    {
+      "accepted_assignments": 64,
+      "aggregate_logical_payload_gb_s": 1.1592324775006786,
+      "capacity_factor": null,
+      "critical_path_ms": 0.11306791566312313,
+      "destination_capacity": null,
+      "dropped_assignments": 0,
+      "dropped_fraction": 0.0,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "iterations": 4,
+      "max_to_mean_receive": 1.0,
+      "max_validation_error": 0.0,
+      "planned_assignments": 64,
+      "rank_median_cv": 0.005412948219337755,
+      "rank_median_ms": [
+        0.11185044422745705,
+        0.11306791566312313
+      ],
+      "rank_median_spread_ms": 0.0012174714356660843,
+      "rank_recv_tokens": [
+        32.0,
+        32.0
+      ],
+      "rank_send_tokens": [
+        32.0,
+        32.0
+      ],
+      "receive_cv": 0.0,
+      "recv_counts": [
+        26,
+        6
+      ],
+      "routing_pattern": "rotated_hot80",
+      "send_counts": [
+        26,
+        6
+      ],
+      "tokens_per_rank": 32,
+      "warmup": 2
+    },
+    {
+      "accepted_assignments": 64,
+      "aggregate_logical_payload_gb_s": 1.3568263190375367,
+      "capacity_factor": 1.25,
+      "critical_path_ms": 0.09660189971327782,
+      "destination_capacity": 40,
+      "dropped_assignments": 0,
+      "dropped_fraction": 0.0,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "iterations": 4,
+      "max_to_mean_receive": 1.0,
+      "max_validation_error": 0.0,
+      "planned_assignments": 64,
+      "rank_median_cv": 0.019133531886149406,
+      "rank_median_ms": [
+        0.09660189971327782,
+        0.09297463111579418
+      ],
+      "rank_median_spread_ms": 0.003627268597483635,
+      "rank_recv_tokens": [
+        32.0,
+        32.0
+      ],
+      "rank_send_tokens": [
+        32.0,
+        32.0
+      ],
+      "receive_cv": 0.0,
+      "recv_counts": [
+        26,
+        6
+      ],
+      "routing_pattern": "rotated_hot80",
+      "send_counts": [
+        26,
+        6
+      ],
+      "tokens_per_rank": 32,
+      "warmup": 2
+    }
+  ],
+  "suite": "distributed_variable_alltoall",
+  "timestamp_utc": "2026-11-10T19:13:36Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "world_size": 2
+}

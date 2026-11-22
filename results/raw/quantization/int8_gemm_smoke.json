@@ -1,0 +1,99 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-10T10:41:32Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "notes": [
+    "INT8 tensors are prequantized; quantization cost is excluded.",
+    "The unfused dequant path materializes INT32 and FP32 intermediates.",
+    "Production W8A8 kernels normally fuse scaling and output conversion."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 3,
+      "implementation": "bf16_cublas",
+      "iterations_per_group": 3,
+      "max_ms": 0.038912000755469,
+      "mean_ms": 0.02842666705449422,
+      "median_ms": 0.023925334215164185,
+      "min_ms": 0.022442666192849476,
+      "quantization_quality": null,
+      "shape_mnk": [
+        256,
+        1024,
+        1024
+      ],
+      "tflop_s": 22.43943207529884,
+      "warmup": 3
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 3,
+      "implementation": "int8_int32_kernel",
+      "iterations_per_group": 3,
+      "max_ms": 0.07316266496976216,
+      "mean_ms": 0.07271466652552287,
+      "median_ms": 0.07267199953397115,
+      "min_ms": 0.07230933507283528,
+      "quantization_quality": {
+        "cosine_similarity": 0.9999107122421265,
+        "max_abs_error": 2.125,
+        "max_rel_error": 1315.5946044921875,
+        "mean_abs_error": 0.3355632424354553,
+        "mean_rel_error": 0.10024921596050262,
+        "normalized_rmse": 0.013360553421080112
+      },
+      "shape_mnk": [
+        256,
+        1024,
+        1024
+      ],
+      "tops": 7.387589655477075,
+      "warmup": 3
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 3,
+      "implementation": "int8_with_unfused_dequant",
+      "iterations_per_group": 3,
+      "max_ms": 0.09006933371225993,
+      "mean_ms": 0.08969955643018086,
+      "median_ms": 0.08969600001970927,
+      "min_ms": 0.08933333555857341,
+      "quantization_quality": {
+        "cosine_similarity": 0.9999107122421265,
+        "max_abs_error": 2.125,
+        "max_rel_error": 1315.5946044921875,
+        "mean_abs_error": 0.3355632424354553,
+        "mean_rel_error": 0.10024921596050262,
+        "normalized_rmse": 0.013360553421080112
+      },
+      "shape_mnk": [
+        256,
+        1024,
+        1024
+      ],
+      "tops": 5.985449873818578,
+      "warmup": 3
+    }
+  ],
+  "suite": "int8_gemm"
+}

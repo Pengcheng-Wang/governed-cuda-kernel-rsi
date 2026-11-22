@@ -1,0 +1,418 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "The Triton quantization kernel fuses per-token absolute-max reduction, BF16 scale rounding, INT8 quantization, and expert-ID/router-weight/scale metadata packing.",
+    "The Triton receive kernel fuses INT8 dequantization with expert-ID, router-weight, and scale unpacking into contiguous tensors for the unchanged fused expert kernel.",
+    "BF16 metadata-packed, eager PyTorch INT8, and fused Triton INT8 paths share routing, collectives, expert weights, BF16 return communication, and weighted combine.",
+    "Crossovers rotate all three paths through timing positions to separate low-single-digit conversion gains from schedule-order effects."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "crossover": null,
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 3,
+      "num_experts": 4,
+      "payload": {
+        "byte_reduction_fraction": 0.4980506822612085,
+        "quantization": "symmetric per-token INT8 with BF16 scale",
+        "return_path": "BF16"
+      },
+      "quality": {
+        "max_torch_hidden_nrmse": 0.008118833415210247,
+        "max_torch_output_nrmse": 0.013068710453808308,
+        "max_triton_hidden_nrmse": 0.008118833415210247,
+        "max_triton_output_nrmse": 0.013157983310520649,
+        "max_triton_reference_nrmse": 0.013157983310520649,
+        "max_triton_vs_torch_hidden_nrmse": 0.0010651529300957918,
+        "max_triton_vs_torch_output_nrmse": 0.0032423704396933317,
+        "max_triton_weight_error": 0.0,
+        "min_triton_hidden_cosine": 0.999967098236084,
+        "min_triton_output_cosine": 0.9999135136604309,
+        "torch_ids_equal": true,
+        "triton_ids_equal": true
+      },
+      "route": "balanced",
+      "routing": {
+        "max_to_mean_receive": 1.03125,
+        "rank0_receive_fraction": 0.515625,
+        "rank_receive_assignments": [
+          66,
+          62
+        ],
+        "send_matrix": [
+          [
+            35,
+            29
+          ],
+          [
+            31,
+            33
+          ]
+        ]
+      },
+      "timings": {
+        "bf16_dispatch": {
+          "critical_path_ms": 0.42253872379660606,
+          "local_samples_ms": [
+            0.39265304803848267,
+            0.42125582695007324,
+            0.6554131396114826
+          ],
+          "rank_median_cv": 0.0015203900586909192,
+          "rank_median_ms": [
+            0.42125582695007324,
+            0.42253872379660606
+          ],
+          "rank_median_spread_ms": 0.0012828968465328217
+        },
+        "bf16_end_to_end": {
+          "critical_path_ms": 1.6284999437630177,
+          "local_samples_ms": [
+            1.6193632036447525,
+            1.6182921826839447,
+            1.6394909471273422
+          ],
+          "rank_median_cv": 0.002813154281318009,
+          "rank_median_ms": [
+            1.6193632036447525,
+            1.6284999437630177
+          ],
+          "rank_median_spread_ms": 0.009136740118265152
+        },
+        "torch_dequantize_unpack_only": {
+          "critical_path_ms": 0.15860609710216522,
+          "local_samples_ms": [
+            0.17492566257715225,
+            0.15794485807418823,
+            0.15709316357970238
+          ],
+          "rank_median_cv": 0.0020888865352139195,
+          "rank_median_ms": [
+            0.15794485807418823,
+            0.15860609710216522
+          ],
+          "rank_median_spread_ms": 0.0006612390279769897
+        },
+        "torch_int8_dispatch": {
+          "critical_path_ms": 0.6816531531512737,
+          "local_samples_ms": [
+            0.6618648767471313,
+            0.6816531531512737,
+            0.7152361795306206
+          ],
+          "rank_median_cv": 0.0317931562880401,
+          "rank_median_ms": [
+            0.6816531531512737,
+            0.639644917100668
+          ],
+          "rank_median_spread_ms": 0.042008236050605774
+        },
+        "torch_int8_end_to_end": {
+          "critical_path_ms": 1.8729274161159992,
+          "local_samples_ms": [
+            1.8649213016033173,
+            1.8729274161159992,
+            1.9085127860307693
+          ],
+          "rank_median_cv": 0.0002489380962328529,
+          "rank_median_ms": [
+            1.8729274161159992,
+            1.8719951622188091
+          ],
+          "rank_median_spread_ms": 0.000932253897190094
+        },
+        "torch_quantize_pack_only": {
+          "critical_path_ms": 0.2503669820725918,
+          "local_samples_ms": [
+            0.2503669820725918,
+            0.26788003742694855,
+            0.23739272728562355
+          ],
+          "rank_median_cv": 0.017838617587593423,
+          "rank_median_ms": [
+            0.2503669820725918,
+            0.24159112945199013
+          ],
+          "rank_median_spread_ms": 0.008775852620601654
+        },
+        "triton_dequantize_unpack_only": {
+          "critical_path_ms": 0.09667081758379936,
+          "local_samples_ms": [
+            0.09667081758379936,
+            0.08963840082287788,
+            0.12461189180612564
+          ],
+          "rank_median_cv": 0.021271676300578034,
+          "rank_median_ms": [
+            0.09667081758379936,
+            0.09264377877116203
+          ],
+          "rank_median_spread_ms": 0.004027038812637329
+        },
+        "triton_int8_dispatch": {
+          "critical_path_ms": 0.45133335515856743,
+          "local_samples_ms": [
+            0.45133335515856743,
+            0.4297317937016487,
+            0.4658494144678116
+          ],
+          "rank_median_cv": 0.00537889549818966,
+          "rank_median_ms": [
+            0.45133335515856743,
+            0.44650398194789886
+          ],
+          "rank_median_spread_ms": 0.004829373210668564
+        },
+        "triton_int8_end_to_end": {
+          "critical_path_ms": 1.6614818014204502,
+          "local_samples_ms": [
+            1.6455817967653275,
+            1.6681347042322159,
+            1.648387871682644
+          ],
+          "rank_median_cv": 0.0039560257747340245,
+          "rank_median_ms": [
+            1.648387871682644,
+            1.6614818014204502
+          ],
+          "rank_median_spread_ms": 0.01309392973780632
+        },
+        "triton_quantize_pack_only": {
+          "critical_path_ms": 0.08970685303211212,
+          "local_samples_ms": [
+            0.08970685303211212,
+            0.10884320363402367,
+            0.08392613381147385
+          ],
+          "rank_median_cv": 0.02694720905810042,
+          "rank_median_ms": [
+            0.08970685303211212,
+            0.08499901741743088
+          ],
+          "rank_median_spread_ms": 0.004707835614681244
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "torch_dispatch_speedup_vs_bf16": 0.61987349701709,
+      "torch_end_to_end_speedup_vs_bf16": 0.8694944234091755,
+      "triton_dispatch_speedup_vs_bf16": 0.9362009675711982,
+      "triton_dispatch_speedup_vs_torch": 1.510309719767527,
+      "triton_end_to_end_speedup_vs_bf16": 0.9801491309569353,
+      "triton_end_to_end_speedup_vs_torch": 1.1272632745750075,
+      "warmup": 1
+    },
+    {
+      "crossover": null,
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 3,
+      "num_experts": 4,
+      "payload": {
+        "byte_reduction_fraction": 0.4980506822612085,
+        "quantization": "symmetric per-token INT8 with BF16 scale",
+        "return_path": "BF16"
+      },
+      "quality": {
+        "max_torch_hidden_nrmse": 0.008109711110591888,
+        "max_torch_output_nrmse": 0.012961427681148052,
+        "max_triton_hidden_nrmse": 0.008109711110591888,
+        "max_triton_output_nrmse": 0.01305188424885273,
+        "max_triton_reference_nrmse": 0.01305188424885273,
+        "max_triton_vs_torch_hidden_nrmse": 0.0014502619160339236,
+        "max_triton_vs_torch_output_nrmse": 0.003353880951181054,
+        "max_triton_weight_error": 0.0,
+        "min_triton_hidden_cosine": 0.9999672174453735,
+        "min_triton_output_cosine": 0.9999149441719055,
+        "torch_ids_equal": true,
+        "triton_ids_equal": true
+      },
+      "route": "global_bias1",
+      "routing": {
+        "max_to_mean_receive": 1.515625,
+        "rank0_receive_fraction": 0.7578125,
+        "rank_receive_assignments": [
+          97,
+          31
+        ],
+        "send_matrix": [
+          [
+            47,
+            17
+          ],
+          [
+            50,
+            14
+          ]
+        ]
+      },
+      "timings": {
+        "bf16_dispatch": {
+          "critical_path_ms": 0.4229201003909111,
+          "local_samples_ms": [
+            0.43011270463466644,
+            0.39131101220846176,
+            0.4229201003909111
+          ],
+          "rank_median_cv": 0.011018394417999903,
+          "rank_median_ms": [
+            0.4229201003909111,
+            0.4137018695473671
+          ],
+          "rank_median_spread_ms": 0.009218230843544006
+        },
+        "bf16_end_to_end": {
+          "critical_path_ms": 1.6482872888445854,
+          "local_samples_ms": [
+            1.6332189552485943,
+            1.6247243620455265,
+            1.7103529535233974
+          ],
+          "rank_median_cv": 0.0045918954513996845,
+          "rank_median_ms": [
+            1.6332189552485943,
+            1.6482872888445854
+          ],
+          "rank_median_spread_ms": 0.015068333595991135
+        },
+        "torch_dequantize_unpack_only": {
+          "critical_path_ms": 0.16114069148898125,
+          "local_samples_ms": [
+            0.1939120702445507,
+            0.15994813293218613,
+            0.15722261741757393
+          ],
+          "rank_median_cv": 0.0037141079542240907,
+          "rank_median_ms": [
+            0.15994813293218613,
+            0.16114069148898125
+          ],
+          "rank_median_spread_ms": 0.0011925585567951202
+        },
+        "torch_int8_dispatch": {
+          "critical_path_ms": 0.6611840799450874,
+          "local_samples_ms": [
+            0.6814119406044483,
+            0.6611840799450874,
+            0.6444328464567661
+          ],
+          "rank_median_cv": 0.002095400352738665,
+          "rank_median_ms": [
+            0.6611840799450874,
+            0.6584189832210541
+          ],
+          "rank_median_spread_ms": 0.0027650967240333557
+        },
+        "torch_int8_end_to_end": {
+          "critical_path_ms": 1.857878640294075,
+          "local_samples_ms": [
+            1.857878640294075,
+            1.912811305373907,
+            1.848611980676651
+          ],
+          "rank_median_cv": 0.0010254217790352806,
+          "rank_median_ms": [
+            1.857878640294075,
+            1.8540723249316216
+          ],
+          "rank_median_spread_ms": 0.0038063153624534607
+        },
+        "torch_quantize_pack_only": {
+          "critical_path_ms": 0.23819459602236748,
+          "local_samples_ms": [
+            0.23819459602236748,
+            0.22945785894989967,
+            0.2593938261270523
+          ],
+          "rank_median_cv": 0.010992029962990963,
+          "rank_median_ms": [
+            0.23819459602236748,
+            0.2330150455236435
+          ],
+          "rank_median_spread_ms": 0.005179550498723984
+        },
+        "triton_dequantize_unpack_only": {
+          "critical_path_ms": 0.08896598592400551,
+          "local_samples_ms": [
+            0.09033922106027603,
+            0.08896598592400551,
+            0.0876537524163723
+          ],
+          "rank_median_cv": 0.010528264462809918,
+          "rank_median_ms": [
+            0.08896598592400551,
+            0.0871121883392334
+          ],
+          "rank_median_spread_ms": 0.00185379758477211
+        },
+        "triton_int8_dispatch": {
+          "critical_path_ms": 0.4432271234691143,
+          "local_samples_ms": [
+            0.45590102672576904,
+            0.42538391426205635,
+            0.4428057000041008
+          ],
+          "rank_median_cv": 0.00047562963114790714,
+          "rank_median_ms": [
+            0.4428057000041008,
+            0.4432271234691143
+          ],
+          "rank_median_spread_ms": 0.00042142346501350403
+        },
+        "triton_int8_end_to_end": {
+          "critical_path_ms": 1.6543278470635414,
+          "local_samples_ms": [
+            1.671541016548872,
+            1.6543278470635414,
+            1.6196542419493198
+          ],
+          "rank_median_cv": 0.009404632761876404,
+          "rank_median_ms": [
+            1.6543278470635414,
+            1.623501069843769
+          ],
+          "rank_median_spread_ms": 0.03082677721977234
+        },
+        "triton_quantize_pack_only": {
+          "critical_path_ms": 0.08371612057089806,
+          "local_samples_ms": [
+            0.08371612057089806,
+            0.10779174044728279,
+            0.08097104728221893
+          ],
+          "rank_median_cv": 0.003483017498813876,
+          "rank_median_ms": [
+            0.08371612057089806,
+            0.083134975284338
+          ],
+          "rank_median_spread_ms": 0.0005811452865600586
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "torch_dispatch_speedup_vs_bf16": 0.6396404771664124,
+      "torch_end_to_end_speedup_vs_bf16": 0.8871878136150408,
+      "triton_dispatch_speedup_vs_bf16": 0.9541837085256397,
+      "triton_dispatch_speedup_vs_torch": 1.4917500417619662,
+      "triton_end_to_end_speedup_vs_bf16": 0.996348632932899,
+      "triton_end_to_end_speedup_vs_torch": 1.1230413872267455,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_int8_fused_dispatch",
+  "timestamp_utc": "2026-11-11T04:47:08Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

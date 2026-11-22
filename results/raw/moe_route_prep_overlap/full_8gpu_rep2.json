@@ -1,0 +1,1949 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 8,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Online schedules include router projection, fused top-k, token permutation, metadata packing, count exchange, CPU split extraction, variable dispatch, local experts, return, and weighted combine.",
+    "Send counts use a pinned nonblocking copy; count exchange and receive-count extraction run after the route event because NCCL did not inherit the external prep-stream dependency reliably.",
+    "The overlapped schedule double-buffers future device router/packing work while count exchange and Python split extraction remain exposed.",
+    "Precomputed schedules reproduce the v23 payload-only lower bound; staged schedules expose all online preparation before payload pipelining.",
+    "BF16 online outputs must match the global-expert reference exactly, and online preparation must not change either BF16 or packet output."
+  ],
+  "profile": "full",
+  "records": [
+    {
+      "chunks": 4,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 6,
+      "num_experts": 16,
+      "preparation": {
+        "count_collective_group": "dedicated_nccl",
+        "count_collective_overlap": false,
+        "count_exchange_in_timed_region": true,
+        "prepare_only_timing": {
+          "critical_path_ms": 3.413643455132842,
+          "local_samples_ms": [
+            3.6495798267424107,
+            3.3663641661405563,
+            3.37783619761467,
+            3.333121072500944,
+            4.878372885286808,
+            3.3324509859085083
+          ],
+          "rank_median_cv": 0.0043137771092727935,
+          "rank_median_ms": [
+            3.372100181877613,
+            3.3779414370656013,
+            3.371503436937928,
+            3.3672056160867214,
+            3.413643455132842,
+            3.3659490291029215,
+            3.3680167980492115,
+            3.3781069796532393
+          ],
+          "rank_median_spread_ms": 0.04769442602992058
+        },
+        "recv_count_host_copy": "blocking_tensor_cpu",
+        "router_pack_in_timed_region": true,
+        "send_count_host_copy": "pinned_nonblocking"
+      },
+      "quality_vs_reference": {
+        "bf16_online_overlapped": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_online_staged": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_online_overlapped": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        },
+        "packet_online_staged": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        },
+        "packet_precomputed": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00844661332666874,
+          "min_cosine_similarity": 0.9999643564224243
+        }
+      },
+      "route": "balanced",
+      "routing": {
+        "aggregate_max_to_mean": 1.038818359375,
+        "aggregate_receive_assignments": [
+          4093,
+          4126,
+          3987,
+          4067,
+          4255,
+          4064,
+          3989,
+          4187
+        ],
+        "max_step_max_to_mean": 1.08203125,
+        "median_step_max_to_mean": 1.05078125,
+        "rank0_fraction_per_chunk": [
+          0.1275634765625,
+          0.1217041015625,
+          0.125244140625,
+          0.1251220703125
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            1045,
+            1019,
+            982,
+            1022,
+            1081,
+            1021,
+            991,
+            1031
+          ],
+          [
+            997,
+            1000,
+            929,
+            1063,
+            1036,
+            1031,
+            1028,
+            1108
+          ],
+          [
+            1026,
+            1057,
+            1027,
+            997,
+            1067,
+            975,
+            1018,
+            1025
+          ],
+          [
+            1025,
+            1050,
+            1049,
+            985,
+            1071,
+            1037,
+            952,
+            1023
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              132,
+              118,
+              138,
+              102,
+              146,
+              127,
+              133,
+              128
+            ],
+            [
+              134,
+              111,
+              120,
+              137,
+              141,
+              154,
+              106,
+              121
+            ],
+            [
+              125,
+              121,
+              121,
+              130,
+              139,
+              127,
+              120,
+              141
+            ],
+            [
+              125,
+              126,
+              123,
+              129,
+              135,
+              134,
+              149,
+              103
+            ],
+            [
+              144,
+              138,
+              120,
+              120,
+              138,
+              123,
+              118,
+              123
+            ],
+            [
+              113,
+              136,
+              107,
+              153,
+              131,
+              118,
+              133,
+              133
+            ],
+            [
+              126,
+              140,
+              127,
+              116,
+              131,
+              114,
+              121,
+              149
+            ],
+            [
+              146,
+              129,
+              126,
+              135,
+              120,
+              124,
+              111,
+              133
+            ]
+          ],
+          [
+            [
+              126,
+              132,
+              116,
+              115,
+              139,
+              128,
+              133,
+              135
+            ],
+            [
+              121,
+              117,
+              106,
+              139,
+              134,
+              131,
+              132,
+              144
+            ],
+            [
+              136,
+              119,
+              108,
+              133,
+              125,
+              135,
+              137,
+              131
+            ],
+            [
+              114,
+              126,
+              113,
+              140,
+              135,
+              120,
+              124,
+              152
+            ],
+            [
+              137,
+              126,
+              111,
+              138,
+              126,
+              113,
+              135,
+              138
+            ],
+            [
+              117,
+              124,
+              125,
+              126,
+              141,
+              123,
+              133,
+              135
+            ],
+            [
+              123,
+              130,
+              122,
+              151,
+              121,
+              137,
+              112,
+              128
+            ],
+            [
+              123,
+              126,
+              128,
+              121,
+              115,
+              144,
+              122,
+              145
+            ]
+          ],
+          [
+            [
+              132,
+              142,
+              121,
+              122,
+              135,
+              117,
+              118,
+              137
+            ],
+            [
+              117,
+              139,
+              128,
+              110,
+              141,
+              129,
+              125,
+              135
+            ],
+            [
+              129,
+              127,
+              147,
+              122,
+              131,
+              115,
+              127,
+              126
+            ],
+            [
+              146,
+              117,
+              119,
+              131,
+              121,
+              110,
+              149,
+              131
+            ],
+            [
+              137,
+              136,
+              118,
+              123,
+              142,
+              125,
+              110,
+              133
+            ],
+            [
+              111,
+              114,
+              136,
+              139,
+              139,
+              126,
+              131,
+              128
+            ],
+            [
+              124,
+              142,
+              138,
+              130,
+              124,
+              128,
+              121,
+              117
+            ],
+            [
+              130,
+              140,
+              120,
+              120,
+              134,
+              125,
+              137,
+              118
+            ]
+          ],
+          [
+            [
+              135,
+              116,
+              140,
+              114,
+              144,
+              124,
+              117,
+              134
+            ],
+            [
+              137,
+              138,
+              137,
+              122,
+              122,
+              109,
+              118,
+              141
+            ],
+            [
+              151,
+              116,
+              127,
+              125,
+              142,
+              143,
+              107,
+              113
+            ],
+            [
+              109,
+              150,
+              135,
+              122,
+              139,
+              121,
+              121,
+              127
+            ],
+            [
+              139,
+              123,
+              122,
+              113,
+              139,
+              144,
+              125,
+              119
+            ],
+            [
+              112,
+              137,
+              133,
+              123,
+              141,
+              128,
+              103,
+              147
+            ],
+            [
+              120,
+              133,
+              122,
+              127,
+              128,
+              142,
+              134,
+              118
+            ],
+            [
+              122,
+              137,
+              133,
+              139,
+              116,
+              126,
+              127,
+              124
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_online_vs_precomputed": 0.45148876340267546,
+        "bf16_overlap_vs_staged": 0.8945394800459772,
+        "bf16_recovery_fraction": -0.23803261340603724,
+        "packet_online_vs_bf16_online": 1.0063321164045227,
+        "packet_online_vs_precomputed": 0.5443773652559484,
+        "packet_overlap_vs_staged": 1.0216067630778203,
+        "packet_recovery_fraction": 0.04527542346811807
+      },
+      "timings": {
+        "bf16_online_overlapped": {
+          "critical_path_ms": 7.820505648851395,
+          "local_samples_ms": [
+            8.60301498323679,
+            6.984615232795477,
+            8.258644957095385,
+            8.87733418494463,
+            7.1125272661447525,
+            6.995325442403555
+          ],
+          "rank_median_cv": 0.006629306659323385,
+          "rank_median_ms": [
+            7.6855861116200686,
+            7.724097929894924,
+            7.692924002185464,
+            7.675386033952236,
+            7.794050266966224,
+            7.679994683712721,
+            7.720195455476642,
+            7.820505648851395
+          ],
+          "rank_median_spread_ms": 0.14511961489915848
+        },
+        "bf16_online_staged": {
+          "critical_path_ms": 6.995751056820154,
+          "local_samples_ms": [
+            6.8099950440227985,
+            6.763305980712175,
+            8.359513711184263,
+            6.8876720033586025,
+            8.96322587504983,
+            6.872544065117836
+          ],
+          "rank_median_cv": 0.00866212771908106,
+          "rank_median_ms": [
+            6.880108034238219,
+            6.907549686729908,
+            6.8650387693196535,
+            6.849184166640043,
+            6.995751056820154,
+            6.782312644645572,
+            6.925122579559684,
+            6.932972464710474
+          ],
+          "rank_median_spread_ms": 0.21343841217458248
+        },
+        "bf16_precomputed": {
+          "critical_path_ms": 3.5308704245835543,
+          "local_samples_ms": [
+            3.9153331890702248,
+            4.010563250631094,
+            3.397934138774872,
+            3.382235299795866,
+            3.3812029287219048,
+            3.409435972571373
+          ],
+          "rank_median_cv": 0.015734551923664766,
+          "rank_median_ms": [
+            3.4036850556731224,
+            3.485284512862563,
+            3.374584950506687,
+            3.410733537748456,
+            3.5059836227446795,
+            3.3950037322938442,
+            3.422129899263382,
+            3.5308704245835543
+          ],
+          "rank_median_spread_ms": 0.1562854740768671
+        },
+        "packet_online_overlapped": {
+          "critical_path_ms": 7.771296892315149,
+          "local_samples_ms": [
+            7.7021620236337185,
+            7.5870840810239315,
+            7.52962613478303,
+            9.934871923178434,
+            7.667526602745056,
+            7.690338883548975
+          ],
+          "rank_median_cv": 0.005127227192835723,
+          "rank_median_ms": [
+            7.678932743147016,
+            7.722079521045089,
+            7.671484258025885,
+            7.654120912775397,
+            7.771296892315149,
+            7.654031272977591,
+            7.690945640206337,
+            7.737188134342432
+          ],
+          "rank_median_spread_ms": 0.11726561933755875
+        },
+        "packet_online_staged": {
+          "critical_path_ms": 7.939209463074803,
+          "local_samples_ms": [
+            7.502163760364056,
+            7.432451006025076,
+            7.415258791297674,
+            7.804614957422018,
+            7.980598136782646,
+            8.276177104562521
+          ],
+          "rank_median_cv": 0.015319690495561375,
+          "rank_median_ms": [
+            7.653389358893037,
+            7.893523667007685,
+            7.630441104993224,
+            7.631593383848667,
+            7.723832968622446,
+            7.609978085383773,
+            7.6830710750073195,
+            7.939209463074803
+          ],
+          "rank_median_spread_ms": 0.3292313776910305
+        },
+        "packet_precomputed": {
+          "critical_path_ms": 4.230518126860261,
+          "local_samples_ms": [
+            4.00206632912159,
+            4.11871587857604,
+            5.483617074787617,
+            4.382515791803598,
+            4.012254998087883,
+            4.023157060146332
+          ],
+          "rank_median_cv": 0.019566433779786528,
+          "rank_median_ms": [
+            4.070936469361186,
+            4.103292478248477,
+            4.0365164168179035,
+            4.00765216909349,
+            4.199995426461101,
+            3.993675811216235,
+            4.094114759936929,
+            4.230518126860261
+          ],
+          "rank_median_spread_ms": 0.2368423156440258
+        }
+      },
+      "tokens_per_chunk": 512,
+      "top_k": 2,
+      "total_tokens_per_rank": 2048,
+      "warmup": 2
+    },
+    {
+      "chunks": 4,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 6,
+      "num_experts": 16,
+      "preparation": {
+        "count_collective_group": "dedicated_nccl",
+        "count_collective_overlap": false,
+        "count_exchange_in_timed_region": true,
+        "prepare_only_timing": {
+          "critical_path_ms": 3.7387532647699118,
+          "local_samples_ms": [
+            3.7066778168082237,
+            3.56527091935277,
+            3.775958903133869,
+            3.331307787448168,
+            3.348310012370348,
+            3.6988528445363045
+          ],
+          "rank_median_cv": 0.016234717837379373,
+          "rank_median_ms": [
+            3.632061881944537,
+            3.6321114748716354,
+            3.7387532647699118,
+            3.5054474137723446,
+            3.63576365634799,
+            3.647591220214963,
+            3.6461385898292065,
+            3.6328379064798355
+          ],
+          "rank_median_spread_ms": 0.23330585099756718
+        },
+        "recv_count_host_copy": "blocking_tensor_cpu",
+        "router_pack_in_timed_region": true,
+        "send_count_host_copy": "pinned_nonblocking"
+      },
+      "quality_vs_reference": {
+        "bf16_online_overlapped": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_online_staged": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "bf16_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_online_overlapped": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        },
+        "packet_online_staged": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        },
+        "packet_precomputed": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.00847781915217638,
+          "min_cosine_similarity": 0.9999641180038452
+        }
+      },
+      "route": "global_bias1",
+      "routing": {
+        "aggregate_max_to_mean": 3.011474609375,
+        "aggregate_receive_assignments": [
+          12335,
+          2913,
+          2880,
+          2932,
+          2963,
+          3020,
+          2917,
+          2808
+        ],
+        "max_step_max_to_mean": 3.0546875,
+        "median_step_max_to_mean": 3.00146484375,
+        "rank0_fraction_per_chunk": [
+          0.3818359375,
+          0.376220703125,
+          0.37353515625,
+          0.3741455078125
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            3128,
+            723,
+            686,
+            739,
+            738,
+            766,
+            714,
+            698
+          ],
+          [
+            3082,
+            742,
+            746,
+            725,
+            715,
+            767,
+            709,
+            706
+          ],
+          [
+            3060,
+            718,
+            718,
+            758,
+            748,
+            757,
+            755,
+            678
+          ],
+          [
+            3065,
+            730,
+            730,
+            710,
+            762,
+            730,
+            739,
+            726
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              387,
+              97,
+              65,
+              86,
+              102,
+              106,
+              100,
+              81
+            ],
+            [
+              395,
+              100,
+              85,
+              95,
+              87,
+              86,
+              93,
+              83
+            ],
+            [
+              378,
+              89,
+              95,
+              99,
+              92,
+              98,
+              89,
+              84
+            ],
+            [
+              403,
+              85,
+              85,
+              102,
+              86,
+              96,
+              84,
+              83
+            ],
+            [
+              401,
+              81,
+              87,
+              85,
+              94,
+              97,
+              90,
+              89
+            ],
+            [
+              400,
+              85,
+              98,
+              91,
+              92,
+              92,
+              89,
+              77
+            ],
+            [
+              381,
+              83,
+              81,
+              88,
+              95,
+              104,
+              84,
+              108
+            ],
+            [
+              383,
+              103,
+              90,
+              93,
+              90,
+              87,
+              85,
+              93
+            ]
+          ],
+          [
+            [
+              381,
+              110,
+              90,
+              101,
+              87,
+              87,
+              79,
+              89
+            ],
+            [
+              386,
+              88,
+              97,
+              89,
+              92,
+              107,
+              85,
+              80
+            ],
+            [
+              401,
+              91,
+              92,
+              81,
+              85,
+              106,
+              87,
+              81
+            ],
+            [
+              401,
+              103,
+              75,
+              83,
+              94,
+              80,
+              95,
+              93
+            ],
+            [
+              391,
+              95,
+              88,
+              105,
+              87,
+              92,
+              84,
+              82
+            ],
+            [
+              388,
+              75,
+              107,
+              90,
+              91,
+              95,
+              90,
+              88
+            ],
+            [
+              368,
+              101,
+              94,
+              91,
+              87,
+              87,
+              105,
+              91
+            ],
+            [
+              366,
+              79,
+              103,
+              85,
+              92,
+              113,
+              84,
+              102
+            ]
+          ],
+          [
+            [
+              371,
+              105,
+              86,
+              97,
+              94,
+              100,
+              84,
+              87
+            ],
+            [
+              389,
+              82,
+              96,
+              95,
+              87,
+              103,
+              91,
+              81
+            ],
+            [
+              395,
+              75,
+              93,
+              80,
+              89,
+              97,
+              108,
+              87
+            ],
+            [
+              383,
+              97,
+              87,
+              82,
+              96,
+              90,
+              99,
+              90
+            ],
+            [
+              384,
+              94,
+              80,
+              113,
+              91,
+              93,
+              84,
+              85
+            ],
+            [
+              355,
+              83,
+              104,
+              94,
+              108,
+              98,
+              100,
+              82
+            ],
+            [
+              406,
+              80,
+              86,
+              103,
+              78,
+              102,
+              89,
+              80
+            ],
+            [
+              377,
+              102,
+              86,
+              94,
+              105,
+              74,
+              100,
+              86
+            ]
+          ],
+          [
+            [
+              396,
+              84,
+              98,
+              76,
+              91,
+              98,
+              86,
+              95
+            ],
+            [
+              400,
+              90,
+              90,
+              88,
+              95,
+              99,
+              89,
+              73
+            ],
+            [
+              389,
+              93,
+              89,
+              75,
+              98,
+              79,
+              97,
+              104
+            ],
+            [
+              375,
+              89,
+              83,
+              100,
+              98,
+              88,
+              97,
+              94
+            ],
+            [
+              385,
+              85,
+              98,
+              79,
+              97,
+              90,
+              94,
+              96
+            ],
+            [
+              375,
+              97,
+              79,
+              112,
+              86,
+              93,
+              97,
+              85
+            ],
+            [
+              364,
+              105,
+              99,
+              90,
+              94,
+              88,
+              92,
+              92
+            ],
+            [
+              381,
+              87,
+              94,
+              90,
+              103,
+              95,
+              87,
+              87
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_online_vs_precomputed": 0.45621331621353306,
+        "bf16_overlap_vs_staged": 0.9179426369613292,
+        "bf16_recovery_fraction": -0.17771746205282019,
+        "packet_online_vs_bf16_online": 0.9411276786518602,
+        "packet_online_vs_precomputed": 0.5117032828588414,
+        "packet_overlap_vs_staged": 0.9841043608473267,
+        "packet_recovery_fraction": -0.033648608975148805
+      },
+      "timings": {
+        "bf16_online_overlapped": {
+          "critical_path_ms": 7.623297860845923,
+          "local_samples_ms": [
+            8.207187056541443,
+            8.085206151008606,
+            6.895727012306452,
+            6.88340375199914,
+            6.858897861093283,
+            8.206365630030632
+          ],
+          "rank_median_cv": 0.006380345951596213,
+          "rank_median_ms": [
+            7.490466581657529,
+            7.496277568861842,
+            7.469071540981531,
+            7.468485040590167,
+            7.510945666581392,
+            7.471751421689987,
+            7.486263290047646,
+            7.623297860845923
+          ],
+          "rank_median_spread_ms": 0.15481282025575638
+        },
+        "bf16_online_staged": {
+          "critical_path_ms": 6.997750140726566,
+          "local_samples_ms": [
+            7.085326127707958,
+            6.771513260900974,
+            7.0678419433534145,
+            6.796440109610558,
+            6.755892187356949,
+            8.499448653310537
+          ],
+          "rank_median_cv": 0.008185341441574286,
+          "rank_median_ms": [
+            6.932141026481986,
+            6.928153103217483,
+            6.80900807492435,
+            6.997750140726566,
+            6.972576957195997,
+            6.862113019451499,
+            6.887511583045125,
+            6.929581053555012
+          ],
+          "rank_median_spread_ms": 0.18874206580221653
+        },
+        "bf16_precomputed": {
+          "critical_path_ms": 3.4778499975800514,
+          "local_samples_ms": [
+            4.166787024587393,
+            3.3607231453061104,
+            3.360903821885586,
+            4.46683494374156,
+            3.340405412018299,
+            3.418323118239641
+          ],
+          "rank_median_cv": 0.007802164748541503,
+          "rank_median_ms": [
+            3.3896134700626135,
+            3.4263525158166885,
+            3.410572884604335,
+            3.406194970011711,
+            3.447582945227623,
+            3.4064906649291515,
+            3.40647017583251,
+            3.4778499975800514
+          ],
+          "rank_median_spread_ms": 0.08823652751743793
+        },
+        "packet_online_overlapped": {
+          "critical_path_ms": 8.100173901766539,
+          "local_samples_ms": [
+            7.569361012428999,
+            13.052958063781261,
+            7.583897560834885,
+            8.942106273025274,
+            8.478389121592045,
+            7.502363994717598
+          ],
+          "rank_median_cv": 0.0169591348628026,
+          "rank_median_ms": [
+            8.031143341213465,
+            7.646045880392194,
+            7.9987929202616215,
+            8.032526355236769,
+            8.071074029430747,
+            8.053305558860302,
+            8.044458460062742,
+            8.100173901766539
+          ],
+          "rank_median_spread_ms": 0.4541280213743448
+        },
+        "packet_online_staged": {
+          "critical_path_ms": 7.971416460350156,
+          "local_samples_ms": [
+            7.500871084630489,
+            12.177562806755304,
+            7.502424065023661,
+            7.455084938555956,
+            8.471476845443249,
+            7.439123932272196
+          ],
+          "rank_median_cv": 0.020517618826755107,
+          "rank_median_ms": [
+            7.501647574827075,
+            7.567591965198517,
+            7.461101049557328,
+            7.971416460350156,
+            7.583752973005176,
+            7.4477659072726965,
+            7.539183832705021,
+            7.616088958457112
+          ],
+          "rank_median_spread_ms": 0.5236505530774593
+        },
+        "packet_precomputed": {
+          "critical_path_ms": 4.144885577261448,
+          "local_samples_ms": [
+            4.573596175760031,
+            3.9961347356438637,
+            4.0550571866333485,
+            4.000513814389706,
+            3.99537431076169,
+            4.025090020149946
+          ],
+          "rank_median_cv": 0.014215095544880716,
+          "rank_median_ms": [
+            4.012801917269826,
+            4.105431493371725,
+            3.9740384090691805,
+            4.012691788375378,
+            4.104164429008961,
+            3.9960448630154133,
+            4.04340447857976,
+            4.144885577261448
+          ],
+          "rank_median_spread_ms": 0.17084716819226742
+        }
+      },
+      "tokens_per_chunk": 512,
+      "top_k": 2,
+      "total_tokens_per_rank": 2048,
+      "warmup": 2
+    },
+    {
+      "chunks": 4,
+      "crossover": null,
+      "exact_quality": {
+        "bf16_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "bf16_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "packet_overlapped_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        },
+        "packet_staged_vs_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998807907104
+        }
+      },
+      "experts_per_rank": 2,
+      "hidden": 1024,
+      "hot_bias": 4.0,
+      "intermediate": 2816,
+      "iterations": 6,
+      "num_experts": 16,
+      "preparation": {
+        "count_collective_group": "dedicated_nccl",
+        "count_collective_overlap": false,
+        "count_exchange_in_timed_region": true,
+        "prepare_only_timing": {
+          "critical_path_ms": 3.5361105110496283,
+          "local_samples_ms": [
+            3.878653049468994,
+            3.3001392148435116,
+            3.3003301359713078,
+            3.3559449948370457,
+            3.716276027262211,
+            3.911214880645275
+          ],
+          "rank_median_cv": 0.02014925614504756,
+          "rank_median_ms": [
+            3.5361105110496283,
+            3.3313536550849676,
+            3.327486105263233,
+            3.3234984148293734,
+            3.3618661109358072,
+            3.3263438381254673,
+            3.3278216142207384,
+            3.3436715602874756
+          ],
+          "rank_median_spread_ms": 0.2126120962202549
+        },
+        "recv_count_host_copy": "blocking_tensor_cpu",
+        "router_pack_in_timed_region": true,
+        "send_count_host_copy": "pinned_nonblocking"
+      },
+      "quality_vs_reference": {
+        "bf16_online_overlapped": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "bf16_online_staged": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "bf16_precomputed": {
+          "max_abs_error": 0.0,
+          "max_normalized_rmse": 0.0,
+          "min_cosine_similarity": 0.9999998211860657
+        },
+        "packet_online_overlapped": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        },
+        "packet_online_staged": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        },
+        "packet_precomputed": {
+          "max_abs_error": 0.015625,
+          "max_normalized_rmse": 0.008446210995316505,
+          "min_cosine_similarity": 0.9999642968177795
+        }
+      },
+      "route": "global_bias4",
+      "routing": {
+        "aggregate_max_to_mean": 7.8193359375,
+        "aggregate_receive_assignments": [
+          32028,
+          115,
+          111,
+          99,
+          114,
+          125,
+          97,
+          79
+        ],
+        "max_step_max_to_mean": 7.83203125,
+        "median_step_max_to_mean": 7.82177734375,
+        "rank0_fraction_per_chunk": [
+          0.97900390625,
+          0.9766845703125,
+          0.9752197265625,
+          0.978759765625
+        ],
+        "receive_assignments_per_chunk": [
+          [
+            8020,
+            24,
+            24,
+            29,
+            30,
+            28,
+            18,
+            19
+          ],
+          [
+            8001,
+            28,
+            21,
+            26,
+            30,
+            36,
+            27,
+            23
+          ],
+          [
+            7989,
+            34,
+            34,
+            22,
+            28,
+            30,
+            31,
+            24
+          ],
+          [
+            8018,
+            29,
+            32,
+            22,
+            26,
+            31,
+            21,
+            13
+          ]
+        ],
+        "send_matrices": [
+          [
+            [
+              1004,
+              4,
+              0,
+              4,
+              3,
+              3,
+              3,
+              3
+            ],
+            [
+              1006,
+              3,
+              6,
+              0,
+              2,
+              2,
+              1,
+              4
+            ],
+            [
+              1003,
+              2,
+              5,
+              2,
+              5,
+              2,
+              3,
+              2
+            ],
+            [
+              1001,
+              3,
+              1,
+              6,
+              5,
+              3,
+              2,
+              3
+            ],
+            [
+              1005,
+              3,
+              3,
+              2,
+              4,
+              2,
+              4,
+              1
+            ],
+            [
+              1007,
+              1,
+              1,
+              2,
+              4,
+              5,
+              2,
+              2
+            ],
+            [
+              998,
+              3,
+              6,
+              6,
+              3,
+              6,
+              1,
+              1
+            ],
+            [
+              996,
+              5,
+              2,
+              7,
+              4,
+              5,
+              2,
+              3
+            ]
+          ],
+          [
+            [
+              1000,
+              2,
+              1,
+              6,
+              7,
+              2,
+              2,
+              4
+            ],
+            [
+              1004,
+              4,
+              0,
+              0,
+              4,
+              5,
+              5,
+              2
+            ],
+            [
+              1001,
+              3,
+              2,
+              2,
+              3,
+              9,
+              2,
+              2
+            ],
+            [
+              1006,
+              1,
+              6,
+              5,
+              1,
+              3,
+              0,
+              2
+            ],
+            [
+              994,
+              8,
+              4,
+              1,
+              4,
+              6,
+              5,
+              2
+            ],
+            [
+              997,
+              2,
+              2,
+              8,
+              2,
+              4,
+              4,
+              5
+            ],
+            [
+              1000,
+              4,
+              3,
+              0,
+              8,
+              1,
+              5,
+              3
+            ],
+            [
+              999,
+              4,
+              3,
+              4,
+              1,
+              6,
+              4,
+              3
+            ]
+          ],
+          [
+            [
+              1003,
+              6,
+              2,
+              1,
+              2,
+              6,
+              2,
+              2
+            ],
+            [
+              1002,
+              5,
+              6,
+              2,
+              4,
+              2,
+              1,
+              2
+            ],
+            [
+              1001,
+              3,
+              6,
+              2,
+              4,
+              2,
+              5,
+              1
+            ],
+            [
+              1001,
+              6,
+              2,
+              4,
+              3,
+              0,
+              4,
+              4
+            ],
+            [
+              996,
+              8,
+              4,
+              2,
+              2,
+              4,
+              5,
+              3
+            ],
+            [
+              998,
+              1,
+              4,
+              4,
+              4,
+              4,
+              4,
+              5
+            ],
+            [
+              994,
+              3,
+              5,
+              5,
+              6,
+              3,
+              3,
+              5
+            ],
+            [
+              994,
+              2,
+              5,
+              2,
+              3,
+              9,
+              7,
+              2
+            ]
+          ],
+          [
+            [
+              1001,
+              4,
+              5,
+              3,
+              2,
+              3,
+              4,
+              2
+            ],
+            [
+              996,
+              4,
+              6,
+              1,
+              4,
+              8,
+              3,
+              2
+            ],
+            [
+              1008,
+              4,
+              1,
+              1,
+              5,
+              1,
+              3,
+              1
+            ],
+            [
+              1001,
+              1,
+              7,
+              4,
+              3,
+              3,
+              2,
+              3
+            ],
+            [
+              1003,
+              6,
+              1,
+              4,
+              3,
+              2,
+              2,
+              3
+            ],
+            [
+              1003,
+              2,
+              4,
+              4,
+              3,
+              3,
+              3,
+              2
+            ],
+            [
+              1002,
+              2,
+              5,
+              4,
+              5,
+              6,
+              0,
+              0
+            ],
+            [
+              1004,
+              6,
+              3,
+              1,
+              1,
+              5,
+              4,
+              0
+            ]
+          ]
+        ]
+      },
+      "speedups": {
+        "bf16_online_vs_precomputed": 0.49217812695491564,
+        "bf16_overlap_vs_staged": 0.8451045939548287,
+        "bf16_recovery_fraction": -0.4388886086154864,
+        "packet_online_vs_bf16_online": 1.067012139775983,
+        "packet_online_vs_precomputed": 0.5262907894009186,
+        "packet_overlap_vs_staged": 0.92787760219138,
+        "packet_recovery_fraction": -0.17959354120089524
+      },
+      "timings": {
+        "bf16_online_overlapped": {
+          "critical_path_ms": 9.68990963883698,
+          "local_samples_ms": [
+            10.048577096313238,
+            8.506542071700096,
+            8.688487112522125,
+            12.840476352721453,
+            10.666847229003906,
+            9.016847237944603
+          ],
+          "rank_median_cv": 0.007567752081145745,
+          "rank_median_ms": [
+            9.53271216712892,
+            9.540262166410685,
+            9.538623970001936,
+            9.539050050079823,
+            9.537552017718554,
+            9.539074497297406,
+            9.401574498042464,
+            9.68990963883698
+          ],
+          "rank_median_spread_ms": 0.2883351407945156
+        },
+        "bf16_online_staged": {
+          "critical_path_ms": 8.188987150788307,
+          "local_samples_ms": [
+            8.284011855721474,
+            8.168703876435757,
+            8.056823164224625,
+            8.999052923172712,
+            8.042305242270231,
+            8.114912081509829
+          ],
+          "rank_median_cv": 0.0018261925072863409,
+          "rank_median_ms": [
+            8.141807978972793,
+            8.187624625861645,
+            8.186562452465296,
+            8.18569608964026,
+            8.185335667803884,
+            8.187639527022839,
+            8.18615616299212,
+            8.188987150788307
+          ],
+          "rank_median_spread_ms": 0.047179171815514565
+        },
+        "bf16_precomputed": {
+          "critical_path_ms": 4.769161576405168,
+          "local_samples_ms": [
+            4.738169256597757,
+            4.699243698269129,
+            4.6950760297477245,
+            4.703192040324211,
+            4.859728273004293,
+            4.714172333478928
+          ],
+          "rank_median_cv": 0.0032020899820959297,
+          "rank_median_ms": [
+            4.708682186901569,
+            4.741423996165395,
+            4.740622825920582,
+            4.741178592666984,
+            4.740507574751973,
+            4.7431825660169125,
+            4.741965560242534,
+            4.769161576405168
+          ],
+          "rank_median_spread_ms": 0.06047938950359821
+        },
+        "packet_online_overlapped": {
+          "critical_path_ms": 9.081349009647965,
+          "local_samples_ms": [
+            10.146634187549353,
+            8.635134901851416,
+            8.630376309156418,
+            11.498439125716686,
+            8.707613218575716,
+            9.417594876140356
+          ],
+          "rank_median_cv": 0.000647415680210226,
+          "rank_median_ms": [
+            9.062604047358036,
+            9.080693125724792,
+            9.080823510885239,
+            9.079555980861187,
+            9.079625830054283,
+            9.080427465960383,
+            9.079390438273549,
+            9.081349009647965
+          ],
+          "rank_median_spread_ms": 0.01874496228992939
+        },
+        "packet_online_staged": {
+          "critical_path_ms": 8.426380343735218,
+          "local_samples_ms": [
+            9.338614996522665,
+            8.125142194330692,
+            8.091999217867851,
+            8.116044104099274,
+            8.66100424900651,
+            9.40551282837987
+          ],
+          "rank_median_cv": 0.0012248106489221343,
+          "rank_median_ms": [
+            8.393073221668601,
+            8.426351007074118,
+            8.422373794019222,
+            8.423516061156988,
+            8.422558195888996,
+            8.42328555881977,
+            8.426380343735218,
+            8.423078805208206
+          ],
+          "rank_median_spread_ms": 0.03330712206661701
+        },
+        "packet_precomputed": {
+          "critical_path_ms": 4.779430339112878,
+          "local_samples_ms": [
+            4.719913937151432,
+            4.767503123730421,
+            4.750550724565983,
+            4.714172799140215,
+            4.960819147527218,
+            5.799835082143545
+          ],
+          "rank_median_cv": 0.0013687317045660442,
+          "rank_median_ms": [
+            4.759026924148202,
+            4.778043599799275,
+            4.777887836098671,
+            4.779430339112878,
+            4.777381895110011,
+            4.769357619807124,
+            4.778499016538262,
+            4.776274785399437
+          ],
+          "rank_median_spread_ms": 0.020403414964675903
+        }
+      },
+      "tokens_per_chunk": 512,
+      "top_k": 2,
+      "total_tokens_per_rank": 2048,
+      "warmup": 2
+    }
+  ],
+  "suite": "distributed_moe_route_prep_overlap",
+  "timestamp_utc": "2026-11-11T11:29:30Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 8
+}

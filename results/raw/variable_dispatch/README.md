@@ -1,0 +1,3 @@
+# Variable-split expert dispatch artifacts
+
+This directory preserves correctness-gated A100 variable-split all-to-all measurements for balanced, globally hot, and rank-rotated 80%-hot routing. The globally hot pattern sends 80% of every source rank's tokens to destination rank 0; rotated hot preserves global receiver balance while skewing each sender's split vector. Capacity factor 1.25 deterministically clips each destination to ceil(1.25 * average planned receive count), so latency gains must be interpreted together with dropped-assignment fraction. Full 8-GPU and 24-GPU matrices have two process-level repetitions. Files are copied serially by node 0.

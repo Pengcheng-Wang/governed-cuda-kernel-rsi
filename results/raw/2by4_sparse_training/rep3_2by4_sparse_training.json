@@ -1,0 +1,1049 @@
+{
+  "experiment": "E124_2by4_sparse_training",
+  "mode": "full",
+  "world_size": 8,
+  "elapsed_s": 181.91,
+  "initial_sm_clock_mhz": 1410.0,
+  "initial_power_w": 88.63,
+  "environment": {
+    "timestamp_utc": "2026-11-16T02:36:20Z",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "cuda_driver": "580.178.04",
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "gpu_count": 8,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "gpu_memory_bytes": 85093777408,
+    "allow_tf32_matmul": false,
+    "allow_tf32_cudnn": true,
+    "triton": "3.7.1",
+    "flash_attn": "2.8.3.post1",
+    "cusparselt_version": 801
+  },
+  "cslt_splitk_fallbacks": [
+    {
+      "compressed_shape": [
+        4096,
+        8064
+      ],
+      "dense_b_shape": [
+        14336,
+        2048
+      ],
+      "transpose_result": true,
+      "rejected_plan": [
+        0,
+        2,
+        1
+      ],
+      "safe_plan": [
+        3,
+        1,
+        -1
+      ]
+    },
+    {
+      "compressed_shape": [
+        4096,
+        8064
+      ],
+      "dense_b_shape": [
+        14336,
+        1024
+      ],
+      "transpose_result": true,
+      "rejected_plan": [
+        0,
+        3,
+        1
+      ],
+      "safe_plan": [
+        3,
+        1,
+        -1
+      ]
+    },
+    {
+      "compressed_shape": [
+        4096,
+        16128
+      ],
+      "dense_b_shape": [
+        28672,
+        1024
+      ],
+      "transpose_result": true,
+      "rejected_plan": [
+        3,
+        5,
+        1
+      ],
+      "safe_plan": [
+        3,
+        1,
+        -1
+      ]
+    },
+    {
+      "compressed_shape": [
+        4096,
+        16128
+      ],
+      "dense_b_shape": [
+        28672,
+        2048
+      ],
+      "transpose_result": true,
+      "rejected_plan": [
+        0,
+        2,
+        1
+      ],
+      "safe_plan": [
+        3,
+        1,
+        -1
+      ]
+    },
+    {
+      "compressed_shape": [
+        4096,
+        3456
+      ],
+      "dense_b_shape": [
+        6144,
+        1024
+      ],
+      "transpose_result": true,
+      "rejected_plan": [
+        0,
+        2,
+        1
+      ],
+      "safe_plan": [
+        1,
+        1,
+        -1
+      ]
+    }
+  ],
+  "suite_0_audits": {
+    "sm80_2by4_gemm_roofline": {
+      "bf16_cublas_dense": {
+        "median_ms": 3.5044,
+        "iqr_ms": 0.1126,
+        "min_ms": 3.4622,
+        "max_ms": 3.7808,
+        "transient_workspace_mib": 224.0,
+        "peak_incremental_mib": 224.0,
+        "sm_clock_mhz": 1395.0,
+        "power_w": 186.89,
+        "effective_tflops": 274.53,
+        "speedup_vs_dense_bf16": 1.0
+      },
+      "pytorch_cutlass_2by4": {
+        "median_ms": 4.2805,
+        "iqr_ms": 0.0476,
+        "min_ms": 4.2456,
+        "max_ms": 4.7891,
+        "transient_workspace_mib": 448.0,
+        "peak_incremental_mib": 448.0,
+        "sm_clock_mhz": 1395.0,
+        "power_w": 88.35,
+        "effective_tflops": 224.76,
+        "speedup_vs_dense_bf16": 0.819
+      },
+      "cusparselt_default_alg0": {
+        "median_ms": 2.2319,
+        "iqr_ms": 0.0129,
+        "min_ms": 2.2195,
+        "max_ms": 4.0616,
+        "transient_workspace_mib": 231.0,
+        "peak_incremental_mib": 231.0,
+        "sm_clock_mhz": 1395.0,
+        "power_w": 476.43,
+        "effective_tflops": 431.06,
+        "speedup_vs_dense_bf16": 1.57
+      },
+      "cusparselt_searched_tuned": {
+        "median_ms": 2.1459,
+        "iqr_ms": 0.0274,
+        "min_ms": 2.1356,
+        "max_ms": 3.8681,
+        "transient_workspace_mib": 231.0,
+        "peak_incremental_mib": 231.0,
+        "sm_clock_mhz": 1395.0,
+        "power_w": 475.5,
+        "effective_tflops": 448.33,
+        "speedup_vs_dense_bf16": 1.633
+      }
+    },
+    "compression_kernel_ablation": {
+      "pytorch_cutlass_from_dense": {
+        "median_ms": 3.7166,
+        "iqr_ms": 0.0129,
+        "min_ms": 3.7007,
+        "max_ms": 3.9563,
+        "transient_workspace_mib": 819.0,
+        "peak_incremental_mib": 819.0,
+        "sm_clock_mhz": 1410.0,
+        "power_w": 163.25
+      },
+      "pytorch_cslt_dual_from_dense": {
+        "median_ms": 6.3989,
+        "iqr_ms": 0.0191,
+        "min_ms": 6.3573,
+        "max_ms": 7.7986,
+        "transient_workspace_mib": 247.0,
+        "peak_incremental_mib": 247.0,
+        "sm_clock_mhz": 1410.0,
+        "power_w": 90.77
+      },
+      "pytorch_tile_4x4_greedy_abs": {
+        "median_ms": 0.4431,
+        "iqr_ms": 0.002,
+        "min_ms": 0.4391,
+        "max_ms": 0.6528,
+        "transient_workspace_mib": 135.0,
+        "peak_incremental_mib": 135.0,
+        "sm_clock_mhz": 1410.0,
+        "power_w": 105.49
+      },
+      "triton_exact90_dp_dual_pack": {
+        "median_ms": 0.2709,
+        "iqr_ms": 0.0032,
+        "min_ms": 0.2688,
+        "max_ms": 0.5951,
+        "transient_workspace_mib": 0.0,
+        "peak_incremental_mib": 0.0,
+        "sm_clock_mhz": 1410.0,
+        "power_w": 197.59
+      },
+      "triton_fast_cached_bitmask_dual_pack": {
+        "median_ms": 0.3089,
+        "iqr_ms": 0.0023,
+        "min_ms": 0.3052,
+        "max_ms": 0.5784,
+        "transient_workspace_mib": 0.0,
+        "peak_incremental_mib": 0.0,
+        "sm_clock_mhz": 1410.0,
+        "power_w": 170.11
+      }
+    },
+    "pytorch_213_tile_bug_audit": {
+      "shape": [
+        14336,
+        4096
+      ],
+      "num_4x4_tiles": 3670016,
+      "pytorch_default_empty_alg": {
+        "retained_l1_pct_of_dense": 54.0171,
+        "retained_l1_pct_of_90mask_oracle": 76.9036,
+        "pruning_rel_frobenius_error": 0.658279,
+        "kept_positive_fraction": 0.742206,
+        "deadlocked_4x4_tile_pct": 15.7893,
+        "min_row_group_nnz": 1,
+        "max_row_group_nnz": 2,
+        "min_col_group_nnz": 1,
+        "max_col_group_nnz": 2
+      },
+      "pytorch_largest_abs_greedy": {
+        "retained_l1_pct_of_dense": 69.2073,
+        "retained_l1_pct_of_90mask_oracle": 98.5297,
+        "pruning_rel_frobenius_error": 0.424852,
+        "kept_positive_fraction": 0.500108,
+        "deadlocked_4x4_tile_pct": 15.7875,
+        "min_row_group_nnz": 1,
+        "max_row_group_nnz": 2,
+        "min_col_group_nnz": 1,
+        "max_col_group_nnz": 2
+      },
+      "triton_exact90_bipartite_dp": {
+        "retained_l1_pct_of_dense": 70.24,
+        "retained_l1_pct_of_90mask_oracle": 100.0,
+        "pruning_rel_frobenius_error": 0.425975,
+        "kept_positive_fraction": 0.500057,
+        "deadlocked_4x4_tile_pct": 0.0001,
+        "min_row_group_nnz": 1,
+        "max_row_group_nnz": 2,
+        "min_col_group_nnz": 1,
+        "max_col_group_nnz": 2
+      },
+      "exact90_cslt_fwd_rel_l2_vs_sparse_dense": 5.9e-05,
+      "exact90_cslt_dx_rel_l2_vs_sparse_dense": 0.000137
+    },
+    "kkt_mvue_monte_carlo_unbiasedness": {
+      "greedy_top2_mse_biased": {
+        "steps_1": 0.216439,
+        "steps_16": 0.216439,
+        "steps_64": 0.216439,
+        "steps_256": 0.216439,
+        "steps_1024": 0.216439
+      },
+      "uniform_unbiased_2x": {
+        "steps_1": 1.000435,
+        "steps_16": 0.249989,
+        "steps_64": 0.124662,
+        "steps_256": 0.062532,
+        "steps_1024": 0.031119
+      },
+      "kkt_exact_madow_mvue_2by4": {
+        "steps_1": 0.467197,
+        "steps_16": 0.118336,
+        "steps_64": 0.058921,
+        "steps_256": 0.02952,
+        "steps_1024": 0.014771
+      }
+    },
+    "sr_ste_flip_rate_trajectories": {
+      "dense_adamw": {
+        "steps": 160,
+        "init_loss": 0.707565,
+        "final_val_mse_loss": 0.347367,
+        "early_flip_rate_mean": 0.016106,
+        "tail_flip_rate_mean": 0.002439
+      },
+      "sparse_2by4_naive_ste": {
+        "steps": 160,
+        "init_loss": 0.547446,
+        "final_val_mse_loss": 0.351927,
+        "early_flip_rate_mean": 0.027454,
+        "tail_flip_rate_mean": 0.007689
+      },
+      "sparse_2by4_weight_sr_ste": {
+        "steps": 160,
+        "init_loss": 0.547446,
+        "final_val_mse_loss": 0.352334,
+        "early_flip_rate_mean": 0.02734,
+        "tail_flip_rate_mean": 0.007607
+      },
+      "sparse_2by4_grad_sr_ste": {
+        "steps": 160,
+        "init_loss": 0.547446,
+        "final_val_mse_loss": 0.355383,
+        "early_flip_rate_mean": 0.001829,
+        "tail_flip_rate_mean": 0.000123
+      }
+    },
+    "fp64_richardson_chain_rule": {
+      "manual_vs_autograd_max_rel_l2": 1.5745937973049424e-16,
+      "dx": {
+        "err_h": 8.256901781224235e-12,
+        "err_h_half": 2.0840617643083648e-12,
+        "richardson_ratio": 3.9619
+      },
+      "dgamma": {
+        "err_h": 1.2256548965854097e-10,
+        "err_h_half": 3.063902321957801e-11,
+        "richardson_ratio": 4.0003
+      },
+      "dw_gate_up_masked": {
+        "err_h": 9.646269937338414e-11,
+        "err_h_half": 2.4142771549301445e-11,
+        "richardson_ratio": 3.9955
+      },
+      "dw_down_masked": {
+        "err_h": 1.448494102440634e-16,
+        "err_h_half": 4.42640715747622e-14,
+        "richardson_ratio": 0.0033
+      },
+      "min_richardson_ratio": 0.0033
+    }
+  },
+  "suite_a_linear_3gemm_scaling": {
+    "token_scaling": {
+      "2048": {
+        "num_tokens": 2048,
+        "in_features": 4096,
+        "out_features": 14336,
+        "dense_equiv_gflops": 721.55,
+        "modes": {
+          "bf16_cublas_dense": {
+            "median_ms": 2.6862,
+            "iqr_ms": 0.0142,
+            "min_ms": 2.6722,
+            "max_ms": 2.9708,
+            "transient_workspace_mib": 184.0,
+            "peak_incremental_mib": 184.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 91.38,
+            "effective_tflops": 268.62,
+            "speedup_vs_dense_bf16": 1.0
+          },
+          "pytorch_cutlass_2by4_2gemm": {
+            "median_ms": 3.0991,
+            "iqr_ms": 0.0116,
+            "min_ms": 3.0814,
+            "max_ms": 3.37,
+            "transient_workspace_mib": 317.0,
+            "peak_incremental_mib": 317.0,
+            "sm_clock_mhz": 1410.0,
+            "power_w": 89.56,
+            "effective_tflops": 232.83,
+            "speedup_vs_dense_bf16": 0.867
+          },
+          "cslt_exact90_2gemm_refresh1": {
+            "median_ms": 2.287,
+            "iqr_ms": 0.0074,
+            "min_ms": 2.2802,
+            "max_ms": 3.8467,
+            "transient_workspace_mib": 184.0,
+            "peak_incremental_mib": 184.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 389.95,
+            "effective_tflops": 315.5,
+            "speedup_vs_dense_bf16": 1.175
+          },
+          "cslt_exact90_3gemm_fst_refresh1": {
+            "median_ms": 2.2713,
+            "iqr_ms": 0.0386,
+            "min_ms": 2.2197,
+            "max_ms": 3.7911,
+            "transient_workspace_mib": 187.5,
+            "peak_incremental_mib": 187.5,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 92.31,
+            "effective_tflops": 317.68,
+            "speedup_vs_dense_bf16": 1.183
+          },
+          "cslt_exact90_3gemm_fst_refresh10": {
+            "median_ms": 2.2896,
+            "iqr_ms": 0.044,
+            "min_ms": 2.2436,
+            "max_ms": 3.8202,
+            "transient_workspace_mib": 187.5,
+            "peak_incremental_mib": 187.5,
+            "sm_clock_mhz": 1380.0,
+            "power_w": 410.07,
+            "effective_tflops": 315.14,
+            "speedup_vs_dense_bf16": 1.173
+          },
+          "cslt_exact90_3gemm_fst_gacc4": {
+            "median_ms": 2.3387,
+            "iqr_ms": 0.06,
+            "min_ms": 2.2739,
+            "max_ms": 2.7883,
+            "transient_workspace_mib": 411.5,
+            "peak_incremental_mib": 411.5,
+            "sm_clock_mhz": 1305.0,
+            "power_w": 414.94,
+            "effective_tflops": 308.53,
+            "speedup_vs_dense_bf16": 1.149
+          }
+        }
+      },
+      "4096": {
+        "num_tokens": 4096,
+        "in_features": 4096,
+        "out_features": 14336,
+        "dense_equiv_gflops": 1443.11,
+        "modes": {
+          "bf16_cublas_dense": {
+            "median_ms": 5.3506,
+            "iqr_ms": 0.1851,
+            "min_ms": 5.1879,
+            "max_ms": 5.8788,
+            "transient_workspace_mib": 256.0,
+            "peak_incremental_mib": 256.0,
+            "sm_clock_mhz": 1380.0,
+            "power_w": 92.64,
+            "effective_tflops": 269.71,
+            "speedup_vs_dense_bf16": 1.0
+          },
+          "pytorch_cutlass_2by4_2gemm": {
+            "median_ms": 5.8054,
+            "iqr_ms": 0.1065,
+            "min_ms": 5.6457,
+            "max_ms": 6.0262,
+            "transient_workspace_mib": 389.0,
+            "peak_incremental_mib": 389.0,
+            "sm_clock_mhz": 1410.0,
+            "power_w": 94.78,
+            "effective_tflops": 248.58,
+            "speedup_vs_dense_bf16": 0.922
+          },
+          "cslt_exact90_2gemm_refresh1": {
+            "median_ms": 4.0515,
+            "iqr_ms": 0.2172,
+            "min_ms": 4.0285,
+            "max_ms": 5.6101,
+            "transient_workspace_mib": 256.0,
+            "peak_incremental_mib": 256.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 110.98,
+            "effective_tflops": 356.19,
+            "speedup_vs_dense_bf16": 1.321
+          },
+          "cslt_exact90_3gemm_fst_refresh1": {
+            "median_ms": 3.6996,
+            "iqr_ms": 0.0845,
+            "min_ms": 3.6267,
+            "max_ms": 5.2354,
+            "transient_workspace_mib": 263.0,
+            "peak_incremental_mib": 263.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 243.4,
+            "effective_tflops": 390.07,
+            "speedup_vs_dense_bf16": 1.446
+          },
+          "cslt_exact90_3gemm_fst_refresh10": {
+            "median_ms": 3.701,
+            "iqr_ms": 0.0256,
+            "min_ms": 3.6354,
+            "max_ms": 5.2072,
+            "transient_workspace_mib": 263.0,
+            "peak_incremental_mib": 263.0,
+            "sm_clock_mhz": 1320.0,
+            "power_w": 91.1,
+            "effective_tflops": 389.92,
+            "speedup_vs_dense_bf16": 1.446
+          },
+          "cslt_exact90_3gemm_fst_gacc4": {
+            "median_ms": 3.9171,
+            "iqr_ms": 0.0899,
+            "min_ms": 3.6402,
+            "max_ms": 4.0366,
+            "transient_workspace_mib": 487.0,
+            "peak_incremental_mib": 487.0,
+            "sm_clock_mhz": 1185.0,
+            "power_w": 457.68,
+            "effective_tflops": 368.41,
+            "speedup_vs_dense_bf16": 1.366
+          }
+        }
+      },
+      "8192": {
+        "num_tokens": 8192,
+        "in_features": 4096,
+        "out_features": 14336,
+        "dense_equiv_gflops": 2886.22,
+        "modes": {
+          "bf16_cublas_dense": {
+            "median_ms": 11.0437,
+            "iqr_ms": 0.1293,
+            "min_ms": 10.2822,
+            "max_ms": 11.1639,
+            "transient_workspace_mib": 400.0,
+            "peak_incremental_mib": 400.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 378.33,
+            "effective_tflops": 261.35,
+            "speedup_vs_dense_bf16": 1.0
+          },
+          "pytorch_cutlass_2by4_2gemm": {
+            "median_ms": 11.5547,
+            "iqr_ms": 0.1822,
+            "min_ms": 10.9827,
+            "max_ms": 11.5872,
+            "transient_workspace_mib": 581.0,
+            "peak_incremental_mib": 581.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 408.26,
+            "effective_tflops": 249.79,
+            "speedup_vs_dense_bf16": 0.956
+          },
+          "cslt_exact90_2gemm_refresh1": {
+            "median_ms": 8.3504,
+            "iqr_ms": 0.3534,
+            "min_ms": 7.7087,
+            "max_ms": 9.5225,
+            "transient_workspace_mib": 400.0,
+            "peak_incremental_mib": 400.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 106.09,
+            "effective_tflops": 345.64,
+            "speedup_vs_dense_bf16": 1.323
+          },
+          "cslt_exact90_3gemm_fst_refresh1": {
+            "median_ms": 7.344,
+            "iqr_ms": 0.6539,
+            "min_ms": 6.8806,
+            "max_ms": 8.4578,
+            "transient_workspace_mib": 414.0,
+            "peak_incremental_mib": 414.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 434.18,
+            "effective_tflops": 393.0,
+            "speedup_vs_dense_bf16": 1.504
+          },
+          "cslt_exact90_3gemm_fst_refresh10": {
+            "median_ms": 7.366,
+            "iqr_ms": 0.5853,
+            "min_ms": 6.879,
+            "max_ms": 8.5605,
+            "transient_workspace_mib": 414.0,
+            "peak_incremental_mib": 414.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 122.29,
+            "effective_tflops": 391.83,
+            "speedup_vs_dense_bf16": 1.499
+          },
+          "cslt_exact90_3gemm_fst_gacc4": {
+            "median_ms": 7.5462,
+            "iqr_ms": 0.021,
+            "min_ms": 7.0042,
+            "max_ms": 7.6243,
+            "transient_workspace_mib": 743.0,
+            "peak_incremental_mib": 743.0,
+            "sm_clock_mhz": 1170.0,
+            "power_w": 493.78,
+            "effective_tflops": 382.47,
+            "speedup_vs_dense_bf16": 1.463
+          }
+        }
+      },
+      "16384": {
+        "num_tokens": 16384,
+        "in_features": 4096,
+        "out_features": 14336,
+        "dense_equiv_gflops": 5772.44,
+        "modes": {
+          "bf16_cublas_dense": {
+            "median_ms": 21.6887,
+            "iqr_ms": 0.2238,
+            "min_ms": 20.2785,
+            "max_ms": 21.9453,
+            "transient_workspace_mib": 688.0,
+            "peak_incremental_mib": 688.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 95.05,
+            "effective_tflops": 266.15,
+            "speedup_vs_dense_bf16": 1.0
+          },
+          "pytorch_cutlass_2by4_2gemm": {
+            "median_ms": 22.7625,
+            "iqr_ms": 0.2408,
+            "min_ms": 21.7091,
+            "max_ms": 22.9507,
+            "transient_workspace_mib": 1029.0,
+            "peak_incremental_mib": 1029.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 162.49,
+            "effective_tflops": 253.59,
+            "speedup_vs_dense_bf16": 0.953
+          },
+          "cslt_exact90_2gemm_refresh1": {
+            "median_ms": 16.7815,
+            "iqr_ms": 0.1978,
+            "min_ms": 15.6584,
+            "max_ms": 17.0105,
+            "transient_workspace_mib": 688.0,
+            "peak_incremental_mib": 688.0,
+            "sm_clock_mhz": 1290.0,
+            "power_w": 210.76,
+            "effective_tflops": 343.98,
+            "speedup_vs_dense_bf16": 1.292
+          },
+          "cslt_exact90_3gemm_fst_refresh1": {
+            "median_ms": 15.1147,
+            "iqr_ms": 0.243,
+            "min_ms": 13.7596,
+            "max_ms": 15.3117,
+            "transient_workspace_mib": 716.0,
+            "peak_incremental_mib": 716.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 90.5,
+            "effective_tflops": 381.91,
+            "speedup_vs_dense_bf16": 1.435
+          },
+          "cslt_exact90_3gemm_fst_refresh10": {
+            "median_ms": 15.0747,
+            "iqr_ms": 0.3262,
+            "min_ms": 13.762,
+            "max_ms": 15.4322,
+            "transient_workspace_mib": 716.0,
+            "peak_incremental_mib": 716.0,
+            "sm_clock_mhz": 1395.0,
+            "power_w": 90.77,
+            "effective_tflops": 382.92,
+            "speedup_vs_dense_bf16": 1.439
+          },
+          "cslt_exact90_3gemm_fst_gacc4": {
+            "median_ms": 15.0909,
+            "iqr_ms": 0.0812,
+            "min_ms": 14.973,
+            "max_ms": 15.8278,
+            "transient_workspace_mib": 1255.0,
+            "peak_incremental_mib": 1255.0,
+            "sm_clock_mhz": 1185.0,
+            "power_w": 430.23,
+            "effective_tflops": 382.51,
+            "speedup_vs_dense_bf16": 1.437
+          }
+        }
+      }
+    }
+  },
+  "suite_b_sparse_swiglu_stack": {
+    "gated_activation_layout_ablation": {
+      "shape_m_2i": [
+        8192,
+        28672
+      ],
+      "col_coalesced_out_rel_l2": 0.002887,
+      "col_coalesced_dgu_rel_l2": 0.002851,
+      "row_fused_mvue_dgu_rel_l2": 0.002851,
+      "modes": {
+        "col_major_strided_eager_swiglu": {
+          "median_ms": 9.2014,
+          "iqr_ms": 0.0193,
+          "min_ms": 9.1897,
+          "max_ms": 9.5089,
+          "transient_workspace_mib": 1120.0,
+          "peak_incremental_mib": 1120.0,
+          "sm_clock_mhz": 1410.0,
+          "power_w": 93.51,
+          "effective_gbps": 204.21
+        },
+        "col_major_coalesced_triton_swiglu": {
+          "median_ms": 1.2155,
+          "iqr_ms": 0.0308,
+          "min_ms": 1.1897,
+          "max_ms": 1.4219,
+          "transient_workspace_mib": 672.0,
+          "peak_incremental_mib": 672.0,
+          "sm_clock_mhz": 1410.0,
+          "power_w": 95.99,
+          "effective_gbps": 1545.91
+        },
+        "row_major_fused_swiglu_plus_mvue24_pack": {
+          "median_ms": 1.6561,
+          "iqr_ms": 0.0348,
+          "min_ms": 1.6284,
+          "max_ms": 1.8499,
+          "transient_workspace_mib": 924.0,
+          "peak_incremental_mib": 924.0,
+          "sm_clock_mhz": 1410.0,
+          "power_w": 92.64,
+          "effective_gbps": 1134.62
+        }
+      }
+    },
+    "stack_masked_bf16_parity": {
+      "out_rel_l2_vs_exact_masked_dense": 0.002118,
+      "dx_rel_l2_vs_exact_masked_dense": 0.002564,
+      "dnorm0_rel_l2_vs_exact_masked_dense": 0.006075
+    },
+    "token_scaling": {
+      "2048": {
+        "num_tokens": 2048,
+        "num_layers": 4,
+        "hidden": 4096,
+        "intermediate": 14336,
+        "modes": {
+          "mlp_bf16_dense_eager": {
+            "median_ms": 47.4816,
+            "iqr_ms": 0.2258,
+            "min_ms": 47.1076,
+            "max_ms": 48.0351,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 209.0,
+            "sm_clock_mhz": 1350.0,
+            "power_w": 421.95,
+            "effective_tflops": 182.36,
+            "speedup_vs_dense_eager": 1.0,
+            "speedup_vs_dense_compile": 0.905
+          },
+          "mlp_bf16_dense_compile": {
+            "median_ms": 42.9932,
+            "iqr_ms": 0.281,
+            "min_ms": 42.2845,
+            "max_ms": 43.3773,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 145.0,
+            "sm_clock_mhz": 1365.0,
+            "power_w": 450.81,
+            "effective_tflops": 201.4,
+            "speedup_vs_dense_eager": 1.104,
+            "speedup_vs_dense_compile": 1.0
+          },
+          "mlp_2by4_pytorch_cutlass_2gemm": {
+            "median_ms": 52.1893,
+            "iqr_ms": 0.354,
+            "min_ms": 51.5504,
+            "max_ms": 52.8132,
+            "transient_workspace_mib": 605.97,
+            "peak_incremental_mib": 1966.0,
+            "sm_clock_mhz": 1380.0,
+            "power_w": 396.97,
+            "effective_tflops": 165.91,
+            "speedup_vs_dense_eager": 0.91,
+            "speedup_vs_dense_compile": 0.824
+          },
+          "mlp_2by4_fst_cslt_refresh1": {
+            "median_ms": 40.8735,
+            "iqr_ms": 0.2287,
+            "min_ms": 40.5639,
+            "max_ms": 41.2068,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 287.0,
+            "sm_clock_mhz": 1320.0,
+            "power_w": 424.1,
+            "effective_tflops": 211.84,
+            "speedup_vs_dense_eager": 1.162,
+            "speedup_vs_dense_compile": 1.052
+          },
+          "mlp_2by4_fst_cslt_refresh10": {
+            "median_ms": 41.2837,
+            "iqr_ms": 0.1273,
+            "min_ms": 40.7416,
+            "max_ms": 41.4807,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 287.0,
+            "sm_clock_mhz": 1350.0,
+            "power_w": 440.59,
+            "effective_tflops": 209.74,
+            "speedup_vs_dense_eager": 1.15,
+            "speedup_vs_dense_compile": 1.041
+          }
+        }
+      },
+      "4096": {
+        "num_tokens": 4096,
+        "num_layers": 4,
+        "hidden": 4096,
+        "intermediate": 14336,
+        "modes": {
+          "mlp_bf16_dense_eager": {
+            "median_ms": 86.4108,
+            "iqr_ms": 0.8146,
+            "min_ms": 85.6332,
+            "max_ms": 87.7736,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 1296.03,
+            "sm_clock_mhz": 1320.0,
+            "power_w": 414.67,
+            "effective_tflops": 200.41,
+            "speedup_vs_dense_eager": 1.0,
+            "speedup_vs_dense_compile": 0.896
+          },
+          "mlp_bf16_dense_compile": {
+            "median_ms": 77.4222,
+            "iqr_ms": 0.5428,
+            "min_ms": 76.8448,
+            "max_ms": 79.5876,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 560.03,
+            "sm_clock_mhz": 1305.0,
+            "power_w": 445.61,
+            "effective_tflops": 223.67,
+            "speedup_vs_dense_eager": 1.116,
+            "speedup_vs_dense_compile": 1.0
+          },
+          "mlp_2by4_pytorch_cutlass_2gemm": {
+            "median_ms": 91.1175,
+            "iqr_ms": 0.4121,
+            "min_ms": 90.281,
+            "max_ms": 92.3411,
+            "transient_workspace_mib": 1628.99,
+            "peak_incremental_mib": 3005.02,
+            "sm_clock_mhz": 1350.0,
+            "power_w": 370.99,
+            "effective_tflops": 190.05,
+            "speedup_vs_dense_eager": 0.948,
+            "speedup_vs_dense_compile": 0.85
+          },
+          "mlp_2by4_fst_cslt_refresh1": {
+            "median_ms": 63.9639,
+            "iqr_ms": 0.3949,
+            "min_ms": 62.2144,
+            "max_ms": 65.3233,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 798.03,
+            "sm_clock_mhz": 1230.0,
+            "power_w": 434.5,
+            "effective_tflops": 270.74,
+            "speedup_vs_dense_eager": 1.351,
+            "speedup_vs_dense_compile": 1.21
+          },
+          "mlp_2by4_fst_cslt_refresh10": {
+            "median_ms": 64.2258,
+            "iqr_ms": 0.3587,
+            "min_ms": 63.7258,
+            "max_ms": 64.8316,
+            "transient_workspace_mib": 0.0,
+            "peak_incremental_mib": 798.03,
+            "sm_clock_mhz": 1245.0,
+            "power_w": 349.67,
+            "effective_tflops": 269.63,
+            "speedup_vs_dense_eager": 1.345,
+            "speedup_vs_dense_compile": 1.205
+          }
+        }
+      },
+      "8192": {
+        "num_tokens": 8192,
+        "num_layers": 4,
+        "hidden": 4096,
+        "intermediate": 14336,
+        "modes": {
+          "mlp_bf16_dense_eager": {
+            "median_ms": 163.1854,
+            "iqr_ms": 0.5627,
+            "min_ms": 161.5408,
+            "max_ms": 164.9404,
+            "transient_workspace_mib": 2416.06,
+            "peak_incremental_mib": 3824.09,
+            "sm_clock_mhz": 1275.0,
+            "power_w": 332.85,
+            "effective_tflops": 212.24,
+            "speedup_vs_dense_eager": 1.0,
+            "speedup_vs_dense_compile": 0.895
+          },
+          "mlp_bf16_dense_compile": {
+            "median_ms": 146.0701,
+            "iqr_ms": 1.0257,
+            "min_ms": 145.014,
+            "max_ms": 147.7421,
+            "transient_workspace_mib": 944.06,
+            "peak_incremental_mib": 2352.09,
+            "sm_clock_mhz": 1275.0,
+            "power_w": 419.82,
+            "effective_tflops": 237.11,
+            "speedup_vs_dense_eager": 1.117,
+            "speedup_vs_dense_compile": 1.0
+          },
+          "mlp_2by4_pytorch_cutlass_2gemm": {
+            "median_ms": 170.4405,
+            "iqr_ms": 1.2115,
+            "min_ms": 169.4101,
+            "max_ms": 171.9758,
+            "transient_workspace_mib": 4013.06,
+            "peak_incremental_mib": 5421.09,
+            "sm_clock_mhz": 1350.0,
+            "power_w": 379.27,
+            "effective_tflops": 203.21,
+            "speedup_vs_dense_eager": 0.957,
+            "speedup_vs_dense_compile": 0.857
+          },
+          "mlp_2by4_fst_cslt_refresh1": {
+            "median_ms": 112.3929,
+            "iqr_ms": 0.6282,
+            "min_ms": 111.9307,
+            "max_ms": 114.0563,
+            "transient_workspace_mib": 1420.06,
+            "peak_incremental_mib": 2828.09,
+            "sm_clock_mhz": 1230.0,
+            "power_w": 422.62,
+            "effective_tflops": 308.16,
+            "speedup_vs_dense_eager": 1.452,
+            "speedup_vs_dense_compile": 1.3
+          },
+          "mlp_2by4_fst_cslt_refresh10": {
+            "median_ms": 112.7554,
+            "iqr_ms": 0.4145,
+            "min_ms": 111.6275,
+            "max_ms": 114.7542,
+            "transient_workspace_mib": 1420.06,
+            "peak_incremental_mib": 2828.09,
+            "sm_clock_mhz": 1185.0,
+            "power_w": 403.98,
+            "effective_tflops": 307.17,
+            "speedup_vs_dense_eager": 1.447,
+            "speedup_vs_dense_compile": 1.295
+          }
+        }
+      }
+    }
+  },
+  "suite_c_9bit_2by4_fsdp2_8gpu": {
+    "distributed_9bit_allgather_parity": {
+      "fwd_9bit_ag_rel_l2_vs_1gpu_exact90": 0.004036,
+      "dx_9bit_ag_rel_l2_vs_1gpu_exact90": 0.005415,
+      "dw_gate_up_2gemm_9bit_ag_rel_l2_vs_1gpu": 0.00619,
+      "dw_gate_up_3gemm_fst_mc_avg_rel_l2_vs_1gpu": 0.088026,
+      "mc_dist_steps": 16
+    },
+    "fsdp2_8gpu_training_scaling": {
+      "num_layers": 6,
+      "params_billions": 1.3087,
+      "ffn_linear_param_share": 0.8077,
+      "local_tokens_per_gpu": 8192,
+      "global_tokens_per_step": 65536,
+      "seq_len": 2048,
+      "bf16_allgather_mib_per_step": 4992.0,
+      "ffn_hybrid_9bit_allgather_mib_per_step": 3228.0,
+      "full_9bit_allgather_mib_per_step": 2808.0,
+      "modes": {
+        "fsdp2_bf16_dense_eager": {
+          "median_ms": 365.414,
+          "iqr_ms": 1.661,
+          "min_ms": 363.669,
+          "max_ms": 369.757,
+          "global_tok_per_s": 179347.3,
+          "peak_allocated_mib_max_rank": 17749.48,
+          "sm_clock_mhz": 1395.0,
+          "power_w": 401.53,
+          "speedup_vs_fsdp2_dense_eager": 1.0,
+          "speedup_vs_fsdp2_dense_compile": 0.93
+        },
+        "fsdp2_bf16_dense_compile": {
+          "median_ms": 339.803,
+          "iqr_ms": 1.979,
+          "min_ms": 337.908,
+          "max_ms": 344.082,
+          "global_tok_per_s": 192864.5,
+          "peak_allocated_mib_max_rank": 15637.48,
+          "sm_clock_mhz": 1410.0,
+          "power_w": 91.52,
+          "speedup_vs_fsdp2_dense_eager": 1.075,
+          "speedup_vs_fsdp2_dense_compile": 1.0
+        },
+        "fsdp2_2by4_post_ag_redundant_fst": {
+          "median_ms": 282.31,
+          "iqr_ms": 1.715,
+          "min_ms": 279.12,
+          "max_ms": 283.713,
+          "global_tok_per_s": 232142.1,
+          "peak_allocated_mib_max_rank": 18782.6,
+          "sm_clock_mhz": 1395.0,
+          "power_w": 91.94,
+          "speedup_vs_fsdp2_dense_eager": 1.294,
+          "speedup_vs_fsdp2_dense_compile": 1.204
+        },
+        "fsdp2_2by4_ffn_hybrid_9bit_ag_refresh1": {
+          "median_ms": 280.322,
+          "iqr_ms": 0.465,
+          "min_ms": 277.999,
+          "max_ms": 281.179,
+          "global_tok_per_s": 233788.5,
+          "peak_allocated_mib_max_rank": 17570.6,
+          "sm_clock_mhz": 1380.0,
+          "power_w": 286.83,
+          "speedup_vs_fsdp2_dense_eager": 1.304,
+          "speedup_vs_fsdp2_dense_compile": 1.212
+        },
+        "fsdp2_2by4_9bit_ag_fst_refresh1": {
+          "median_ms": 260.106,
+          "iqr_ms": 0.725,
+          "min_ms": 257.987,
+          "max_ms": 263.837,
+          "global_tok_per_s": 251959.1,
+          "peak_allocated_mib_max_rank": 17392.6,
+          "sm_clock_mhz": 1380.0,
+          "power_w": 282.84,
+          "speedup_vs_fsdp2_dense_eager": 1.405,
+          "speedup_vs_fsdp2_dense_compile": 1.306
+        },
+        "fsdp2_2by4_9bit_ag_fst_refresh10": {
+          "median_ms": 259.229,
+          "iqr_ms": 0.801,
+          "min_ms": 258.245,
+          "max_ms": 262.697,
+          "global_tok_per_s": 252811.4,
+          "peak_allocated_mib_max_rank": 17392.6,
+          "sm_clock_mhz": 1395.0,
+          "power_w": 351.0,
+          "speedup_vs_fsdp2_dense_eager": 1.41,
+          "speedup_vs_fsdp2_dense_compile": 1.311
+        }
+      }
+    }
+  }
+}

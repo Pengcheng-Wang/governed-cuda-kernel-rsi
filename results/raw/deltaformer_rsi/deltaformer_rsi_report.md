@@ -1,0 +1,12 @@
+# E151 (`v142`, Round-25 RSI): DeltaFormer (`arXiv:2505.19488`) Zero-Spill SM80 Suite
+
+## 1. Executive Summary
+- **Architecture**: `DeltaFormer: Understanding Transformer from the Perspective of Associative Memory` (`arXiv:2505.19488` — Jusen Du, Weigao Sun, Disen Lan, Jiaxi Hu, Yu Cheng; upstream `fla/ops/deltaformer` & `fla/layers/deltaformer.py`).
+- **Hardware**: `8x NVIDIA A100-SXM4-80GB` (`NV12` NVSwitch), `3` independent repetitions.
+- **Frozen Cryptographic Evaluator**: `code/rsi_kernel_harness.py` (`SHA256 = 3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e`).
+- **SM80 Cubin Register Spill Elimination**: Upstream `fla/ops/deltaformer` compiles `24/104` (`23.08%`) spilling specializations (`1,606` total spills, `max_regs = 255`, `max_spills = 274` in `parallel_deltaformer_bwd_kernel_qk`, `65/104` specs `> 168` regs, `max_smem = 131,072 B`) vs **Round-25 RSI `0` spills across all `13` kernels / `195` specializations (`max_regs = 168 <= 168`, `max_smem = 18432 B`)**.
+- **In-Place Tensor-Core Euler-16 Triangular Solve & Diagonal-LSE Stage-2 Collapse**: Replaces `torch.linalg.solve_triangular` (`68.8%` of upstream GPU time) and `160` `.transpose(0,1).contiguous()` copies with in-place Euler-16 block substitution (`_df_tril_solve_fwd_rsi_kernel` & `_df_tril_solve_bwd_rsi_kernel`), achieving up to **`3.484x` Fwd+Bwd** (`4.838x` Fwd, `2.756x` Bwd) kernel speedup and **`216.87x` lower `FP32` error (`8.356e-06` vs `1.81e-3`)** while fixing upstream's `FP32` `RuntimeError` crash, GQA `AssertionError` crash, and unmasked OOB `tl.load(u_blk_ptr)`.
+- **Track 2 Single-Pass Cached Decode (`deltaformer_decode_rsi`)**: Uses the exact Diagonal-LSE Stage-2 Collapse identity (`P^(2)_{t,s} = (1 - alpha_t) P^(1)_{t,s}`) to update `u_cache` and compute `o_new` in **one KV-cache pass** instead of two, achieving up to **`7.281x` decode speedup** (`0.0`–`4.2e-8` `u_cache` relative L2 error).
+- **Track 3 `DeltaFormerBlockRSI` 5-Stage Ablation (`A0 -> A4`)**: Achieves **`2.808x` (`D=1024, K=64`)** and **`2.143x` (`D=2048, K=128`)** end-to-end training layer speedup.
+- **Track 4 8-GPU NVSwitch `DeltaFormer-CP = 8` (`Ulysses` vs `Ring/AllGather`)**: Achieves up to **`3.709x` speedup** (`3.519x` scaling over single-GPU at `T=16,384..32,768`).
+- **Track 5 Fixed-Wall-Clock (`12.0s`) `val_bpb` Autoresearch**: Achieves **`2.702x` (`D=1024`)** and **`2.055x` (`D=2048`)** training throughput, lowering final `val_bpb` by **`-6.7788` (`D=1024`)** and **`-2.7225` (`D=2048`)**.

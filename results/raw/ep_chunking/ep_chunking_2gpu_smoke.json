@@ -1,0 +1,628 @@
+{
+  "fixed_total_chunk_sweep": true,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Each microbatch dispatches equal BF16 token splits with NCCL all-to-all, then runs vLLM fused experts locally.",
+    "The pipelined schedule overlaps dispatch of microbatch i+1 with fused-expert compute for microbatch i.",
+    "Routing is precomputed and excluded; dispatch permutation, combine all-to-all, and router computation are outside this benchmark.",
+    "Critical path is the slowest rank's median CPU wall time with CUDA synchronization before and after each schedule."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "chunks": 1,
+      "communication_fraction_of_separate_work": 0.195311297159886,
+      "communication_only": {
+        "critical_path_ms": 0.10632909834384918,
+        "local_samples_ms": [
+          0.20736688748002052,
+          0.09947596117854118,
+          0.10344386100769043
+        ],
+        "rank_median_cv": 0.013754095594960087,
+        "rank_median_ms": [
+          0.10344386100769043,
+          0.10632909834384918
+        ],
+        "rank_median_spread_ms": 0.0028852373361587524
+      },
+      "compute_only": {
+        "critical_path_ms": 0.43807923793792725,
+        "local_samples_ms": [
+          0.436355359852314,
+          0.46407710760831833,
+          0.4234807565808296
+        ],
+        "rank_median_cv": 0.0019714202639849955,
+        "rank_median_ms": [
+          0.436355359852314,
+          0.43807923793792725
+        ],
+        "rank_median_spread_ms": 0.0017238780856132507
+      },
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 0.5444083362817764,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 16,
+      "max_dispatch_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.0,
+      "per_rank_send_bytes_per_chunk": 32768,
+      "pipeline_speedup": 0.9616687460358395,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 0.9999999403953552,
+      "pipelined": {
+        "critical_path_ms": 0.5344785749912262,
+        "local_samples_ms": [
+          0.5344785749912262,
+          0.5410220474004745,
+          0.5263742059469223
+        ],
+        "rank_median_cv": 0.0017267328530016655,
+        "rank_median_ms": [
+          0.5344785749912262,
+          0.5326359532773495
+        ],
+        "rank_median_spread_ms": 0.0018426217138767242
+      },
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "max_assignments": 4,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 4.0,
+        "min_assignments": 4
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.0,
+      "saved_critical_path_ms": 0.0,
+      "sequential": {
+        "critical_path_ms": 0.5139913409948349,
+        "local_samples_ms": [
+          0.5139913409948349,
+          0.5631032399833202,
+          0.5112960934638977
+        ],
+        "rank_median_cv": 0.0029125485822280475,
+        "rank_median_ms": [
+          0.5139913409948349,
+          0.511005986481905
+        ],
+        "rank_median_spread_ms": 0.0029853545129299164
+      },
+      "tokens_per_peer": 8,
+      "top_k": 2,
+      "total_local_tokens": 16,
+      "total_tokens_per_peer": 8,
+      "useful_compute_tflop_s": 1.2638081882311165,
+      "useful_flops_per_chunk": 553648128.0,
+      "warmup": 1
+    },
+    {
+      "chunks": 2,
+      "communication_fraction_of_separate_work": 0.16962553528899607,
+      "communication_only": {
+        "critical_path_ms": 0.1645679585635662,
+        "local_samples_ms": [
+          0.20024413242936134,
+          0.1645679585635662,
+          0.15680305659770966
+        ],
+        "rank_median_cv": 0.025825084903195843,
+        "rank_median_ms": [
+          0.1645679585635662,
+          0.1562819816172123
+        ],
+        "rank_median_spread_ms": 0.008285976946353912
+      },
+      "compute_only": {
+        "critical_path_ms": 0.8056159131228924,
+        "local_samples_ms": [
+          0.8164271712303162,
+          0.7999362424015999,
+          0.7702400907874107
+        ],
+        "rank_median_cv": 0.003537518667175963,
+        "rank_median_ms": [
+          0.7999362424015999,
+          0.8056159131228924
+        ],
+        "rank_median_spread_ms": 0.005679670721292496
+      },
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 0.8878998924046755,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 8,
+      "max_dispatch_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.22842662067831415,
+      "per_rank_send_bytes_per_chunk": 16384,
+      "pipeline_speedup": 1.02592382394348,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 0.9999999403953552,
+      "pipelined": {
+        "critical_path_ms": 0.9731100872159004,
+        "local_samples_ms": [
+          0.9612278081476688,
+          0.9706346318125725,
+          0.9789303876459599
+        ],
+        "rank_median_cv": 0.0012735496483124748,
+        "rank_median_ms": [
+          0.9706346318125725,
+          0.9731100872159004
+        ],
+        "rank_median_spread_ms": 0.002475455403327942
+      },
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "max_assignments": 2,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 2.0,
+        "min_assignments": 2
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.025268761031236358,
+      "saved_critical_path_ms": 0.025226734578609467,
+      "sequential": {
+        "critical_path_ms": 0.9983368217945099,
+        "local_samples_ms": [
+          1.0137846693396568,
+          0.9952513501048088,
+          0.9955507703125477
+        ],
+        "rank_median_cv": 0.00139729616302894,
+        "rank_median_ms": [
+          0.9955507703125477,
+          0.9983368217945099
+        ],
+        "rank_median_spread_ms": 0.002786051481962204
+      },
+      "tokens_per_peer": 4,
+      "top_k": 2,
+      "total_local_tokens": 16,
+      "total_tokens_per_peer": 8,
+      "useful_compute_tflop_s": 0.6872358390412578,
+      "useful_flops_per_chunk": 276824064.0,
+      "warmup": 1
+    },
+    {
+      "chunks": 4,
+      "communication_fraction_of_separate_work": 0.14886370948339953,
+      "communication_only": {
+        "critical_path_ms": 0.2682507038116455,
+        "local_samples_ms": [
+          0.2593039534986019,
+          0.26063714176416397,
+          0.28197700157761574
+        ],
+        "rank_median_cv": 0.014395418823044645,
+        "rank_median_ms": [
+          0.26063714176416397,
+          0.2682507038116455
+        ],
+        "rank_median_spread_ms": 0.007613562047481537
+      },
+      "compute_only": {
+        "critical_path_ms": 1.5337378717958927,
+        "local_samples_ms": [
+          1.5724911354482174,
+          1.5172269195318222,
+          1.5124082565307617
+        ],
+        "rank_median_cv": 0.0054117151109060475,
+        "rank_median_ms": [
+          1.5172269195318222,
+          1.5337378717958927
+        ],
+        "rank_median_spread_ms": 0.01651095226407051
+      },
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 1.600800547748804,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 4,
+      "max_dispatch_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.1337251994839975,
+      "per_rank_send_bytes_per_chunk": 8192,
+      "pipeline_speedup": 1.0274053521626152,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 1.0,
+      "pipelined": {
+        "critical_path_ms": 1.9463389180600643,
+        "local_samples_ms": [
+          1.8982300534844398,
+          1.9267420284450054,
+          1.9070361740887165
+        ],
+        "rank_median_cv": 0.010199563507696621,
+        "rank_median_ms": [
+          1.9070361740887165,
+          1.9463389180600643
+        ],
+        "rank_median_spread_ms": 0.03930274397134781
+      },
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "max_assignments": 1,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 1.0,
+        "min_assignments": 1
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.026674332681768623,
+      "saved_critical_path_ms": 0.05334010347723961,
+      "sequential": {
+        "critical_path_ms": 1.999679021537304,
+        "local_samples_ms": [
+          1.963060349225998,
+          1.9687111489474773,
+          2.0339232869446278
+        ],
+        "rank_median_cv": 0.00780363604873145,
+        "rank_median_ms": [
+          1.9687111489474773,
+          1.999679021537304
+        ],
+        "rank_median_spread_ms": 0.030967872589826584
+      },
+      "tokens_per_peer": 2,
+      "top_k": 2,
+      "total_local_tokens": 16,
+      "total_tokens_per_peer": 8,
+      "useful_compute_tflop_s": 0.3609796290364268,
+      "useful_flops_per_chunk": 138412032.0,
+      "warmup": 1
+    },
+    {
+      "chunks": 1,
+      "communication_fraction_of_separate_work": 0.16859993459027603,
+      "communication_only": {
+        "critical_path_ms": 0.09242212399840355,
+        "local_samples_ms": [
+          0.09393598884344101,
+          0.0896877609193325,
+          0.08969707414507866
+        ],
+        "rank_median_cv": 0.014963001600621839,
+        "rank_median_ms": [
+          0.08969707414507866,
+          0.09242212399840355
+        ],
+        "rank_median_spread_ms": 0.00272504985332489
+      },
+      "compute_only": {
+        "critical_path_ms": 0.45575201511383057,
+        "local_samples_ms": [
+          0.46249479055404663,
+          0.41001709178090096,
+          0.4417961463332176
+        ],
+        "rank_median_cv": 0.015548880138212267,
+        "rank_median_ms": [
+          0.4417961463332176,
+          0.45575201511383057
+        ],
+        "rank_median_spread_ms": 0.013955868780612946
+      },
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 0.5481741391122341,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 32,
+      "max_dispatch_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.0,
+      "per_rank_send_bytes_per_chunk": 65536,
+      "pipeline_speedup": 1.0204094577501837,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 1.0,
+      "pipelined": {
+        "critical_path_ms": 0.4992131143808365,
+        "local_samples_ms": [
+          0.4992131143808365,
+          0.5344892852008343,
+          0.4955567419528961
+        ],
+        "rank_median_cv": 0.00031164914651055596,
+        "rank_median_ms": [
+          0.4992131143808365,
+          0.4989020526409149
+        ],
+        "rank_median_spread_ms": 0.0003110617399215698
+      },
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "max_assignments": 8,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 8.0,
+        "min_assignments": 8
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.020001243221699338,
+      "saved_critical_path_ms": 0.010188668966293335,
+      "sequential": {
+        "critical_path_ms": 0.5094017833471298,
+        "local_samples_ms": [
+          0.5094017833471298,
+          0.5310326814651489,
+          0.5068578757345676
+        ],
+        "rank_median_cv": 0.010262093422729539,
+        "rank_median_ms": [
+          0.5094017833471298,
+          0.4990529268980026
+        ],
+        "rank_median_spread_ms": 0.010348856449127197
+      },
+      "tokens_per_peer": 16,
+      "top_k": 2,
+      "total_local_tokens": 32,
+      "total_tokens_per_peer": 16,
+      "useful_compute_tflop_s": 2.4296025454181196,
+      "useful_flops_per_chunk": 1107296256.0,
+      "warmup": 1
+    },
+    {
+      "chunks": 2,
+      "communication_fraction_of_separate_work": 0.15652239060834522,
+      "communication_only": {
+        "critical_path_ms": 0.1498199999332428,
+        "local_samples_ms": [
+          0.14642300084233284,
+          0.1498199999332428,
+          0.15201419591903687
+        ],
+        "rank_median_cv": 0.004566409646755039,
+        "rank_median_ms": [
+          0.1498199999332428,
+          0.14845794066786766
+        ],
+        "rank_median_spread_ms": 0.0013620592653751373
+      },
+      "compute_only": {
+        "critical_path_ms": 0.8073593489825726,
+        "local_samples_ms": [
+          0.7952172309160233,
+          0.79753203317523,
+          0.7935641333460808
+        ],
+        "rank_median_cv": 0.0075766226830281036,
+        "rank_median_ms": [
+          0.7952172309160233,
+          0.8073593489825726
+        ],
+        "rank_median_spread_ms": 0.012142118066549301
+      },
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 0.882269348949194,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 16,
+      "max_dispatch_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.34085525240973696,
+      "per_rank_send_bytes_per_chunk": 32768,
+      "pipeline_speedup": 1.0405900846479939,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 1.0,
+      "pipelined": {
+        "critical_path_ms": 0.9574200958013535,
+        "local_samples_ms": [
+          0.9414702653884888,
+          1.0762829333543777,
+          0.9453678503632545
+        ],
+        "rank_median_cv": 0.006333992950918284,
+        "rank_median_ms": [
+          0.9453678503632545,
+          0.9574200958013535
+        ],
+        "rank_median_spread_ms": 0.012052245438098907
+      },
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "max_assignments": 4,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 4.0,
+        "min_assignments": 4
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.03900679551614654,
+      "saved_critical_path_ms": 0.03886176273226738,
+      "sequential": {
+        "critical_path_ms": 0.9962818585336208,
+        "local_samples_ms": [
+          1.0578976944088936,
+          0.9817159734666348,
+          0.9829779155552387
+        ],
+        "rank_median_cv": 0.006721676028861093,
+        "rank_median_ms": [
+          0.9829779155552387,
+          0.9962818585336208
+        ],
+        "rank_median_spread_ms": 0.01330394297838211
+      },
+      "tokens_per_peer": 8,
+      "top_k": 2,
+      "total_local_tokens": 32,
+      "total_tokens_per_peer": 16,
+      "useful_compute_tflop_s": 1.3715036029438508,
+      "useful_flops_per_chunk": 553648128.0,
+      "warmup": 1
+    },
+    {
+      "chunks": 4,
+      "communication_fraction_of_separate_work": 0.14404987748763917,
+      "communication_only": {
+        "critical_path_ms": 0.26168907061219215,
+        "local_samples_ms": [
+          0.26121921837329865,
+          0.26168907061219215,
+          0.28027407824993134
+        ],
+        "rank_median_cv": 0.010074267391366866,
+        "rank_median_ms": [
+          0.26168907061219215,
+          0.2564690075814724
+        ],
+        "rank_median_spread_ms": 0.005220063030719757
+      },
+      "compute_only": {
+        "critical_path_ms": 1.5549669042229652,
+        "local_samples_ms": [
+          1.4949650503695011,
+          1.5236088074743748,
+          1.5228078700602055
+        ],
+        "rank_median_cv": 0.010448793859599353,
+        "rank_median_ms": [
+          1.5228078700602055,
+          1.5549669042229652
+        ],
+        "rank_median_spread_ms": 0.03215903416275978
+      },
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 1.6203891718760133,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 8,
+      "max_dispatch_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.13418666701101317,
+      "per_rank_send_bytes_per_chunk": 16384,
+      "pipeline_speedup": 1.025038449426144,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 0.9999998807907104,
+      "pipelined": {
+        "critical_path_ms": 1.932614017277956,
+        "local_samples_ms": [
+          1.9140290096402168,
+          1.930098980665207,
+          1.9337558187544346
+        ],
+        "rank_median_cv": 0.0006511062597941704,
+        "rank_median_ms": [
+          1.930098980665207,
+          1.932614017277956
+        ],
+        "rank_median_spread_ms": 0.0025150366127490997
+      },
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "max_assignments": 2,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 2.0,
+        "min_assignments": 2
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.02442683924701699,
+      "saved_critical_path_ms": 0.04838965833187103,
+      "sequential": {
+        "critical_path_ms": 1.981003675609827,
+        "local_samples_ms": [
+          1.9340668804943562,
+          1.949995756149292,
+          1.9595441408455372
+        ],
+        "rank_median_cv": 0.007888049845547557,
+        "rank_median_ms": [
+          1.949995756149292,
+          1.981003675609827
+        ],
+        "rank_median_spread_ms": 0.03100791946053505
+      },
+      "tokens_per_peer": 4,
+      "top_k": 2,
+      "total_local_tokens": 32,
+      "total_tokens_per_peer": 16,
+      "useful_compute_tflop_s": 0.7121027804468473,
+      "useful_flops_per_chunk": 276824064.0,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_ep_overlap",
+  "timestamp_utc": "2026-11-10T17:11:52Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

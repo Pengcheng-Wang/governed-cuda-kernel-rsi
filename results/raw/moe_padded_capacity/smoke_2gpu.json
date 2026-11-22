@@ -1,0 +1,483 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "The variable control uses count exchange and Python split lists; the padded path uses equal-size all-to-all without count exchange.",
+    "Static capacity is ceil(capacity_factor * assignments_per_rank / world_size) for every source-destination segment.",
+    "The padded path keeps a fixed tensor shape and computes zero-weight padding rows instead of using data-dependent compaction.",
+    "Both paths retain the same highest router weights per source-destination segment and must match exactly.",
+    "Capacity factors trade host synchronization for padding, dense expert work, assignment drops, and output quality."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "capacity": {
+        "accepted_assignments": 502.0,
+        "dropped_assignment_fraction": 0.01953125,
+        "fixed_padding_fraction": 0.01953125,
+        "fixed_row_inflation_vs_accepted": 1.0199203187250996,
+        "fully_dropped_token_fraction": 0.0,
+        "lossless": false,
+        "planned_assignments": 512,
+        "retained_router_weight_fraction": 0.9954541292454198
+      },
+      "capacity_factor": 1.0,
+      "capacity_per_destination": 128,
+      "correctness": {
+        "padded_vs_masked_reference": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "padded_vs_variable": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "selection_equal": true,
+        "variable_vs_masked_reference": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "crossover": null,
+      "experts_per_rank": 2,
+      "fixed_rows_per_rank": 256,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "quality_vs_uncapped": {
+        "cosine_similarity": 0.9997548460960388,
+        "max_abs_error": 0.28125,
+        "mean_abs_error": 0.001206462038680911,
+        "normalized_rmse": 0.02214515022933483
+      },
+      "route": "balanced",
+      "speedup": 0.9758752553978685,
+      "timings": {
+        "padded_end_to_end": {
+          "critical_path_ms": 2.0575691014528275,
+          "local_samples_ms": [
+            2.0554042421281338,
+            2.059733960777521
+          ],
+          "rank_median_cv": 0.01013854382953868,
+          "rank_median_ms": [
+            2.0575691014528275,
+            2.016266342252493
+          ],
+          "rank_median_spread_ms": 0.04130275920033455
+        },
+        "padded_route_capacity": {
+          "critical_path_ms": 1.1507971212267876,
+          "local_samples_ms": [
+            1.1522001586854458,
+            1.1493940837681293
+          ],
+          "rank_median_cv": 0.0040626599117505515,
+          "rank_median_ms": [
+            1.1507971212267876,
+            1.14148436114192
+          ],
+          "rank_median_spread_ms": 0.009312760084867477
+        },
+        "variable_end_to_end": {
+          "critical_path_ms": 2.0079307723790407,
+          "local_samples_ms": [
+            2.0182449370622635,
+            1.997616607695818
+          ],
+          "rank_median_cv": 0.00911964109776903,
+          "rank_median_ms": [
+            2.0079307723790407,
+            1.9716385286301374
+          ],
+          "rank_median_spread_ms": 0.036292243748903275
+        },
+        "variable_route_capacity": {
+          "critical_path_ms": 0.936887925490737,
+          "local_samples_ms": [
+            0.9400439448654652,
+            0.9337319061160088
+          ],
+          "rank_median_cv": 0.012004386631713446,
+          "rank_median_ms": [
+            0.936887925490737,
+            0.9146612137556076
+          ],
+          "rank_median_spread_ms": 0.022226711735129356
+        }
+      },
+      "tokens_per_rank": 128,
+      "top_k": 2,
+      "transport": {
+        "padded_count_exchange": false,
+        "padded_dense_expert_rows": 256,
+        "padded_python_split_lists": false,
+        "variable_count_exchange": true,
+        "variable_python_split_lists": true
+      },
+      "warmup": 1
+    },
+    {
+      "capacity": {
+        "accepted_assignments": 512.0,
+        "dropped_assignment_fraction": 0.0,
+        "fixed_padding_fraction": 0.5,
+        "fixed_row_inflation_vs_accepted": 2.0,
+        "fully_dropped_token_fraction": 0.0,
+        "lossless": true,
+        "planned_assignments": 512,
+        "retained_router_weight_fraction": 1.0
+      },
+      "capacity_factor": 2.0,
+      "capacity_per_destination": 256,
+      "correctness": {
+        "padded_vs_masked_reference": {
+          "cosine_similarity": 1.0000001192092896,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "padded_vs_variable": {
+          "cosine_similarity": 1.0000001192092896,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "selection_equal": true,
+        "variable_vs_masked_reference": {
+          "cosine_similarity": 1.0000001192092896,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "crossover": null,
+      "experts_per_rank": 2,
+      "fixed_rows_per_rank": 512,
+      "hidden": 1024,
+      "hot_bias": 0.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "quality_vs_uncapped": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "route": "balanced",
+      "speedup": 0.9086661994861014,
+      "timings": {
+        "padded_end_to_end": {
+          "critical_path_ms": 2.0572878420352936,
+          "local_samples_ms": [
+            2.0723161287605762,
+            2.042259555310011
+          ],
+          "rank_median_cv": 0.005048569662924799,
+          "rank_median_ms": [
+            2.0572878420352936,
+            2.0366194657981396
+          ],
+          "rank_median_spread_ms": 0.020668376237154007
+        },
+        "padded_route_capacity": {
+          "critical_path_ms": 1.1608009226620197,
+          "local_samples_ms": [
+            1.158371102064848,
+            1.1553559452295303
+          ],
+          "rank_median_cv": 0.0016988650022658565,
+          "rank_median_ms": [
+            1.1568635236471891,
+            1.1608009226620197
+          ],
+          "rank_median_spread_ms": 0.003937399014830589
+        },
+        "variable_end_to_end": {
+          "critical_path_ms": 1.869387924671173,
+          "local_samples_ms": [
+            1.8527768552303314,
+            1.8859989941120148
+          ],
+          "rank_median_cv": 0.009481427724906202,
+          "rank_median_ms": [
+            1.869387924671173,
+            1.8342719413340092
+          ],
+          "rank_median_spread_ms": 0.035115983337163925
+        },
+        "variable_route_capacity": {
+          "critical_path_ms": 0.8323928341269493,
+          "local_samples_ms": [
+            0.8346769027411938,
+            0.8301087655127048
+          ],
+          "rank_median_cv": 0.004385459714734414,
+          "rank_median_ms": [
+            0.8323928341269493,
+            0.8251238614320755
+          ],
+          "rank_median_spread_ms": 0.00726897269487381
+        }
+      },
+      "tokens_per_rank": 128,
+      "top_k": 2,
+      "transport": {
+        "padded_count_exchange": false,
+        "padded_dense_expert_rows": 512,
+        "padded_python_split_lists": false,
+        "variable_count_exchange": true,
+        "variable_python_split_lists": true
+      },
+      "warmup": 1
+    },
+    {
+      "capacity": {
+        "accepted_assignments": 408.0,
+        "dropped_assignment_fraction": 0.203125,
+        "fixed_padding_fraction": 0.203125,
+        "fixed_row_inflation_vs_accepted": 1.2549019607843137,
+        "fully_dropped_token_fraction": 0.0,
+        "lossless": false,
+        "planned_assignments": 512,
+        "retained_router_weight_fraction": 0.8857137408219701
+      },
+      "capacity_factor": 1.0,
+      "capacity_per_destination": 128,
+      "correctness": {
+        "padded_vs_masked_reference": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "padded_vs_variable": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "selection_equal": true,
+        "variable_vs_masked_reference": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "crossover": null,
+      "experts_per_rank": 2,
+      "fixed_rows_per_rank": 256,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "quality_vs_uncapped": {
+        "cosine_similarity": 0.9695010185241699,
+        "max_abs_error": 0.96875,
+        "mean_abs_error": 0.05307648330926895,
+        "normalized_rmse": 0.2450874000787735
+      },
+      "route": "global_bias1",
+      "speedup": 0.9801006477746748,
+      "timings": {
+        "padded_end_to_end": {
+          "critical_path_ms": 2.040025545284152,
+          "local_samples_ms": [
+            2.0440430380403996,
+            2.0360080525279045
+          ],
+          "rank_median_cv": 0.005869725826707537,
+          "rank_median_ms": [
+            2.040025545284152,
+            2.016216516494751
+          ],
+          "rank_median_spread_ms": 0.023809028789401054
+        },
+        "padded_route_capacity": {
+          "critical_path_ms": 1.1722720228135586,
+          "local_samples_ms": [
+            1.1914130300283432,
+            1.153131015598774
+          ],
+          "rank_median_cv": 0.009993577799547307,
+          "rank_median_ms": [
+            1.1722720228135586,
+            1.149073475971818
+          ],
+          "rank_median_spread_ms": 0.023198546841740608
+        },
+        "variable_end_to_end": {
+          "critical_path_ms": 1.9994303584098816,
+          "local_samples_ms": [
+            1.9596959464251995,
+            2.0391647703945637
+          ],
+          "rank_median_cv": 0.0073479906825312715,
+          "rank_median_ms": [
+            1.9994303584098816,
+            1.9702611025422812
+          ],
+          "rank_median_spread_ms": 0.02916925586760044
+        },
+        "variable_route_capacity": {
+          "critical_path_ms": 0.9191201534122229,
+          "local_samples_ms": [
+            0.9196964092552662,
+            0.9185438975691795
+          ],
+          "rank_median_cv": 0.007830001188433314,
+          "rank_median_ms": [
+            0.9191201534122229,
+            0.9048385545611382
+          ],
+          "rank_median_spread_ms": 0.01428159885108471
+        }
+      },
+      "tokens_per_rank": 128,
+      "top_k": 2,
+      "transport": {
+        "padded_count_exchange": false,
+        "padded_dense_expert_rows": 256,
+        "padded_python_split_lists": false,
+        "variable_count_exchange": true,
+        "variable_python_split_lists": true
+      },
+      "warmup": 1
+    },
+    {
+      "capacity": {
+        "accepted_assignments": 512.0,
+        "dropped_assignment_fraction": 0.0,
+        "fixed_padding_fraction": 0.5,
+        "fixed_row_inflation_vs_accepted": 2.0,
+        "fully_dropped_token_fraction": 0.0,
+        "lossless": true,
+        "planned_assignments": 512,
+        "retained_router_weight_fraction": 1.0
+      },
+      "capacity_factor": 2.0,
+      "capacity_per_destination": 256,
+      "correctness": {
+        "padded_vs_masked_reference": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "padded_vs_variable": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "selection_equal": true,
+        "variable_vs_masked_reference": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "mean_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "crossover": null,
+      "experts_per_rank": 2,
+      "fixed_rows_per_rank": 512,
+      "hidden": 1024,
+      "hot_bias": 1.0,
+      "intermediate": 2816,
+      "iterations": 2,
+      "num_experts": 4,
+      "quality_vs_uncapped": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "route": "global_bias1",
+      "speedup": 0.9157652980046582,
+      "timings": {
+        "padded_end_to_end": {
+          "critical_path_ms": 2.03990051522851,
+          "local_samples_ms": [
+            2.0401161164045334,
+            2.0396849140524864
+          ],
+          "rank_median_cv": 0.007219920070159195,
+          "rank_median_ms": [
+            2.03990051522851,
+            2.0106558222323656
+          ],
+          "rank_median_spread_ms": 0.029244692996144295
+        },
+        "padded_route_capacity": {
+          "critical_path_ms": 1.161637483164668,
+          "local_samples_ms": [
+            1.1565880849957466,
+            1.1666868813335896
+          ],
+          "rank_median_cv": 0.011778269214974707,
+          "rank_median_ms": [
+            1.161637483164668,
+            1.1345918755978346
+          ],
+          "rank_median_spread_ms": 0.027045607566833496
+        },
+        "variable_end_to_end": {
+          "critical_path_ms": 1.8680701032280922,
+          "local_samples_ms": [
+            1.8692067824304104,
+            1.866933424025774
+          ],
+          "rank_median_cv": 0.015067553300440285,
+          "rank_median_ms": [
+            1.8680701032280922,
+            1.8126112408936024
+          ],
+          "rank_median_spread_ms": 0.05545886233448982
+        },
+        "variable_route_capacity": {
+          "critical_path_ms": 0.8808083366602659,
+          "local_samples_ms": [
+            0.9308867156505585,
+            0.8307299576699734
+          ],
+          "rank_median_cv": 0.037932389748373534,
+          "rank_median_ms": [
+            0.8808083366602659,
+            0.8164281025528908
+          ],
+          "rank_median_spread_ms": 0.06438023410737514
+        }
+      },
+      "tokens_per_rank": 128,
+      "top_k": 2,
+      "transport": {
+        "padded_count_exchange": false,
+        "padded_dense_expert_rows": 512,
+        "padded_python_split_lists": false,
+        "variable_count_exchange": true,
+        "variable_python_split_lists": true
+      },
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_padded_capacity",
+  "timestamp_utc": "2026-11-11T12:14:58Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

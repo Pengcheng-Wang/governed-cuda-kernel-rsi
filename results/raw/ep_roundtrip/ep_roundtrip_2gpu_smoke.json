@@ -1,0 +1,135 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Each microbatch performs equal-split BF16 dispatch all-to-all, vLLM fused expert compute, and combine all-to-all back to the original rank.",
+    "The pipeline overlaps combine of microbatch i-1 and dispatch of microbatch i+1 with expert compute for microbatch i.",
+    "NCCL collectives share one process group and retain identical launch ordering on every rank.",
+    "Routing is precomputed and excluded; token permutation, router computation, capacity factors, and dropped tokens are outside this isolated benchmark.",
+    "Critical path is the slowest rank's median CPU wall time with CUDA synchronization before and after each schedule."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "chunks": 2,
+      "dtype": "torch.bfloat16",
+      "hidden": 1024,
+      "ideal_pipeline_ms": 0.981638440862298,
+      "intermediate": 2816,
+      "iterations": 3,
+      "local_tokens_per_chunk": 16,
+      "max_roundtrip_marker_error": 0.0,
+      "num_experts": 8,
+      "overlap_efficiency": 0.22190448000141608,
+      "pipeline_speedup": 1.0450645731033672,
+      "pipeline_vs_sequential_max_abs_error": 0.0,
+      "pipeline_vs_sequential_min_cosine": 0.9999999403953552,
+      "routing": {
+        "active_experts": 8,
+        "coefficient_of_variation": 0.0,
+        "counts": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "max_assignments": 4,
+        "max_to_mean": 1.0,
+        "mean_assignments_per_expert": 4.0,
+        "min_assignments": 4
+      },
+      "routing_pattern": "uniform",
+      "saved_critical_path_fraction": 0.043121328828079945,
+      "saved_critical_path_ms": 0.0525391660630703,
+      "timings": {
+        "compute_only": {
+          "critical_path_ms": 0.8351639844477177,
+          "local_samples_ms": [
+            0.8399640209972858,
+            0.8284011855721474,
+            0.8351639844477177
+          ],
+          "rank_median_cv": 0.0060277491859509575,
+          "rank_median_ms": [
+            0.8351639844477177,
+            0.8251559920608997
+          ],
+          "rank_median_spread_ms": 0.010007992386817932
+        },
+        "dispatch_only": {
+          "critical_path_ms": 0.16257399693131447,
+          "local_samples_ms": [
+            0.28461311012506485,
+            0.16257399693131447,
+            0.15744520351290703
+          ],
+          "rank_median_cv": 0.01730103806228374,
+          "rank_median_ms": [
+            0.16257399693131447,
+            0.15704426914453506
+          ],
+          "rank_median_spread_ms": 0.005529727786779404
+        },
+        "pipelined": {
+          "critical_path_ms": 1.1658640578389168,
+          "local_samples_ms": [
+            1.1400161311030388,
+            1.1658640578389168,
+            1.2057982385158539
+          ],
+          "rank_median_cv": 0.011557049206093,
+          "rank_median_ms": [
+            1.1658640578389168,
+            1.1392240412533283
+          ],
+          "rank_median_spread_ms": 0.026640016585588455
+        },
+        "roundtrip_communication_only": {
+          "critical_path_ms": 0.2929489128291607,
+          "local_samples_ms": [
+            0.31856726855039597,
+            0.26190001517534256,
+            0.2929489128291607
+          ],
+          "rank_median_cv": 0.0099298863814229,
+          "rank_median_ms": [
+            0.2929489128291607,
+            0.28718821704387665
+          ],
+          "rank_median_spread_ms": 0.005760695785284042
+        },
+        "sequential": {
+          "critical_path_ms": 1.218403223901987,
+          "local_samples_ms": [
+            1.425629947334528,
+            1.218403223901987,
+            1.1733979918062687
+          ],
+          "rank_median_cv": 0.016202530465674193,
+          "rank_median_ms": [
+            1.218403223901987,
+            1.1795503087341785
+          ],
+          "rank_median_spread_ms": 0.03885291516780853
+        }
+      },
+      "tokens_per_peer": 8,
+      "top_k": 2,
+      "total_local_tokens": 32,
+      "total_tokens_per_peer": 16,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_ep_roundtrip",
+  "timestamp_utc": "2026-11-10T18:13:08Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

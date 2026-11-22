@@ -1,0 +1,6 @@
+gen_idx	generation_id	eval_harness_sha256	budget_s	elapsed_s	optimizer_steps	ms_per_step	val_bpb	val_beyond_swa_recall_acc	decision	notes
+0	gen0_eager_lact_swa_baseline	3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e	16.00	16.0642	84	191.241	3.653536	0.054688	BASELINE	Eager multi-chunk LaCT(Muon+Momentum+L2Norm) + masked SWA + eager MLP/Gate
+1	gen1_rsi_unckpt_fa2_swa	3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e	16.00	16.1132	210	76.729	3.062083	0.969401	KEEP	Swap in uncheckpointed RSI Apply/Grad2/BatchedMuon + FA2 SWA
+2	gen2_rsi_superfused_gate_swiglu	3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e	16.00	16.0391	228	70.347	3.054733	0.994141	KEEP	Zero-copy compact-bank ChunkCheckpointedLaCTSwiGLUFn + FusedLaCTRMSNormGateFn + FusedSwiGLUFn
+3	gen3_ablate_l2norm_sphere_retention	3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e	16.00	16.0956	240	67.065	3.411464	0.099609	REVERT_VAL_BPB	Single-factor LaCT Eq. 5 ablation: disable FusedL2NormStepFn row-sphere retention (faster steps, unbounded multi-chunk norm drift collapses recall & val_bpb)
+4	gen4_small_chunk_c32_overhead	3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e	16.00	16.3867	64	256.043	3.707181	0.068359	REVERT_SLOWER	Systems chunk-size ablation: shrink chunk_size 128 -> 32 (4x Muon-NS5 boundary overhead)

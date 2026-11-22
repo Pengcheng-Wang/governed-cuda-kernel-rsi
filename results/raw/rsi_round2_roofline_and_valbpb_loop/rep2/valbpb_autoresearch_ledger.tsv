@@ -1,0 +1,6 @@
+gen_id	candidate_id	budget_s	elapsed_s	completed_steps	steps_per_sec	val_bpb_8node	untouched_test_bpb_16node	delta_val_bpb_vs_prior_incumbent	decision	active_incumbent_after_trial	hypothesis_note
+0	gen0_literature_flex_eager_adaln_iid_t	12.0	12.0467	81	6.724	2.49556	2.37631	0.0	BASELINE	0	Literature baseline: FlexAttention 2Lx2L + Eager adaLN-Zero + Full CE + IID t~U[0.01,0.99]
+1	gen1_e127_round1_kernels_iid_t	12.0	12.0516	104	8.63	2.11216	1.97411	-0.3834	KEEP	1	Round-1 E127 kernels (6-call FA2 at W=64 + 1-CTA/blk adaLN + Compacted CE) with IID t~U[0.01,0.99]
+2	gen2_e128_round2_roofline_kernels_fsdp2_prefetch	12.0	12.0247	193	16.05	0.08628	0.09775	-2.02587	KEEP	2	Round-2 K_TILE=16 0-spill BD3 + Split-32 AdaLN + Merged QKV/SwiGLU + FSDP2 2-blk prefetch + IID t
+3	gen3_aggressive_lr_unclipped_spike_overshoot	12.0	12.0012	193	16.082	999.0	999.0	998.91372	REVERT_VAL_BPB	2	Over-aggressive peak LR (3.5e-2) + extreme t~U[0.001,0.999] 1/t variance spike -> destabilizes val_bpb
+4	gen4_round2_kernels_plus_stratified_antithetic_nelbo	12.0	12.0522	193	16.014	0.08543	0.10421	-0.00085	REVERT_VAL_BPB	2	Round-2 roofline stack + zero-bias stratified complementary-antithetic (t, 1-t; m, 1-m) on [0.01,0.99]

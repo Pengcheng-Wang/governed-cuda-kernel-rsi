@@ -1,0 +1,8 @@
+# E143 (`v134`, Round-17 RSI): Triadic Gated DeltaNet (`Triadic-GDN`) & Triadic Kimi Delta Attention (`Triadic-KDA`, `arXiv:2609.36529`)
+
+## 1. Executive Summary (3-Repetition 8xA100-SXM4-80GB Hardware Medians)
+- **Frozen Cryptographic Evaluator**: `code/rsi_kernel_harness.py` (`SHA256 = 3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e`)
+- **Hardware**: `8x NVIDIA A100-SXM4-80GB` (`NV12` NVSwitch)
+- **SM80 Cubin Register & Spill Audit**: Upstream `fla/ops/triadic_gdn` spills **`1684` registers across `19/37` specializations** (`max_regs = 255`) and crashes `SM80` on `(K=128, V=128, FP32)` (`229,632 > 166,912` B SMEM). Round-17 RSI compiles all **`25/25` kernels (`78` specializations)** with **`0` cubin spills** and **`max_regs == 168` (`<= 168`)**.
+- **Numerical Parity vs True `FP64` Recurrent Oracle**: Fused Dual-Sphere `L2Norm` ($S^{E-1} \times S^{K-1}$) eliminates `65536` `o` `NaN`s and `163660` gradient `NaN`s, improving `FP32` parity by **`8167.8x` (`o`) and `8013.4x` (`dq`)** (`max_fp32_rel_l2 = 6.40e-07`, `max_bf16_rel_l2 = 0.0066`).
+- **3-Rep Median Performance & Scaling**: `Triadic-GDN` achieves **`1.77x`** (`T=2048`, `1.583 ms`, `2588.0 kTok/s`) and **`1.26x`** (`T=4096`, `2.703 ms`, `3031.0 kTok/s`) speedup over upstream `fla` (`64.81x–75.09x` over eager chunk); first-ever Triton `Triadic-KDA` achieves **`30.89x`** speedup (`95.260 -> 3.081 ms`); `TriadicGDNBlockRSI` `Stage A4` achieves **`29.58x`** speedup (`104.206 -> 3.491 ms`); fixed-`25s` autoresearch completes **`6.67x` more steps** (`-0.1189 val_bpb`); and 8-GPU NVSwitch Ulysses-WY `Triadic-CP = 8` achieves **`1.73x` vs 1x A100** (`1.79x` vs 8-GPU ring, `3960.7 kTok/s` at $T_{\text{global}} = 65,536$, `0.000e+00` parity).

@@ -1,0 +1,3 @@
+# Full expert-parallel round-trip artifacts
+
+This directory preserves correctness-gated A100 measurements for dispatch all-to-all, vLLM fused-expert compute, and combine all-to-all back to the original rank. The pipeline overlaps combine of microbatch i-1 and dispatch of microbatch i+1 with compute for microbatch i. Full 8-GPU and 24-GPU benchmarks have two process-level repetitions. Round-trip rank markers and sequential-versus-pipelined outputs are validated. The simple isolated-stage overlap-efficiency estimate can exceed one because separately timed stages do not reproduce the integrated schedule's synchronization and launch behavior; measured critical-path latency is authoritative. Files are copied serially by node 0.

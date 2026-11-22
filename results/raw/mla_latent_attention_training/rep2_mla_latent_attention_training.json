@@ -1,0 +1,784 @@
+{
+  "experiment": "E120_mla_latent_attention_training",
+  "mode": "full",
+  "world_size": 8,
+  "elapsed_s": 185.32,
+  "environment": {
+    "timestamp_utc": "2026-11-15T17:10:49Z",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "cuda_driver": "580.178.04",
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "gpu_count": 8,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "gpu_memory_bytes": 85093777408,
+    "allow_tf32_matmul": false,
+    "allow_tf32_cudnn": true,
+    "triton": "3.7.1",
+    "flash_attn": "2.8.3.post1",
+    "flashinfer": "0.6.18"
+  },
+  "suite_0_audits": {
+    "ecosystem_compatibility_audit": {
+      "decompressed_192_to_128": {
+        "flash_attn_func_direct_192_128": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "v must have shape (batch_size, seqlen_k, num_heads_k, head_size)"
+        },
+        "flash_attn_func_vpadded_192_192": {
+          "supported": true,
+          "error_type": null,
+          "error_excerpt": null
+        },
+        "sdpa_flash_192_128": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "No available kernel. Aborting execution."
+        },
+        "sdpa_efficient_192_128": {
+          "supported": true,
+          "error_type": null,
+          "error_excerpt": null
+        },
+        "sdpa_cudnn_192_128": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "No available kernel. Aborting execution."
+        },
+        "sdpa_math_192_128": {
+          "supported": true,
+          "error_type": null,
+          "error_excerpt": null
+        },
+        "flex_attention_192_128": {
+          "supported": true,
+          "error_type": null,
+          "error_excerpt": null
+        }
+      },
+      "weight_absorbed_576_to_512_mqa": {
+        "flash_attn_func_576_576": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "FlashAttention forward only supports head dimension at most 256"
+        },
+        "sdpa_flash_576_512": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "No available kernel. Aborting execution."
+        },
+        "sdpa_efficient_576_512": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "No available kernel. Aborting execution."
+        },
+        "sdpa_cudnn_576_512": {
+          "supported": false,
+          "error_type": "RuntimeError",
+          "error_excerpt": "No available kernel. Aborting execution."
+        },
+        "sdpa_math_576_512": {
+          "supported": true,
+          "error_type": null,
+          "error_excerpt": null
+        },
+        "flex_attention_576_512_sm80": {
+          "supported": false,
+          "error_type": "InductorError",
+          "error_excerpt": "OutOfMemoryError: out of resource: triton_tem_fused_flex_attention_5 Required: 196608 Hardware limit:166912 Reducing block sizes or `num_stages` may help."
+        },
+        "flashinfer_mla_paged_fa2": {
+          "supported": true,
+          "error_type": null,
+          "error_excerpt": null
+        },
+        "flashinfer_mla_paged_fa3": {
+          "supported": false,
+          "error_type": "SubprocessCUDAError",
+          "error_excerpt": "  File \"<unknown>\", line 0, in __tvm_ffi_run   File \"/workspace/build/aot/generated/batch_mla_attention_dtype_q_bf16_dtype_kv_bf16_dtype_o_bf16_dtype_idx_i32_head_dim_ckv_512_head_dim_kpe_64_profiler_False_sm90/batch_mla"
+        }
+      }
+    },
+    "fp64_chain_rule_refinement": {
+      "split_mla_ratios_h_vs_half_h": {
+        "q_nope": 4.0,
+        "q_rope": 4.0,
+        "k_nope": 3.9999,
+        "k_rope_shared": 4.0,
+        "v": 4.0
+      },
+      "absorbed_mla_ratios_h_vs_half_h": {
+        "q_abs": 3.9995,
+        "q_rope": 4.0,
+        "c_kv_merged_kv": 4.0002,
+        "k_rope_shared": 4.0008
+      },
+      "min_refinement_ratio": 3.9995
+    },
+    "bf16_triton_parity": {
+      "split_mla_128_64_to_128": {
+        "out_rel_l2": 0.001918,
+        "dq_nope_rel_l2": 0.002508,
+        "dq_rope_rel_l2": 0.002532,
+        "dk_nope_rel_l2": 0.002484,
+        "dk_rope_rel_l2": 0.002524,
+        "dv_rel_l2": 0.002282
+      },
+      "absorbed_mla_512_64_to_512": {
+        "out_rel_l2": 0.001822,
+        "dq_abs_rel_l2": 0.002707,
+        "dq_rope_rel_l2": 0.002734,
+        "dc_kv_rel_l2": 0.002564,
+        "dk_rope_rel_l2": 0.002763
+      },
+      "fused_latent_rmsnorm_rope": {
+        "c_norm_rel_l2": 0.001634,
+        "k_rope_rel_l2": 0.001656,
+        "d_raw_rel_l2": 0.001659,
+        "dw_norm_rel_l2": 0.001639
+      }
+    },
+    "sm80_split_mla_kernel_ablation": {
+      "seq_len": 4096,
+      "heads": 32,
+      "bwd_only_1pass_global_atomic_dq": {
+        "median_ms": 196.1857,
+        "iqr_ms": 0.0503,
+        "peak_inc_mib": 0.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 198.2
+      },
+      "bwd_only_2pass_sync_stages1": {
+        "median_ms": 201.7273,
+        "iqr_ms": 0.4466,
+        "peak_inc_mib": 48.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 216.24
+      },
+      "bwd_only_2pass_cp_async_stages2": {
+        "median_ms": 4.4108,
+        "iqr_ms": 0.0204,
+        "peak_inc_mib": 146.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 267.87
+      },
+      "speedup_2pass_vs_global_atomic_dq": 44.4785,
+      "speedup_stages2_vs_stages1": 45.7349,
+      "autograd_fwd_bwd_triton_split_mla": {
+        "median_ms": 5.6994,
+        "iqr_ms": 0.0321,
+        "peak_inc_mib": 66.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 374.99
+      },
+      "autograd_fwd_bwd_fa2_vpadded_192": {
+        "median_ms": 5.8686,
+        "iqr_ms": 0.0509,
+        "peak_inc_mib": 368.5,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 374.99
+      },
+      "autograd_fwd_bwd_sdpa_cutlass_efficient": {
+        "median_ms": 19.8334,
+        "iqr_ms": 0.0388,
+        "peak_inc_mib": 290.55,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 284.65
+      },
+      "memory_reduction_vs_fa2_vpadded": 5.5833,
+      "speedup_vs_sdpa_cutlass_efficient": 3.4799
+    }
+  },
+  "suite_a_mla_layer_scaling": {
+    "2048": {
+      "hidden": 4096,
+      "heads": 32,
+      "seq_len": 2048,
+      "modes": {
+        "mla_sdpa_math_eager": {
+          "median_ms": 25.7055,
+          "iqr_ms": 0.0879,
+          "peak_inc_mib": 2165.76,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 298.71
+        },
+        "mla_sdpa_cutlass_efficient": {
+          "median_ms": 9.5676,
+          "iqr_ms": 0.0335,
+          "peak_inc_mib": 216.29,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 270.27
+        },
+        "mla_flex_attention_compiled": {
+          "median_ms": 10.4465,
+          "iqr_ms": 0.037,
+          "peak_inc_mib": 134.26,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 290.46,
+          "first_call_compile_s": 0.76
+        },
+        "mla_fa2_vpadded_eager": {
+          "median_ms": 5.5479,
+          "iqr_ms": 0.0108,
+          "peak_inc_mib": 230.26,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 295.95
+        },
+        "mla_triton_split_fused": {
+          "median_ms": 5.2205,
+          "iqr_ms": 0.0202,
+          "peak_inc_mib": 167.26,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 90.77
+        },
+        "mla_triton_weight_absorbed": {
+          "median_ms": 99.8573,
+          "iqr_ms": 0.1171,
+          "peak_inc_mib": 440.51,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 267.26
+        }
+      }
+    },
+    "4096": {
+      "hidden": 4096,
+      "heads": 32,
+      "seq_len": 4096,
+      "modes": {
+        "mla_sdpa_math_eager": {
+          "median_ms": 92.005,
+          "iqr_ms": 0.0266,
+          "peak_inc_mib": 8470.04,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 299.64
+        },
+        "mla_sdpa_cutlass_efficient": {
+          "median_ms": 26.1492,
+          "iqr_ms": 0.2186,
+          "peak_inc_mib": 457.08,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 311.81
+        },
+        "mla_flex_attention_compiled": {
+          "median_ms": 31.6258,
+          "iqr_ms": 0.0355,
+          "peak_inc_mib": 311.04,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 284.98,
+          "first_call_compile_s": 0.04
+        },
+        "mla_fa2_vpadded_eager": {
+          "median_ms": 12.0795,
+          "iqr_ms": 0.0039,
+          "peak_inc_mib": 503.04,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 313.99
+        },
+        "mla_triton_split_fused": {
+          "median_ms": 12.0014,
+          "iqr_ms": 0.0224,
+          "peak_inc_mib": 377.04,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 381.07
+        },
+        "mla_triton_weight_absorbed": {
+          "median_ms": 382.0439,
+          "iqr_ms": 0.4289,
+          "peak_inc_mib": 919.54,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 261.44
+        }
+      }
+    },
+    "8192": {
+      "hidden": 4096,
+      "heads": 32,
+      "seq_len": 8192,
+      "modes": {
+        "mla_sdpa_cutlass_efficient": {
+          "median_ms": 81.8801,
+          "iqr_ms": 0.1404,
+          "peak_inc_mib": 938.68,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 364.91
+        },
+        "mla_flex_attention_compiled": {
+          "median_ms": 111.5472,
+          "iqr_ms": 0.0591,
+          "peak_inc_mib": 664.58,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 313.67,
+          "first_call_compile_s": 0.12
+        },
+        "mla_fa2_vpadded_eager": {
+          "median_ms": 31.4276,
+          "iqr_ms": 0.0189,
+          "peak_inc_mib": 1048.58,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 400.31
+        },
+        "mla_triton_split_fused": {
+          "median_ms": 32.8644,
+          "iqr_ms": 0.0616,
+          "peak_inc_mib": 796.58,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 390.55
+        },
+        "mla_triton_weight_absorbed": {
+          "median_ms": 1497.1371,
+          "iqr_ms": 0.1998,
+          "peak_inc_mib": 1877.58,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 262.98
+        }
+      }
+    },
+    "16384": {
+      "hidden": 4096,
+      "heads": 32,
+      "seq_len": 16384,
+      "modes": {
+        "mla_sdpa_cutlass_efficient": {
+          "median_ms": 285.7908,
+          "iqr_ms": 1.1877,
+          "peak_inc_mib": 1901.86,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 283.44
+        },
+        "mla_flex_attention_compiled": {
+          "median_ms": 433.7535,
+          "iqr_ms": 0.5514,
+          "peak_inc_mib": 1403.68,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 262.05,
+          "first_call_compile_s": 0.44
+        },
+        "mla_fa2_vpadded_eager": {
+          "median_ms": 94.0834,
+          "iqr_ms": 0.5983,
+          "peak_inc_mib": 2139.68,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 373.79
+        },
+        "mla_triton_split_fused": {
+          "median_ms": 101.9631,
+          "iqr_ms": 0.0978,
+          "peak_inc_mib": 1635.68,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 418.62
+        }
+      }
+    },
+    "32768": {
+      "hidden": 4096,
+      "heads": 32,
+      "seq_len": 32768,
+      "modes": {
+        "mla_sdpa_cutlass_efficient": {
+          "median_ms": 1097.6399,
+          "iqr_ms": 1.455,
+          "peak_inc_mib": 3828.24,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 280.97
+        },
+        "mla_fa2_vpadded_eager": {
+          "median_ms": 319.7598,
+          "iqr_ms": 0.7628,
+          "peak_inc_mib": 4321.86,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 396.03
+        },
+        "mla_triton_split_fused": {
+          "median_ms": 355.351,
+          "iqr_ms": 0.5812,
+          "peak_inc_mib": 3313.86,
+          "sm_clock_after_mhz": 1380.0,
+          "power_after_w": 411.93
+        }
+      }
+    }
+  },
+  "suite_b_crossover_and_latent_sac": {
+    "prefill_to_decode_absorption_crossover": {
+      "1": {
+        "batch": 8,
+        "heads": 32,
+        "kv_context_len": 16384,
+        "query_len": 1,
+        "latent_kv_cache_mib": 144.0,
+        "decompressed_kv_cache_mib": 2064.0,
+        "kv_cache_compression_ratio": 14.33,
+        "decompressed_kv_fa2": {
+          "median_ms": 2.5869,
+          "iqr_ms": 0.0114,
+          "peak_inc_mib": 0.1,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 93.24
+        },
+        "weight_absorbed_triton_mla": {
+          "median_ms": 0.2892,
+          "iqr_ms": 0.0075,
+          "peak_inc_mib": 0.56,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 93.24
+        },
+        "absorbed_triton_speedup_vs_decompressed": 8.945,
+        "weight_absorbed_flashinfer_fa2_paged": {
+          "median_ms": 0.2816,
+          "iqr_ms": 0.0037,
+          "peak_inc_mib": 0.56,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 93.24
+        },
+        "absorbed_flashinfer_speedup_vs_decompressed": 9.1864
+      },
+      "16": {
+        "batch": 8,
+        "heads": 32,
+        "kv_context_len": 16384,
+        "query_len": 16,
+        "latent_kv_cache_mib": 144.0,
+        "decompressed_kv_cache_mib": 2064.0,
+        "kv_cache_compression_ratio": 14.33,
+        "decompressed_kv_fa2": {
+          "median_ms": 2.5897,
+          "iqr_ms": 0.0065,
+          "peak_inc_mib": 1.52,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 361.24
+        },
+        "weight_absorbed_triton_mla": {
+          "median_ms": 3.6941,
+          "iqr_ms": 0.004,
+          "peak_inc_mib": 17.02,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 361.24
+        },
+        "absorbed_triton_speedup_vs_decompressed": 0.701
+      },
+      "64": {
+        "batch": 8,
+        "heads": 32,
+        "kv_context_len": 16384,
+        "query_len": 64,
+        "latent_kv_cache_mib": 144.0,
+        "decompressed_kv_cache_mib": 2064.0,
+        "kv_cache_compression_ratio": 14.33,
+        "decompressed_kv_fa2": {
+          "median_ms": 2.5938,
+          "iqr_ms": 0.0035,
+          "peak_inc_mib": 6.06,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 346.93
+        },
+        "weight_absorbed_triton_mla": {
+          "median_ms": 5.7615,
+          "iqr_ms": 0.0339,
+          "peak_inc_mib": 68.06,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 424.42
+        },
+        "absorbed_triton_speedup_vs_decompressed": 0.4502
+      },
+      "256": {
+        "batch": 8,
+        "heads": 32,
+        "kv_context_len": 16384,
+        "query_len": 256,
+        "latent_kv_cache_mib": 144.0,
+        "decompressed_kv_cache_mib": 2064.0,
+        "kv_cache_compression_ratio": 14.33,
+        "decompressed_kv_fa2": {
+          "median_ms": 4.3019,
+          "iqr_ms": 0.118,
+          "peak_inc_mib": 24.25,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 424.42
+        },
+        "weight_absorbed_triton_mla": {
+          "median_ms": 19.9924,
+          "iqr_ms": 0.1147,
+          "peak_inc_mib": 272.25,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 413.41
+        },
+        "absorbed_triton_speedup_vs_decompressed": 0.2152
+      },
+      "1024": {
+        "batch": 8,
+        "heads": 32,
+        "kv_context_len": 16384,
+        "query_len": 1024,
+        "latent_kv_cache_mib": 144.0,
+        "decompressed_kv_cache_mib": 2064.0,
+        "kv_cache_compression_ratio": 14.33,
+        "decompressed_kv_fa2": {
+          "median_ms": 16.1907,
+          "iqr_ms": 0.1628,
+          "peak_inc_mib": 97.0,
+          "sm_clock_after_mhz": 1350.0,
+          "power_after_w": 402.77
+        },
+        "weight_absorbed_triton_mla": {
+          "median_ms": 77.404,
+          "iqr_ms": 0.3277,
+          "peak_inc_mib": 1089.0,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 392.09
+        },
+        "absorbed_triton_speedup_vs_decompressed": 0.2092
+      },
+      "4096": {
+        "batch": 8,
+        "heads": 32,
+        "kv_context_len": 16384,
+        "query_len": 4096,
+        "latent_kv_cache_mib": 144.0,
+        "decompressed_kv_cache_mib": 2064.0,
+        "kv_cache_compression_ratio": 14.33,
+        "decompressed_kv_fa2": {
+          "median_ms": 58.3612,
+          "iqr_ms": 0.0072,
+          "peak_inc_mib": 388.0,
+          "sm_clock_after_mhz": 1350.0,
+          "power_after_w": 401.51
+        },
+        "weight_absorbed_triton_mla": {
+          "median_ms": 280.257,
+          "iqr_ms": 1.5472,
+          "peak_inc_mib": 4356.0,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 408.53
+        },
+        "absorbed_triton_speedup_vs_decompressed": 0.2082
+      }
+    },
+    "latent_sac_parity_vs_no_ac": {
+      "out_rel_l2": 0.0,
+      "dx_rel_l2": 0.0,
+      "dw_ukv_rel_l2": 0.0
+    },
+    "four_layer_latent_sac_scaling": {
+      "4096": {
+        "no_ac": {
+          "median_ms": 102.4513,
+          "iqr_ms": 0.6684,
+          "peak_inc_mib": 1622.17,
+          "sm_clock_after_mhz": 1350.0,
+          "power_after_w": 402.45
+        },
+        "compressed_latent_sac": {
+          "median_ms": 118.0092,
+          "iqr_ms": 0.7914,
+          "peak_inc_mib": 679.54,
+          "sm_clock_after_mhz": 1350.0,
+          "power_after_w": 421.36
+        },
+        "full_layer_ac": {
+          "median_ms": 129.0554,
+          "iqr_ms": 1.5103,
+          "peak_inc_mib": 607.04,
+          "sm_clock_after_mhz": 1335.0,
+          "power_after_w": 414.07
+        }
+      },
+      "16384": {
+        "no_ac": {
+          "median_ms": 629.5038,
+          "iqr_ms": 1.1353,
+          "peak_inc_mib": 10221.42,
+          "sm_clock_after_mhz": 1365.0,
+          "power_after_w": 356.09
+        },
+        "compressed_latent_sac": {
+          "median_ms": 687.4525,
+          "iqr_ms": 0.4376,
+          "peak_inc_mib": 4171.18,
+          "sm_clock_after_mhz": 1320.0,
+          "power_after_w": 407.05
+        },
+        "full_layer_ac": {
+          "median_ms": 781.3415,
+          "iqr_ms": 1.2213,
+          "peak_inc_mib": 3167.73,
+          "sm_clock_after_mhz": 1290.0,
+          "power_after_w": 464.23
+        }
+      }
+    }
+  },
+  "suite_c_cp8_latent_ring": {
+    "cp8_vs_1gpu_parity": {
+      "compressed_latent_ring": {
+        "max_out_rel_l2": 0.000368,
+        "max_dx_rel_l2": 0.000778,
+        "max_dw_dkv_rel_l2": 0.007522,
+        "max_dw_ukv_rel_l2": 0.004466,
+        "max_dw_o_rel_l2": 0.004736
+      },
+      "decompressed_kv_ring": {
+        "max_out_rel_l2": 0.000368,
+        "max_dx_rel_l2": 0.000776,
+        "max_dw_ukv_rel_l2": 0.006724
+      },
+      "ulysses_triton_split": {
+        "max_out_rel_l2": 0.000357,
+        "max_dx_rel_l2": 0.000686,
+        "max_dw_ukv_rel_l2": 0.004846
+      }
+    },
+    "cp8_long_context_scaling": {
+      "16384": {
+        "global_seq_len": 16384,
+        "local_seq_len": 2048,
+        "heads": 32,
+        "hidden": 4096,
+        "modes": {
+          "cp8_mla_compressed_latent_zigzag_ring": {
+            "step_ms_median": 26.6707,
+            "step_ms_iqr": 0.078,
+            "per_rank_peak_inc_mib": 293.39,
+            "cluster_ktok_per_s": 614.31,
+            "comm_mib_per_rank": 49.5
+          },
+          "cp8_mla_decompressed_zigzag_ring": {
+            "step_ms_median": 31.1642,
+            "step_ms_iqr": 0.065,
+            "per_rank_peak_inc_mib": 650.76,
+            "cluster_ktok_per_s": 525.73,
+            "comm_mib_per_rank": 709.5
+          },
+          "cp8_mla_ulysses_fa2_vpadded": {
+            "step_ms_median": 14.943,
+            "step_ms_iqr": 0.0365,
+            "per_rank_peak_inc_mib": 383.01,
+            "cluster_ktok_per_s": 1096.43,
+            "comm_mib_per_rank": 168.0
+          },
+          "cp8_mla_ulysses_triton_split": {
+            "step_ms_median": 16.3837,
+            "step_ms_iqr": 0.104,
+            "per_rank_peak_inc_mib": 255.01,
+            "cluster_ktok_per_s": 1000.02,
+            "comm_mib_per_rank": 129.5
+          }
+        }
+      },
+      "32768": {
+        "global_seq_len": 32768,
+        "local_seq_len": 4096,
+        "heads": 32,
+        "hidden": 4096,
+        "modes": {
+          "cp8_mla_compressed_latent_zigzag_ring": {
+            "step_ms_median": 64.1758,
+            "step_ms_iqr": 0.1293,
+            "per_rank_peak_inc_mib": 608.29,
+            "cluster_ktok_per_s": 510.6,
+            "comm_mib_per_rank": 99.0
+          },
+          "cp8_mla_decompressed_zigzag_ring": {
+            "step_ms_median": 71.1318,
+            "step_ms_iqr": 0.0965,
+            "per_rank_peak_inc_mib": 1347.04,
+            "cluster_ktok_per_s": 460.67,
+            "comm_mib_per_rank": 1419.0
+          },
+          "cp8_mla_ulysses_fa2_vpadded": {
+            "step_ms_median": 45.0692,
+            "step_ms_iqr": 0.0764,
+            "per_rank_peak_inc_mib": 807.54,
+            "cluster_ktok_per_s": 727.06,
+            "comm_mib_per_rank": 336.0
+          },
+          "cp8_mla_ulysses_triton_split": {
+            "step_ms_median": 50.1813,
+            "step_ms_iqr": 0.3044,
+            "per_rank_peak_inc_mib": 551.54,
+            "cluster_ktok_per_s": 652.99,
+            "comm_mib_per_rank": 259.0
+          }
+        }
+      },
+      "65536": {
+        "global_seq_len": 65536,
+        "local_seq_len": 8192,
+        "heads": 32,
+        "hidden": 4096,
+        "modes": {
+          "cp8_mla_compressed_latent_zigzag_ring": {
+            "step_ms_median": 202.74,
+            "step_ms_iqr": 0.3294,
+            "per_rank_peak_inc_mib": 1240.58,
+            "cluster_ktok_per_s": 323.25,
+            "comm_mib_per_rank": 198.0
+          },
+          "cp8_mla_decompressed_zigzag_ring": {
+            "step_ms_median": 215.1531,
+            "step_ms_iqr": 0.6991,
+            "per_rank_peak_inc_mib": 2734.58,
+            "cluster_ktok_per_s": 304.6,
+            "comm_mib_per_rank": 2838.0
+          },
+          "cp8_mla_ulysses_fa2_vpadded": {
+            "step_ms_median": 158.0249,
+            "step_ms_iqr": 0.3013,
+            "per_rank_peak_inc_mib": 1657.58,
+            "cluster_ktok_per_s": 414.72,
+            "comm_mib_per_rank": 672.0
+          },
+          "cp8_mla_ulysses_triton_split": {
+            "step_ms_median": 177.5697,
+            "step_ms_iqr": 0.2974,
+            "per_rank_peak_inc_mib": 1145.58,
+            "cluster_ktok_per_s": 369.07,
+            "comm_mib_per_rank": 518.0
+          }
+        }
+      },
+      "131072": {
+        "global_seq_len": 131072,
+        "local_seq_len": 16384,
+        "heads": 32,
+        "hidden": 4096,
+        "modes": {
+          "cp8_mla_compressed_latent_zigzag_ring": {
+            "step_ms_median": 707.904,
+            "step_ms_iqr": 0.6152,
+            "per_rank_peak_inc_mib": 2507.18,
+            "cluster_ktok_per_s": 185.16,
+            "comm_mib_per_rank": 396.0
+          },
+          "cp8_mla_decompressed_zigzag_ring": {
+            "step_ms_median": 739.8759,
+            "step_ms_iqr": 0.3314,
+            "per_rank_peak_inc_mib": 5500.18,
+            "cluster_ktok_per_s": 177.15,
+            "comm_mib_per_rank": 5676.0
+          },
+          "cp8_mla_ulysses_fa2_vpadded": {
+            "step_ms_median": 591.666,
+            "step_ms_iqr": 0.7364,
+            "per_rank_peak_inc_mib": 3358.18,
+            "cluster_ktok_per_s": 221.53,
+            "comm_mib_per_rank": 1344.0
+          },
+          "cp8_mla_ulysses_triton_split": {
+            "step_ms_median": 673.5538,
+            "step_ms_iqr": 1.3783,
+            "per_rank_peak_inc_mib": 2334.18,
+            "cluster_ktok_per_s": 194.6,
+            "comm_mib_per_rank": 1036.0
+          }
+        }
+      }
+    }
+  }
+}

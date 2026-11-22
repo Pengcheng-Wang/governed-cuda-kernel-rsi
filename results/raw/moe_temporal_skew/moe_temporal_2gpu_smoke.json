@@ -1,0 +1,481 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "Each temporal cycle has world_size microbatches. Rotating schedules bias destination step mod world_size, so every rank is hot once and aggregate receiver load is balanced over the cycle.",
+    "Persistent schedules bias rank 0 in every microbatch. Steady balanced uses zero bias.",
+    "The full path includes router projection, fused top-k, token duplication and sort, variable hidden/id/weight dispatch, local fused experts, return all-to-all, and weighted combine.",
+    "Cycle timings are authoritative for throughput. Per-step synchronized samples expose p50/p95/p99/max tail latency.",
+    "Every microbatch is checked against its corresponding global-expert reference; route/output drift is measured against the same hidden states under zero bias."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "aggregate_routing": {
+        "effective_destinations": 1.99975586434169,
+        "max_to_mean_receive": 1.015625,
+        "normalized_destination_entropy": 0.9998238825988729,
+        "rank_receive_assignments": [
+          126,
+          130
+        ],
+        "receive_cv": 0.015625,
+        "send_matrix": [
+          [
+            63,
+            65
+          ],
+          [
+            63,
+            65
+          ]
+        ]
+      },
+      "correctness": {
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999999403953552
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 0.0,
+      "intermediate": 512,
+      "iterations": 2,
+      "min_output_cosine_vs_balanced": 0.9999999403953552,
+      "num_experts": 4,
+      "route_set_match_vs_balanced": 1.0,
+      "schedule": "steady_balanced",
+      "schedule_kind": "balanced",
+      "step_latency": {
+        "critical_step_samples_ms": [
+          [
+            1.5523741021752357,
+            1.5732855536043644
+          ],
+          [
+            1.5667430125176907,
+            1.5568328090012074
+          ]
+        ],
+        "cv": 0.005247432561402167,
+        "iterations": 2,
+        "max_ms": 1.5732855536043644,
+        "mean_ms": 1.5623088693246245,
+        "p50_ms": 1.561787910759449,
+        "p95_ms": 1.5723041724413633,
+        "p99_ms": 1.5730892773717642,
+        "position_median_ms": [
+          1.5595585573464632,
+          1.5650591813027859
+        ]
+      },
+      "step_routing": {
+        "max_max_to_mean_receive": 1.046875,
+        "median_hottest_receive_fraction": 0.515625,
+        "median_max_to_mean_receive": 1.03125,
+        "records": [
+          {
+            "configured_hot_destination": null,
+            "hottest_receive_fraction": 0.5234375,
+            "max_to_mean_receive": 1.046875,
+            "observed_hot_destination": 1,
+            "step": 0
+          },
+          {
+            "configured_hot_destination": null,
+            "hottest_receive_fraction": 0.5078125,
+            "max_to_mean_receive": 1.015625,
+            "observed_hot_destination": 0,
+            "step": 1
+          }
+        ]
+      },
+      "steps": 2,
+      "timings": {
+        "dispatch_cycle": {
+          "critical_path_ms": 0.6881996523588896,
+          "local_samples_ms": [
+            0.6708297878503799,
+            0.6645875982940197
+          ],
+          "rank_median_cv": 0.015112348379399483,
+          "rank_median_ms": [
+            0.6677086930721998,
+            0.6881996523588896
+          ],
+          "rank_median_spread_ms": 0.02049095928668976
+        },
+        "expert_cycle": {
+          "critical_path_ms": 0.8569809142500162,
+          "local_samples_ms": [
+            0.8738590404391289,
+            0.8401027880609035
+          ],
+          "rank_median_cv": 2.0105248257703638e-05,
+          "rank_median_ms": [
+            0.8569809142500162,
+            0.8569464553147554
+          ],
+          "rank_median_spread_ms": 3.4458935260772705e-05
+        },
+        "integrated_cycle": {
+          "critical_path_ms": 3.072596387937665,
+          "local_samples_ms": [
+            3.0459831468760967,
+            3.075060900300741
+          ],
+          "rank_median_cv": 0.001968715348223906,
+          "rank_median_ms": [
+            3.060522023588419,
+            3.072596387937665
+          ],
+          "rank_median_spread_ms": 0.012074364349246025
+        },
+        "return_cycle": {
+          "critical_path_ms": 0.3456550184637308,
+          "local_samples_ms": [
+            0.3327038139104843,
+            0.3272644244134426
+          ],
+          "rank_median_cv": 0.023194185222658113,
+          "rank_median_ms": [
+            0.32998411916196346,
+            0.3456550184637308
+          ],
+          "rank_median_spread_ms": 0.01567089930176735
+        },
+        "router_cycle": {
+          "critical_path_ms": 1.2331265024840832,
+          "local_samples_ms": [
+            1.2128660455346107,
+            1.1770762503147125
+          ],
+          "rank_median_cv": 0.01571409393398922,
+          "rank_median_ms": [
+            1.1949711479246616,
+            1.2331265024840832
+          ],
+          "rank_median_spread_ms": 0.03815535455942154
+        }
+      },
+      "tokens_per_rank_per_step": 32,
+      "top_k": 2,
+      "total_tokens_per_rank": 64,
+      "warmup": 1
+    },
+    {
+      "aggregate_routing": {
+        "effective_destinations": 1.9990235169495665,
+        "max_to_mean_receive": 1.03125,
+        "normalized_destination_entropy": 0.9992954443621548,
+        "rank_receive_assignments": [
+          124,
+          132
+        ],
+        "receive_cv": 0.03125,
+        "send_matrix": [
+          [
+            58,
+            70
+          ],
+          [
+            66,
+            62
+          ]
+        ]
+      },
+      "correctness": {
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 1.0
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 1.0,
+      "intermediate": 512,
+      "iterations": 2,
+      "min_output_cosine_vs_balanced": 0.8408162593841553,
+      "num_experts": 4,
+      "route_set_match_vs_balanced": 0.5703125,
+      "schedule": "rotating_bias1",
+      "schedule_kind": "rotating",
+      "step_latency": {
+        "critical_step_samples_ms": [
+          [
+            1.6007102094590664,
+            1.5907101333141327
+          ],
+          [
+            1.5655811876058578,
+            1.6726907342672348
+          ]
+        ],
+        "cv": 0.024757852791949708,
+        "iterations": 2,
+        "max_ms": 1.6726907342672348,
+        "mean_ms": 1.607423066161573,
+        "p50_ms": 1.5957101713865995,
+        "p95_ms": 1.6618936555460095,
+        "p99_ms": 1.6705313185229897,
+        "position_median_ms": [
+          1.5831456985324621,
+          1.6317004337906837
+        ]
+      },
+      "step_routing": {
+        "max_max_to_mean_receive": 1.4375,
+        "median_hottest_receive_fraction": 0.703125,
+        "median_max_to_mean_receive": 1.40625,
+        "records": [
+          {
+            "configured_hot_destination": 0,
+            "hottest_receive_fraction": 0.6875,
+            "max_to_mean_receive": 1.375,
+            "observed_hot_destination": 0,
+            "step": 0
+          },
+          {
+            "configured_hot_destination": 1,
+            "hottest_receive_fraction": 0.71875,
+            "max_to_mean_receive": 1.4375,
+            "observed_hot_destination": 1,
+            "step": 1
+          }
+        ]
+      },
+      "steps": 2,
+      "timings": {
+        "dispatch_cycle": {
+          "critical_path_ms": 0.6665317341685295,
+          "local_samples_ms": [
+            0.6565521471202374,
+            0.6568930111825466
+          ],
+          "rank_median_cv": 0.007412902356257788,
+          "rank_median_ms": [
+            0.656722579151392,
+            0.6665317341685295
+          ],
+          "rank_median_spread_ms": 0.009809155017137527
+        },
+        "expert_cycle": {
+          "critical_path_ms": 0.8127340115606785,
+          "local_samples_ms": [
+            0.8090734481811523,
+            0.7997239008545876
+          ],
+          "rank_median_cv": 0.005154392780855376,
+          "rank_median_ms": [
+            0.80439867451787,
+            0.8127340115606785
+          ],
+          "rank_median_spread_ms": 0.008335337042808533
+        },
+        "integrated_cycle": {
+          "critical_path_ms": 3.130399389192462,
+          "local_samples_ms": [
+            3.1418316066265106,
+            3.1172442249953747
+          ],
+          "rank_median_cv": 0.0001376169344109508,
+          "rank_median_ms": [
+            3.1295379158109426,
+            3.130399389192462
+          ],
+          "rank_median_spread_ms": 0.0008614733815193176
+        },
+        "return_cycle": {
+          "critical_path_ms": 0.35330490209162235,
+          "local_samples_ms": [
+            0.34095998853445053,
+            0.3656498156487942
+          ],
+          "rank_median_cv": 0.0076588776342644375,
+          "rank_median_ms": [
+            0.35330490209162235,
+            0.34793419763445854
+          ],
+          "rank_median_spread_ms": 0.005370704457163811
+        },
+        "router_cycle": {
+          "critical_path_ms": 1.2425449676811695,
+          "local_samples_ms": [
+            1.2656301259994507,
+            1.2194598093628883
+          ],
+          "rank_median_cv": 0.0036154445774443274,
+          "rank_median_ms": [
+            1.2425449676811695,
+            1.2335926294326782
+          ],
+          "rank_median_spread_ms": 0.008952338248491287
+        }
+      },
+      "tokens_per_rank_per_step": 32,
+      "top_k": 2,
+      "total_tokens_per_rank": 64,
+      "warmup": 1
+    },
+    {
+      "aggregate_routing": {
+        "effective_destinations": 1.8609486313308101,
+        "max_to_mean_receive": 1.375,
+        "normalized_destination_entropy": 0.8960382325345574,
+        "rank_receive_assignments": [
+          176,
+          80
+        ],
+        "receive_cv": 0.375,
+        "send_matrix": [
+          [
+            87,
+            41
+          ],
+          [
+            89,
+            39
+          ]
+        ]
+      },
+      "correctness": {
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999999403953552
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 1.0,
+      "intermediate": 512,
+      "iterations": 2,
+      "min_output_cosine_vs_balanced": 0.7857524752616882,
+      "num_experts": 4,
+      "route_set_match_vs_balanced": 0.6328125,
+      "schedule": "persistent_bias1",
+      "schedule_kind": "persistent",
+      "step_latency": {
+        "critical_step_samples_ms": [
+          [
+            1.543598249554634,
+            1.5753102488815784
+          ],
+          [
+            1.5787966549396515,
+            1.5406119637191296
+          ]
+        ],
+        "cv": 0.011252638912899423,
+        "iterations": 2,
+        "max_ms": 1.5787966549396515,
+        "mean_ms": 1.5595792792737484,
+        "p50_ms": 1.5594542492181063,
+        "p95_ms": 1.5782736940309405,
+        "p99_ms": 1.5786920627579093,
+        "position_median_ms": [
+          1.5611974522471428,
+          1.557961106300354
+        ]
+      },
+      "step_routing": {
+        "max_max_to_mean_receive": 1.375,
+        "median_hottest_receive_fraction": 0.6875,
+        "median_max_to_mean_receive": 1.375,
+        "records": [
+          {
+            "configured_hot_destination": 0,
+            "hottest_receive_fraction": 0.6875,
+            "max_to_mean_receive": 1.375,
+            "observed_hot_destination": 0,
+            "step": 0
+          },
+          {
+            "configured_hot_destination": 0,
+            "hottest_receive_fraction": 0.6875,
+            "max_to_mean_receive": 1.375,
+            "observed_hot_destination": 0,
+            "step": 1
+          }
+        ]
+      },
+      "steps": 2,
+      "timings": {
+        "dispatch_cycle": {
+          "critical_path_ms": 0.6199653726071119,
+          "local_samples_ms": [
+            0.6446093320846558,
+            0.5953214131295681
+          ],
+          "rank_median_cv": 0.0008983810722008945,
+          "rank_median_ms": [
+            0.6199653726071119,
+            0.6188524421304464
+          ],
+          "rank_median_spread_ms": 0.0011129304766654968
+        },
+        "expert_cycle": {
+          "critical_path_ms": 0.8088462054729462,
+          "local_samples_ms": [
+            0.8030207827687263,
+            0.7975702174007893
+          ],
+          "rank_median_cv": 0.00531382994962822,
+          "rank_median_ms": [
+            0.8002955000847578,
+            0.8088462054729462
+          ],
+          "rank_median_spread_ms": 0.008550705388188362
+        },
+        "integrated_cycle": {
+          "critical_path_ms": 4.424987360835075,
+          "local_samples_ms": [
+            5.730075761675835,
+            3.119898959994316
+          ],
+          "rank_median_cv": 0.1780037710027744,
+          "rank_median_ms": [
+            4.424987360835075,
+            3.087700577452779
+          ],
+          "rank_median_spread_ms": 1.3372867833822966
+        },
+        "return_cycle": {
+          "critical_path_ms": 0.3411413636058569,
+          "local_samples_ms": [
+            0.36013778299093246,
+            0.3178650513291359
+          ],
+          "rank_median_cv": 0.003146319429301268,
+          "rank_median_ms": [
+            0.3390014171600342,
+            0.3411413636058569
+          ],
+          "rank_median_spread_ms": 0.0021399464458227158
+        },
+        "router_cycle": {
+          "critical_path_ms": 1.208738423883915,
+          "local_samples_ms": [
+            1.194230280816555,
+            1.2106020003557205
+          ],
+          "rank_median_cv": 0.0026220978907533243,
+          "rank_median_ms": [
+            1.2024161405861378,
+            1.208738423883915
+          ],
+          "rank_median_spread_ms": 0.006322283297777176
+        }
+      },
+      "tokens_per_rank_per_step": 32,
+      "top_k": 2,
+      "total_tokens_per_rank": 64,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_temporal_skew",
+  "timestamp_utc": "2026-11-11T01:44:41Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

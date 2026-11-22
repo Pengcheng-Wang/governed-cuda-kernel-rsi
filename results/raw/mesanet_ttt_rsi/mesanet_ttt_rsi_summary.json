@@ -1,0 +1,366 @@
+{
+  "experiment_id": "E139",
+  "version": "v130",
+  "round": "Round-13 RSI",
+  "title": "MesaNet: Sequence Modeling by Locally Optimal Test-Time Training (Dual-State H_kk/H_kv Recurrence, Causal Query-Subtiled Warm-Start Jacobi-PCG & NVSwitch Dual-State Prefix-Scan Mesa-CP=8)",
+  "paper": "arXiv:2506.05233v2 (von Oswald, Scherrer, Kobayashi, Versari, Yang et al., Google Paradigms of Intelligence / Google DeepMind / MIT CSAIL, 2025)",
+  "official_repo": "fla-org/flash-linear-attention/tree/main/fla/ops/mesa_net",
+  "harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+  "num_full_repetitions": 3,
+  "smoke_elapsed_s": 80.77364179608412,
+  "rep_elapsed_s": [
+    111.13540926016867,
+    111.13847424811684,
+    111.23301630513743
+  ],
+  "suite0_summary": {
+    "spectral_convergence_audit": {
+      "upstream_cg_rel_l2_by_step": {
+        "step_4": 0.06521400275748925,
+        "step_6": 0.01701942674513393,
+        "step_8": 0.004601014834521339,
+        "step_10": 0.0026159230582346498,
+        "step_15": 0.001881308497327016,
+        "step_30": 0.0012938124051635126
+      },
+      "rsi_jacobi_pcg_rel_l2_by_step": {
+        "step_4": 8.291523108927725e-06,
+        "step_6": 4.8509081865604155e-08,
+        "step_8": 3.1187262356607076e-10,
+        "step_10": 9.687801094082916e-13,
+        "step_15": 4.877195723259569e-16,
+        "step_30": 4.877195723259569e-16
+      },
+      "upstream_step30_rel_l2": 0.0012938124051635126,
+      "rsi_pcg_step6_rel_l2": 4.8509081865604155e-08,
+      "rsi_pcg_step8_rel_l2": 3.1187262356607076e-10,
+      "accuracy_improvement_factor_step6_vs_upstream30": 26671.550056297874,
+      "verified": true
+    },
+    "fp32_max_rel_l2_median": 1.28781205515825e-06,
+    "bf16_max_rel_l2_median": 0.004479276577452525,
+    "richardson_oh2_passed": "7/7",
+    "cubin_spill_audit": {
+      "total_rsi_kernels": 15,
+      "compiled_rsi_kernels": 15,
+      "total_specializations": 49,
+      "total_rsi_spills": 0,
+      "negative_control_monolithic_d128_spills": 1942,
+      "negative_control_monolithic_d128_regs": 32,
+      "all_zero_spills": true,
+      "kernels": [
+        {
+          "kernel": "_mesa_fused_qk_l2norm_cumsum_fwd_kernel",
+          "specializations": 4,
+          "max_n_regs": 128,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_fwd_dual_h_kernel",
+          "specializations": 4,
+          "max_n_regs": 104,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_qsubtiled_pcg_fwd_d64_kernel",
+          "specializations": 2,
+          "max_n_regs": 190,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_qsubtiled_pcg_fwd_d128_kernel",
+          "specializations": 3,
+          "max_n_regs": 248,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_readout_o_fwd_d128_kernel",
+          "specializations": 2,
+          "max_n_regs": 96,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_bwd_dh_reverse_kernel",
+          "specializations": 8,
+          "max_n_regs": 75,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_bwd_dq_star_kernel",
+          "specializations": 4,
+          "max_n_regs": 168,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_qsubtiled_pcg_bwd_d64_kernel",
+          "specializations": 2,
+          "max_n_regs": 128,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_bwd_intra_matrices_kernel",
+          "specializations": 4,
+          "max_n_regs": 255,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_bwd_intra_dk_dv_dbeta_dg_kernel",
+          "specializations": 4,
+          "max_n_regs": 255,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_bwd_fused_l2norm_rcumsum_g_kernel",
+          "specializations": 4,
+          "max_n_regs": 138,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_fused_shortconv_silu_fwd_kernel",
+          "specializations": 2,
+          "max_n_regs": 48,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_fused_shortconv_silu_bwd_kernel",
+          "specializations": 2,
+          "max_n_regs": 127,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_fused_rmsnorm_gate_fwd_kernel",
+          "specializations": 2,
+          "max_n_regs": 18,
+          "total_spills": 0
+        },
+        {
+          "kernel": "_mesa_fused_rmsnorm_gate_bwd_kernel",
+          "specializations": 2,
+          "max_n_regs": 137,
+          "total_spills": 0
+        }
+      ]
+    },
+    "red_team_exploits_caught": "4/4"
+  },
+  "suite_a_summary": {
+    "track1_mesa_layer": {
+      "geomean_speedup_vs_upstream_median": 53.5076667305534,
+      "geomean_speedup_vs_compile_median": 31.912946800125372,
+      "max_speedup_vs_seq_linalg_solve_median": 2452.816036754873,
+      "shapes": {
+        "s1_B2_T512_H8_K64": {
+          "upstream_cg30_ms": 59.23779296875,
+          "seq_linalg_solve_ms": 755.8180847167969,
+          "torch_compile_ms": 31.398032188415527,
+          "rsi_pcg8_ms": 1.2132160067558289,
+          "rsi_pcg6_ms": 1.1976320147514343,
+          "speedup_vs_upstream": 49.462432733183626,
+          "speedup_vs_compile": 26.216760909595518,
+          "speedup_vs_seq_solve": 631.0937545149585,
+          "upstream_hbm_mib": 435.7607421875,
+          "rsi_pcg6_hbm_mib": 46.7548828125
+        },
+        "s2_B2_T1024_H8_K64": {
+          "upstream_cg30_ms": 66.57331085205078,
+          "seq_linalg_solve_ms": 1510.8504028320312,
+          "torch_compile_ms": 40.14422416687012,
+          "rsi_pcg8_ms": 1.2216480374336243,
+          "rsi_pcg6_ms": 1.2122079730033875,
+          "speedup_vs_upstream": 54.919050472096465,
+          "speedup_vs_compile": 33.11661452564785,
+          "speedup_vs_seq_solve": 1246.362370549933,
+          "upstream_hbm_mib": 854.7646484375,
+          "rsi_pcg6_hbm_mib": 77.2548828125
+        },
+        "s3_B2_T1024_H8_K128": {
+          "upstream_cg30_ms": 67.0080337524414,
+          "seq_linalg_solve_ms": 1899.2744140625,
+          "torch_compile_ms": 40.897953033447266,
+          "rsi_pcg8_ms": 1.5921440124511719,
+          "rsi_pcg6_ms": 1.5377600193023682,
+          "speedup_vs_upstream": 43.57509163415549,
+          "speedup_vs_compile": 26.595796821406072,
+          "speedup_vs_seq_solve": 1235.0915553937598,
+          "upstream_hbm_mib": 1456.2666015625,
+          "rsi_pcg6_hbm_mib": 161.7587890625
+        },
+        "s4_B2_T2048_H8_K64": {
+          "upstream_cg30_ms": 84.00613021850586,
+          "seq_linalg_solve_ms": 3038.921630859375,
+          "torch_compile_ms": 56.11303901672363,
+          "rsi_pcg8_ms": 1.2376480102539062,
+          "rsi_pcg6_ms": 1.2240960001945496,
+          "speedup_vs_upstream": 68.62707680210906,
+          "speedup_vs_compile": 45.84039079272002,
+          "speedup_vs_seq_solve": 2482.5843972828843,
+          "upstream_hbm_mib": 1692.7724609375,
+          "rsi_pcg6_hbm_mib": 138.2548828125
+        }
+      }
+    },
+    "track2_mesa_block": {
+      "geomean_speedup_vs_upstream_median": 19.3960885725287,
+      "geomean_speedup_vs_compile_median": 12.227475694583488,
+      "shapes": {
+        "s1_B2_T512_H8_K64": {
+          "upstream_block_ms": 61.840864181518555,
+          "compile_block_ms": 35.644575119018555,
+          "rsi_block_ms": 3.6075519323349,
+          "speedup_vs_upstream": 17.142057922224716,
+          "speedup_vs_compile": 9.880543866751344
+        },
+        "s2_B2_T1024_H8_K64": {
+          "upstream_block_ms": 69.2279052734375,
+          "compile_block_ms": 42.98736000061035,
+          "rsi_block_ms": 3.620144009590149,
+          "speedup_vs_upstream": 19.12296999512875,
+          "speedup_vs_compile": 11.87448893931629
+        },
+        "s3_B2_T1024_H8_K128": {
+          "upstream_block_ms": 69.99996948242188,
+          "compile_block_ms": 42.99144172668457,
+          "rsi_block_ms": 3.587455987930298,
+          "speedup_vs_upstream": 19.512425997121927,
+          "speedup_vs_compile": 11.98382415598289
+        },
+        "s4_B2_T2048_H8_K64": {
+          "upstream_block_ms": 85.0907974243164,
+          "compile_block_ms": 58.40884780883789,
+          "rsi_block_ms": 3.652992010116577,
+          "speedup_vs_upstream": 23.293452925346234,
+          "speedup_vs_compile": 15.989317153467823
+        }
+      }
+    }
+  },
+  "suite_b_summary": {
+    "world_size": 8,
+    "t_global": 8192,
+    "t_local": 1024,
+    "parity": {
+      "broken_local_only_no_prefix_rel_l2": 1.144567608833313,
+      "max_loss_rel_diff": 1.1876491613118536e-07,
+      "max_param_rel_l2": 9.39046913117636e-07,
+      "max_grad_rel_l2": 2.124948196069454e-06
+    },
+    "performance": {
+      "D64": {
+        "allgather_upstream_ms": 169.72964477539062,
+        "mesa_cp8_rsi_ms": 3.064608097076416,
+        "speedup": 55.38380092949236,
+        "allgather_upstream_hbm_mib": 3640.65185546875,
+        "mesa_cp8_rsi_hbm_mib": 278.27587890625,
+        "hbm_reduction_ratio": 13.082886917034124
+      },
+      "D128": {
+        "allgather_upstream_ms": 225.44855499267578,
+        "mesa_cp8_rsi_ms": 3.0811359882354736,
+        "speedup": 73.17059547306357,
+        "allgather_upstream_hbm_mib": 6085.40283203125,
+        "mesa_cp8_rsi_hbm_mib": 334.02978515625,
+        "hbm_reduction_ratio": 18.21814431663531
+      }
+    }
+  },
+  "suite_c_summary": {
+    "wallclock_budget_s": 2.1,
+    "val_bpb_loop": {
+      "candidates": [
+        {
+          "id": "C0_upstream_mesa_30cg",
+          "steps_median": 36,
+          "val_bpb_median": 0.2697712767149668,
+          "val_recall_acc_median": 0.929931640625,
+          "decision": "BASELINE"
+        },
+        {
+          "id": "C1_rsi_mesa_pcg8_no_conv",
+          "steps_median": 368,
+          "val_bpb_median": 0.07812953625709114,
+          "val_recall_acc_median": 0.98193359375,
+          "decision": "KEEP"
+        },
+        {
+          "id": "C2_hebbian_gla_0cg_collapse",
+          "steps_median": 252,
+          "val_bpb_median": 5.9546702052338,
+          "val_recall_acc_median": 0.029541015625,
+          "decision": "REVERT_VAL_BPB"
+        },
+        {
+          "id": "C3_unfused_host_loop_35cg",
+          "steps_median": 32,
+          "val_bpb_median": 0.30350173957856824,
+          "val_recall_acc_median": 0.922607421875,
+          "decision": "REVERT_SLOWER"
+        },
+        {
+          "id": "C4_rsi_mesa_shortconv_pcg6",
+          "steps_median": 344,
+          "val_bpb_median": 0.046631537188677116,
+          "val_recall_acc_median": 0.989990234375,
+          "decision": "KEEP"
+        }
+      ],
+      "initial_val_bpb_median": 0.2697712767149668,
+      "final_val_bpb_median": 0.046631537188677116,
+      "val_bpb_improvement_median": 0.22313973952628968,
+      "initial_test_bpb_median": 0.2923552000108479,
+      "final_test_bpb_median": 0.054906708162170415,
+      "test_bpb_improvement_median": 0.2374484918486775,
+      "initial_recall_acc_median": 0.927978515625,
+      "final_recall_acc_median": 0.990234375
+    },
+    "scaling_law_5arm": {
+      "M0_hebbian_gla_0cg": {
+        "matched_steps": 108,
+        "val_bpb_median": 5.975654840361476,
+        "test_bpb_median": 5.965387476104967,
+        "recall_test_bpb_median": 5.965387476104967,
+        "recall_test_acc_median": 0.03466796875
+      },
+      "M1_online_deltanet_1step": {
+        "matched_steps": 108,
+        "val_bpb_median": 5.378111438897699,
+        "test_bpb_median": 5.385237024088247,
+        "recall_test_bpb_median": 5.385237024088247,
+        "recall_test_acc_median": 0.0869140625
+      },
+      "M2_mesa_biased_unprecond_1cg": {
+        "matched_steps": 108,
+        "val_bpb_median": 5.94125349467469,
+        "test_bpb_median": 5.94162428926995,
+        "recall_test_bpb_median": 5.94162428926995,
+        "recall_test_acc_median": 0.0341796875
+      },
+      "M3_mesa_scalar_lambda_pcg": {
+        "matched_steps": 108,
+        "val_bpb_median": 0.3358578245856309,
+        "test_bpb_median": 0.33498230390575107,
+        "recall_test_bpb_median": 0.33498230390575107,
+        "recall_test_acc_median": 0.8994140625
+      },
+      "M4_mesa_anisotropic_shortconv_rsi_pcg": {
+        "matched_steps": 108,
+        "val_bpb_median": 0.08105230616609482,
+        "test_bpb_median": 0.08594096676144855,
+        "recall_test_bpb_median": 0.08594096676144855,
+        "recall_test_acc_median": 0.975830078125
+      }
+    }
+  },
+  "gates": {
+    "G0_red_team_and_frozen_harness": true,
+    "G1_numerical_parity": true,
+    "G2_richardson_oh2": true,
+    "G3_zero_cubin_spills": true,
+    "G8_upstream_pathologies_audited": true,
+    "G4_dominates_upstream_eager": true,
+    "G5_dominates_torch_compile": true,
+    "G6_vector_pareto_all_shapes": true,
+    "G9_mesa_cp8_parity_and_speedup": true,
+    "G7_val_bpb_and_scaling_law": true
+  },
+  "all_nine_gates_passed": true
+}

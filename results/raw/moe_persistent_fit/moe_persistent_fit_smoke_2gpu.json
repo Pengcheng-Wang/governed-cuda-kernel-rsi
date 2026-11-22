@@ -1,0 +1,829 @@
+{
+  "additive_margin": 18,
+  "calibration_steps": 96,
+  "correctness": {
+    "cases": {
+      "hit_q1": {
+        "ideal_precomputed": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "scalar_host": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "vector_host": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "hit_q2": {
+        "ideal_precomputed": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "scalar_host": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "vector_host": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "miss_q1": {
+        "ideal_precomputed": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "scalar_host": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "vector_host": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "miss_q2": {
+        "ideal_precomputed": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "scalar_host": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "vector_host": {
+          "cosine_similarity": 1.0,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "mixed_q2": {
+        "ideal_precomputed": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "scalar_host": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "vector_host": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      }
+    },
+    "fit_decisions_exact": true,
+    "max_abs_error": 0.0,
+    "max_allowed_abs_error": 0.03125,
+    "min_cosine_similarity": 0.9999999403953552
+  },
+  "cuda": "12.9",
+  "experts_per_rank": 32,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hidden": 2048,
+  "hostname": "node-0",
+  "intermediate": 1024,
+  "method_order": "ascending",
+  "nodes": 1,
+  "notes": [
+    "The persistent controller batches profile-fit flags for several independent ready microbatches into one vector NCCL all-reduce and one CPU synchronization.",
+    "scalar_host performs the same pack, global fit reduction, host decision, and exact static-or-dynamic branch independently for every microbatch.",
+    "vector_host retains all speculative fixed routes until the batched decision is available, trading memory for fewer collective launches and host synchronizations.",
+    "ideal_precomputed is an upper bound with known fit decisions. Misses execute the original dynamic variable-split path rather than the count-free gathered fallback.",
+    "Queue patterns use natural trained-trace additive-profile hits and misses when available; the smoke gate may synthesize a fit boundary if one class is absent."
+  ],
+  "num_tokens": 128,
+  "profile": "smoke",
+  "profile_statistics": {
+    "observed_hit_rate": 0.9791666666666666,
+    "observed_hits": 141,
+    "observed_steps": 144
+  },
+  "queue_depths": [
+    1,
+    2
+  ],
+  "records": [
+    {
+      "controller_amortization": 1.038672592839013,
+      "controller_per_case_us": {
+        "scalar": 151.2069720774889,
+        "vector": 145.57712711393833
+      },
+      "controller_timings": {
+        "scalar_controller": {
+          "critical_path_ms": 0.1512069720774889,
+          "local_samples_ms": [
+            0.15872623771429062,
+            0.1469138078391552,
+            0.15599001199007034,
+            0.14693429693579674,
+            0.15327567234635353,
+            0.14560110867023468,
+            0.15683192759752274,
+            0.14606211334466934,
+            0.18787989392876625,
+            0.14913827180862427
+          ],
+          "rank_median_cv": 0.014980213927144742,
+          "rank_median_ms": [
+            0.1512069720774889,
+            0.14674360863864422
+          ],
+          "rank_median_spread_ms": 0.004463363438844681
+        },
+        "vector_controller": {
+          "critical_path_ms": 0.14557712711393833,
+          "local_samples_ms": [
+            0.1470041461288929,
+            0.17362413927912712,
+            0.14401832595467567,
+            0.1451699063181877,
+            0.17426395788788795,
+            0.14482997357845306,
+            0.14756526798009872,
+            0.14316709712147713,
+            0.14594057574868202,
+            0.14471029862761497
+          ],
+          "rank_median_cv": 7.517570321272165e-05,
+          "rank_median_ms": [
+            0.14555524103343487,
+            0.14557712711393833
+          ],
+          "rank_median_spread_ms": 2.1886080503463745e-05
+        }
+      },
+      "domains": [
+        "biology"
+      ],
+      "hit_fraction": 1.0,
+      "layers": [
+        0
+      ],
+      "pattern": "hit",
+      "queue_depth": 1,
+      "route_buffer_bytes_estimate": 4525096,
+      "scalar_peak_extra_bytes": 28529152.0,
+      "speedup_vs_dynamic": {
+        "ideal_precomputed": 1.1360266890743052,
+        "scalar_host": 1.0383785705353037,
+        "vector_host": 1.0176765529712704
+      },
+      "steps": [
+        97
+      ],
+      "synthetic_cases": 0,
+      "timings": {
+        "dynamic": {
+          "critical_path_ms": 1.5968575607985258,
+          "local_samples_ms": [
+            1.6010049730539322,
+            1.582159660756588,
+            1.5927101485431194,
+            1.6036597080528736
+          ],
+          "rank_median_cv": 0.005534400598765303,
+          "rank_median_ms": [
+            1.5968575607985258,
+            1.5792795456945896
+          ],
+          "rank_median_spread_ms": 0.017578015103936195
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 1.4056514482945204,
+          "local_samples_ms": [
+            1.4004511758685112,
+            1.4123031869530678,
+            1.3642339035868645,
+            1.368200872093439
+          ],
+          "rank_median_cv": 0.007643582977088445,
+          "rank_median_ms": [
+            1.3843260239809752,
+            1.4056514482945204
+          ],
+          "rank_median_spread_ms": 0.021325424313545227
+        },
+        "scalar_host": {
+          "critical_path_ms": 1.53783755376935,
+          "local_samples_ms": [
+            1.5532448887825012,
+            1.4997259713709354,
+            1.5200539492070675,
+            1.5363837592303753
+          ],
+          "rank_median_cv": 0.003137156748182724,
+          "rank_median_ms": [
+            1.5282188542187214,
+            1.53783755376935
+          ],
+          "rank_median_spread_ms": 0.009618699550628662
+        },
+        "vector_host": {
+          "critical_path_ms": 1.5691209118813276,
+          "local_samples_ms": [
+            1.554638147354126,
+            1.5770900063216686,
+            1.5659499913454056,
+            1.5533058904111385
+          ],
+          "rank_median_cv": 0.0028206046767531687,
+          "rank_median_ms": [
+            1.5602940693497658,
+            1.5691209118813276
+          ],
+          "rank_median_spread_ms": 0.008826842531561852
+        }
+      },
+      "vector_peak_extra_bytes": 28529152.0,
+      "vector_vs_ideal": 0.8958209897344288,
+      "vector_vs_scalar": 0.980063130970277
+    },
+    {
+      "controller_amortization": 0.9872807318610413,
+      "controller_per_case_us": {
+        "scalar": 147.34524302184582,
+        "vector": 149.24351125955582
+      },
+      "controller_timings": {
+        "scalar_controller": {
+          "critical_path_ms": 0.14734524302184582,
+          "local_samples_ms": [
+            0.14827679842710495,
+            0.14770636335015297,
+            0.14552101492881775,
+            0.14689425006508827,
+            0.14431914314627647,
+            0.15908712521195412,
+            0.15342701226472855,
+            0.14698412269353867,
+            0.14647282660007477,
+            0.14870800077915192
+          ],
+          "rank_median_cv": 0.004680145103549005,
+          "rank_median_ms": [
+            0.14734524302184582,
+            0.1459724735468626
+          ],
+          "rank_median_spread_ms": 0.0013727694749832153
+        },
+        "vector_controller": {
+          "critical_path_ms": 0.14924351125955582,
+          "local_samples_ms": [
+            0.14791591092944145,
+            0.14403928071260452,
+            0.14635175466537476,
+            0.18416298553347588,
+            0.14541111886501312,
+            0.15057111158967018,
+            0.18527498468756676,
+            0.1505897380411625,
+            0.15145214274525642,
+            0.14576176181435585
+          ],
+          "rank_median_cv": 0.002642707371190501,
+          "rank_median_ms": [
+            0.14924351125955582,
+            0.1484567765146494
+          ],
+          "rank_median_spread_ms": 0.0007867347449064255
+        }
+      },
+      "domains": [
+        "biology"
+      ],
+      "hit_fraction": 0.0,
+      "layers": [
+        0
+      ],
+      "pattern": "miss",
+      "queue_depth": 1,
+      "route_buffer_bytes_estimate": 4525096,
+      "scalar_peak_extra_bytes": 31186432.0,
+      "speedup_vs_dynamic": {
+        "ideal_precomputed": 1.0035803719868162,
+        "scalar_host": 0.7797297795528542,
+        "vector_host": 0.7825503739927006
+      },
+      "steps": [
+        96
+      ],
+      "synthetic_cases": 0,
+      "timings": {
+        "dynamic": {
+          "critical_path_ms": 1.565844751894474,
+          "local_samples_ms": [
+            1.5736143104732037,
+            1.548707950860262,
+            1.5830909833312035,
+            1.5580751933157444
+          ],
+          "rank_median_cv": 0.0017449818180789054,
+          "rank_median_ms": [
+            1.565844751894474,
+            1.5603895299136639
+          ],
+          "rank_median_spread_ms": 0.005455221980810165
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 1.5602584462612867,
+          "local_samples_ms": [
+            1.5584551729261875,
+            1.562061719596386,
+            1.5534069389104843,
+            1.5677730552852154
+          ],
+          "rank_median_cv": 0.0025442635507859704,
+          "rank_median_ms": [
+            1.5602584462612867,
+            1.5523391775786877
+          ],
+          "rank_median_spread_ms": 0.007919268682599068
+        },
+        "scalar_host": {
+          "critical_path_ms": 2.008188981562853,
+          "local_samples_ms": [
+            2.0104078575968742,
+            2.0059701055288315,
+            2.0253160037100315,
+            1.9722669385373592
+          ],
+          "rank_median_cv": 0.0016214455141759048,
+          "rank_median_ms": [
+            2.008188981562853,
+            2.0016871858388186
+          ],
+          "rank_median_spread_ms": 0.006501795724034309
+        },
+        "vector_host": {
+          "critical_path_ms": 2.0009507425129414,
+          "local_samples_ms": [
+            2.004137262701988,
+            1.9976748153567314,
+            1.9977642223238945,
+            2.04360019415617
+          ],
+          "rank_median_cv": 0.0014667716841165535,
+          "rank_median_ms": [
+            2.0009507425129414,
+            1.9950894638895988
+          ],
+          "rank_median_spread_ms": 0.005861278623342514
+        }
+      },
+      "vector_peak_extra_bytes": 31186432.0,
+      "vector_vs_ideal": 0.7797585483297801,
+      "vector_vs_scalar": 1.003617399917012
+    },
+    {
+      "controller_amortization": 1.8149913122073227,
+      "controller_per_case_us": {
+        "scalar": 135.58764476329088,
+        "vector": 74.7042940929532
+      },
+      "controller_timings": {
+        "scalar_controller": {
+          "critical_path_ms": 0.27117528952658176,
+          "local_samples_ms": [
+            0.2589426003396511,
+            0.2622688189148903,
+            0.29112305492162704,
+            0.29492005705833435,
+            0.2584117464721203,
+            0.25952374562621117,
+            0.2729087136685848,
+            0.2694418653845787,
+            0.2947291359305382,
+            0.29656291007995605
+          ],
+          "rank_median_cv": 0.01026451276851262,
+          "rank_median_ms": [
+            0.27117528952658176,
+            0.26566488668322563
+          ],
+          "rank_median_spread_ms": 0.0055104028433561325
+        },
+        "vector_controller": {
+          "critical_path_ms": 0.1494085881859064,
+          "local_samples_ms": [
+            0.1774309203028679,
+            0.14680391177535057,
+            0.1454399898648262,
+            0.1520938239991665,
+            0.1470041461288929,
+            0.17855316400527954,
+            0.18060626462101936,
+            0.14501018449664116,
+            0.14577200636267662,
+            0.14334777370095253
+          ],
+          "rank_median_cv": 0.00845242183061683,
+          "rank_median_ms": [
+            0.14690402895212173,
+            0.1494085881859064
+          ],
+          "rank_median_spread_ms": 0.0025045592337846756
+        }
+      },
+      "domains": [
+        "biology",
+        "biology"
+      ],
+      "hit_fraction": 1.0,
+      "layers": [
+        0,
+        0
+      ],
+      "pattern": "hit",
+      "queue_depth": 2,
+      "route_buffer_bytes_estimate": 9050192,
+      "scalar_peak_extra_bytes": 29053440.0,
+      "speedup_vs_dynamic": {
+        "ideal_precomputed": 1.1821004593694682,
+        "scalar_host": 1.0630072327944857,
+        "vector_host": 1.1273252479646987
+      },
+      "steps": [
+        97,
+        98
+      ],
+      "synthetic_cases": 0,
+      "timings": {
+        "dynamic": {
+          "critical_path_ms": 3.017896553501487,
+          "local_samples_ms": [
+            3.0359202064573765,
+            3.0405991710722446,
+            2.999872900545597,
+            2.9916982166469097
+          ],
+          "rank_median_cv": 0.002523601919663792,
+          "rank_median_ms": [
+            3.017896553501487,
+            3.00270295701921
+          ],
+          "rank_median_spread_ms": 0.015193596482276917
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 2.55299499258399,
+          "local_samples_ms": [
+            2.5461972691118717,
+            2.5057420134544373,
+            2.5359978899359703,
+            2.5283941067755222
+          ],
+          "rank_median_cv": 0.0040901107284468385,
+          "rank_median_ms": [
+            2.5321959983557463,
+            2.55299499258399
+          ],
+          "rank_median_spread_ms": 0.020798994228243828
+        },
+        "scalar_host": {
+          "critical_path_ms": 2.839017892256379,
+          "local_samples_ms": [
+            2.7831587940454483,
+            3.0070971697568893,
+            2.8046900406479836,
+            2.7962527237832546
+          ],
+          "rank_median_cv": 0.006835106543290481,
+          "rank_median_ms": [
+            2.800471382215619,
+            2.839017892256379
+          ],
+          "rank_median_spread_ms": 0.03854651004076004
+        },
+        "vector_host": {
+          "critical_path_ms": 2.677041571587324,
+          "local_samples_ms": [
+            2.679636236280203,
+            2.6463442482054234,
+            2.634872682392597,
+            2.6937718503177166
+          ],
+          "rank_median_cv": 0.002631319406771983,
+          "rank_median_ms": [
+            2.662990242242813,
+            2.677041571587324
+          ],
+          "rank_median_spread_ms": 0.014051329344511032
+        }
+      },
+      "vector_peak_extra_bytes": 33596928.0,
+      "vector_vs_ideal": 0.953662811844277,
+      "vector_vs_scalar": 1.0605057173516408
+    },
+    {
+      "controller_amortization": 1.7641762246757422,
+      "controller_per_case_us": {
+        "scalar": 136.03339903056622,
+        "vector": 77.10873614996672
+      },
+      "controller_timings": {
+        "scalar_controller": {
+          "critical_path_ms": 0.27206679806113243,
+          "local_samples_ms": [
+            0.2689911052584648,
+            0.27027400210499763,
+            0.27056364342570305,
+            0.27365097776055336,
+            0.2735699526965618,
+            0.30167214572429657,
+            0.2696928568184376,
+            0.2691117115318775,
+            0.312252901494503,
+            0.3066319040954113
+          ],
+          "rank_median_cv": 0.00016519376029786232,
+          "rank_median_ms": [
+            0.27206679806113243,
+            0.27197692543268204
+          ],
+          "rank_median_spread_ms": 8.987262845039368e-05
+        },
+        "vector_controller": {
+          "critical_path_ms": 0.15421747229993343,
+          "local_samples_ms": [
+            0.14815572649240494,
+            0.19007455557584763,
+            0.15395693480968475,
+            0.14583207666873932,
+            0.1538759097456932,
+            0.1574428752064705,
+            0.19635586068034172,
+            0.17807213589549065,
+            0.1482861116528511,
+            0.1544780097901821
+          ],
+          "rank_median_cv": 0.012663665996000465,
+          "rank_median_ms": [
+            0.15421747229993343,
+            0.15036039985716343
+          ],
+          "rank_median_spread_ms": 0.0038570724427700043
+        }
+      },
+      "domains": [
+        "biology",
+        "biology"
+      ],
+      "hit_fraction": 0.0,
+      "layers": [
+        0,
+        0
+      ],
+      "pattern": "miss",
+      "queue_depth": 2,
+      "route_buffer_bytes_estimate": 9050192,
+      "scalar_peak_extra_bytes": 31931904.0,
+      "speedup_vs_dynamic": {
+        "ideal_precomputed": 0.9925204577851855,
+        "scalar_host": 0.7862233335243618,
+        "vector_host": 0.8096792348001465
+      },
+      "steps": [
+        96,
+        99
+      ],
+      "synthetic_cases": 0,
+      "timings": {
+        "dynamic": {
+          "critical_path_ms": 2.9866087716072798,
+          "local_samples_ms": [
+            2.979754935950041,
+            2.9827309772372246,
+            2.9918579384684563,
+            2.973014023154974
+          ],
+          "rank_median_cv": 0.0008991200281151547,
+          "rank_median_ms": [
+            2.9812429565936327,
+            2.9866087716072798
+          ],
+          "rank_median_spread_ms": 0.0053658150136470795
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 3.0091155786067247,
+          "local_samples_ms": [
+            3.010061103850603,
+            3.0075679533183575,
+            3.0020070262253284,
+            2.9960558749735355
+          ],
+          "rank_median_cv": 0.0007196805112538496,
+          "rank_median_ms": [
+            3.004787489771843,
+            3.0091155786067247
+          ],
+          "rank_median_spread_ms": 0.0043280888348817825
+        },
+        "scalar_host": {
+          "critical_path_ms": 3.7986773531883955,
+          "local_samples_ms": [
+            3.779286053031683,
+            3.77820385619998,
+            3.792411182075739,
+            3.855688963085413
+          ],
+          "rank_median_cv": 0.001691435388865751,
+          "rank_median_ms": [
+            3.785848617553711,
+            3.7986773531883955
+          ],
+          "rank_median_spread_ms": 0.012828735634684563
+        },
+        "vector_host": {
+          "critical_path_ms": 3.688632044941187,
+          "local_samples_ms": [
+            3.664522897452116,
+            3.6921328864991665,
+            3.6851312033832073,
+            3.734332975000143
+          ],
+          "rank_median_cv": 0.0003817444987952995,
+          "rank_median_ms": [
+            3.688632044941187,
+            3.685816889628768
+          ],
+          "rank_median_spread_ms": 0.0028151553124189377
+        }
+      },
+      "vector_peak_extra_bytes": 36164096.0,
+      "vector_vs_ideal": 0.8157809024984229,
+      "vector_vs_scalar": 1.029833636672471
+    },
+    {
+      "controller_amortization": 1.75067677186521,
+      "controller_per_case_us": {
+        "scalar": 129.26594354212284,
+        "vector": 73.8376984372735
+      },
+      "controller_timings": {
+        "scalar_controller": {
+          "critical_path_ms": 0.2585318870842457,
+          "local_samples_ms": [
+            0.26299990713596344,
+            0.2594427205622196,
+            0.25716982781887054,
+            0.2560671418905258,
+            0.27036387473344803,
+            0.28890883550047874,
+            0.2569491043686867,
+            0.26683835312724113,
+            0.253261998295784,
+            0.25762105360627174
+          ],
+          "rank_median_cv": 0.005416496137283095,
+          "rank_median_ms": [
+            0.2585318870842457,
+            0.2557463012635708
+          ],
+          "rank_median_spread_ms": 0.0027855858206748962
+        },
+        "vector_controller": {
+          "critical_path_ms": 0.147675396874547,
+          "local_samples_ms": [
+            0.14844676479697227,
+            0.1602480188012123,
+            0.1643267460167408,
+            0.144248828291893,
+            0.1459517516195774,
+            0.14474987983703613,
+            0.1446697860956192,
+            0.14937901869416237,
+            0.14690402895212173,
+            0.15471875667572021
+          ],
+          "rank_median_cv": 0.004702257669780648,
+          "rank_median_ms": [
+            0.147675396874547,
+            0.14629308134317398
+          ],
+          "rank_median_spread_ms": 0.001382315531373024
+        }
+      },
+      "domains": [
+        "biology",
+        "biology"
+      ],
+      "hit_fraction": 0.5,
+      "layers": [
+        0,
+        0
+      ],
+      "pattern": "mixed",
+      "queue_depth": 2,
+      "route_buffer_bytes_estimate": 9050192,
+      "scalar_peak_extra_bytes": 32038400.0,
+      "speedup_vs_dynamic": {
+        "ideal_precomputed": 1.0665636129627518,
+        "scalar_host": 0.9254652913077053,
+        "vector_host": 0.9244702218253307
+      },
+      "steps": [
+        97,
+        96
+      ],
+      "synthetic_cases": 0,
+      "timings": {
+        "dynamic": {
+          "critical_path_ms": 3.02305119112134,
+          "local_samples_ms": [
+            3.0438853427767754,
+            3.0022170394659042,
+            2.9974980279803276,
+            3.2489183358848095
+          ],
+          "rank_median_cv": 0.0037440061635152107,
+          "rank_median_ms": [
+            3.02305119112134,
+            3.0004989821463823
+          ],
+          "rank_median_spread_ms": 0.022552208974957466
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 2.8343843296170235,
+          "local_samples_ms": [
+            2.7911337092518806,
+            4.017259925603867,
+            2.8311489149928093,
+            2.8376197442412376
+          ],
+          "rank_median_cv": 0.002018797912908746,
+          "rank_median_ms": [
+            2.8343843296170235,
+            2.82296328805387
+          ],
+          "rank_median_spread_ms": 0.011421041563153267
+        },
+        "scalar_host": {
+          "critical_path_ms": 3.266520332545042,
+          "local_samples_ms": [
+            3.234521020203829,
+            3.287198953330517,
+            3.2430971041321754,
+            3.2672309316694736
+          ],
+          "rank_median_cv": 0.0017413162051366526,
+          "rank_median_ms": [
+            3.2551640179008245,
+            3.266520332545042
+          ],
+          "rank_median_spread_ms": 0.011356314644217491
+        },
+        "vector_host": {
+          "critical_path_ms": 3.270036308094859,
+          "local_samples_ms": [
+            3.2449597492814064,
+            3.3104117028415203,
+            3.2392796128988266,
+            3.295112866908312
+          ],
+          "rank_median_cv": 0.0015172473594533488,
+          "rank_median_ms": [
+            3.270036308094859,
+            3.2601284328848124
+          ],
+          "rank_median_spread_ms": 0.009907875210046768
+        }
+      },
+      "vector_peak_extra_bytes": 36270592.0,
+      "vector_vs_ideal": 0.8667745745209634,
+      "vector_vs_scalar": 0.9989247900578004
+    }
+  ],
+  "selected_layers": [
+    0
+  ],
+  "suite": "distributed_moe_persistent_fit",
+  "tile_size": 512,
+  "timestamp_utc": "2026-11-11T22:07:25Z",
+  "top_k": 8,
+  "torch": "2.13.0+cu129",
+  "trace_corpus_sha256": "08008e65c5d919ac8c45bef7d07b0b1c9ea260d257d36e9d1c3c8b93257d5ad5",
+  "trace_experts": 64,
+  "trace_model": "allenai/OLMoE-1B-7B-0924",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

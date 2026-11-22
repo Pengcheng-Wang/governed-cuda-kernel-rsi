@@ -1,0 +1,333 @@
+{
+  "additive_margin": 18,
+  "calibration_steps": 96,
+  "correctness": {
+    "cases": {
+      "hit_layer0_step96": {
+        "device_cond_gather": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "device_host_gather": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "dynamic": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "gather_fallback": {
+          "cosine_similarity": 0.9999926686286926,
+          "max_abs_error": 0.0078125,
+          "normalized_rmse": 0.003831221954897046
+        },
+        "ideal_precomputed": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "precomputed_gather": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        }
+      },
+      "miss_layer0_step96": {
+        "device_cond_gather": {
+          "cosine_similarity": 0.9999926686286926,
+          "max_abs_error": 0.0078125,
+          "normalized_rmse": 0.003830013331025839
+        },
+        "device_host_gather": {
+          "cosine_similarity": 0.9999927282333374,
+          "max_abs_error": 0.0078125,
+          "normalized_rmse": 0.0038148800376802683
+        },
+        "dynamic": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "gather_fallback": {
+          "cosine_similarity": 0.9999926090240479,
+          "max_abs_error": 0.0078125,
+          "normalized_rmse": 0.0038176842499524355
+        },
+        "ideal_precomputed": {
+          "cosine_similarity": 0.9999999403953552,
+          "max_abs_error": 0.0,
+          "normalized_rmse": 0.0
+        },
+        "precomputed_gather": {
+          "cosine_similarity": 0.9999927282333374,
+          "max_abs_error": 0.0078125,
+          "normalized_rmse": 0.0038124346174299717
+        }
+      }
+    },
+    "max_abs_error": 0.0078125,
+    "max_allowed_abs_error": 0.03125,
+    "min_cosine_similarity": 0.9999926090240479
+  },
+  "cuda": "12.9",
+  "expected_mix": {
+    "device_cond_gather_ms": 2.527736428116138,
+    "dynamic_ms": 1.6247619350906461,
+    "hit_rate": 0.9791666666666666,
+    "speedup_vs_dynamic": 0.6427734778904708
+  },
+  "experts_per_rank": 32,
+  "fallback_accumulation": "bf16",
+  "fallback_dispatch_row_ratio": 0.25,
+  "fallback_return_byte_ratio": 0.25,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hidden": 2048,
+  "hostname": "node-0",
+  "intermediate": 1024,
+  "mean_speedup_vs_dynamic": {
+    "hit": {
+      "device_cond_gather": 0.6443041419585032,
+      "device_host_gather": 0.6428911278740043,
+      "gather_fallback": 0.7683749254967317,
+      "ideal_precomputed": 1.1837914336437736,
+      "precomputed_gather": 1.1924146020212634
+    },
+    "miss": {
+      "device_cond_gather": 0.5838832739452264,
+      "device_host_gather": 0.5853926082922557,
+      "gather_fallback": 0.8437364919661371,
+      "ideal_precomputed": 1.1337846400773803,
+      "precomputed_gather": 0.6818781748879368
+    }
+  },
+  "method_order": "ascending",
+  "nodes": 1,
+  "notes": [
+    "The device predicate reuses the tiled packer's overflow scalar and a functional NCCL all-reduce; torch.cond consumes the global scalar without Python item() synchronization.",
+    "The exact fallback all-gathers each source token once, filters assignments for local experts on device, and reduce-scatters token contributions back to source ranks.",
+    "The fallback uses fixed collective signatures and requires no Python split extraction. Its hidden-row ratio versus dynamic assignment transport is world_size/top_k.",
+    "ideal_precomputed matches the v33 assumption: host-known profile hits use fixed all-to-all and misses use the ordinary dynamic split path.",
+    "The first device_cond_gather invocation is reported separately as compile_critical_ms and excluded from steady-state timing."
+  ],
+  "num_tokens": 128,
+  "profile": "smoke",
+  "profile_statistics": {
+    "observed_hit_rate": 0.9791666666666666,
+    "observed_hits": 141,
+    "observed_steps": 144
+  },
+  "records": [
+    {
+      "compile_critical_ms": 1337.6803579740226,
+      "domain": "biology",
+      "expected_hit": true,
+      "kind": "hit",
+      "layer": 0,
+      "profile_rows_per_source": 1110,
+      "speedup_vs_dynamic": {
+        "device_cond_gather": 0.6443041419585032,
+        "device_host_gather": 0.6428911278740043,
+        "gather_fallback": 0.7683749254967317,
+        "ideal_precomputed": 1.1837914336437736,
+        "precomputed_gather": 1.1924146020212634
+      },
+      "step": 96,
+      "synthetic": true,
+      "timings": {
+        "device_cond_gather": {
+          "critical_path_ms": 2.516119508072734,
+          "local_samples_ms": [
+            2.5960090570151806,
+            2.431442029774189
+          ],
+          "rank_median_cv": 0.00047595197338149944,
+          "rank_median_ms": [
+            2.513725543394685,
+            2.516119508072734
+          ],
+          "rank_median_spread_ms": 0.0023939646780490875
+        },
+        "device_host_gather": {
+          "critical_path_ms": 2.5216497015208006,
+          "local_samples_ms": [
+            2.556965220719576,
+            2.4863341823220253
+          ],
+          "rank_median_cv": 0.0024573638259087916,
+          "rank_median_ms": [
+            2.5216497015208006,
+            2.5092868600040674
+          ],
+          "rank_median_spread_ms": 0.01236284151673317
+        },
+        "dynamic": {
+          "critical_path_ms": 1.6211462207138538,
+          "local_samples_ms": [
+            1.6148886643350124,
+            1.6274037770926952
+          ],
+          "rank_median_cv": 0.002445584432627363,
+          "rank_median_ms": [
+            1.6211462207138538,
+            1.613236265257001
+          ],
+          "rank_median_spread_ms": 0.007909955456852913
+        },
+        "gather_fallback": {
+          "critical_path_ms": 2.1098374854773283,
+          "local_samples_ms": [
+            2.113268245011568,
+            2.1029491908848286
+          ],
+          "rank_median_cv": 0.00040986002328004934,
+          "rank_median_ms": [
+            2.1081087179481983,
+            2.1098374854773283
+          ],
+          "rank_median_spread_ms": 0.001728767529129982
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 1.3694525696337223,
+          "local_samples_ms": [
+            1.3777376152575016,
+            1.3485932722687721
+          ],
+          "rank_median_cv": 0.0023007701185318798,
+          "rank_median_ms": [
+            1.3631654437631369,
+            1.3694525696337223
+          ],
+          "rank_median_spread_ms": 0.006287125870585442
+        },
+        "precomputed_gather": {
+          "critical_path_ms": 1.359549118205905,
+          "local_samples_ms": [
+            1.346598844975233,
+            1.3651740737259388
+          ],
+          "rank_median_cv": 0.001348829221209107,
+          "rank_median_ms": [
+            1.355886459350586,
+            1.359549118205905
+          ],
+          "rank_median_spread_ms": 0.003662658855319023
+        }
+      }
+    },
+    {
+      "compile_critical_ms": 504.21707332134247,
+      "domain": "biology",
+      "expected_hit": false,
+      "kind": "miss",
+      "layer": 0,
+      "profile_rows_per_source": 1023,
+      "speedup_vs_dynamic": {
+        "device_cond_gather": 0.5838832739452264,
+        "device_host_gather": 0.5853926082922557,
+        "gather_fallback": 0.8437364919661371,
+        "ideal_precomputed": 1.1337846400773803,
+        "precomputed_gather": 0.6818781748879368
+      },
+      "step": 96,
+      "synthetic": true,
+      "timings": {
+        "device_cond_gather": {
+          "critical_path_ms": 3.0737316701561213,
+          "local_samples_ms": [
+            3.2188380137085915,
+            2.8325561434030533
+          ],
+          "rank_median_cv": 0.007875260713627102,
+          "rank_median_ms": [
+            3.0256970785558224,
+            3.0737316701561213
+          ],
+          "rank_median_spread_ms": 0.04803459160029888
+        },
+        "device_host_gather": {
+          "critical_path_ms": 3.065806580707431,
+          "local_samples_ms": [
+            2.911853604018688,
+            3.173123113811016
+          ],
+          "rank_median_cv": 0.00381746821708328,
+          "rank_median_ms": [
+            3.042488358914852,
+            3.065806580707431
+          ],
+          "rank_median_spread_ms": 0.023318221792578697
+        },
+        "dynamic": {
+          "critical_path_ms": 1.7947005107998848,
+          "local_samples_ms": [
+            1.9864649511873722,
+            1.6029360704123974
+          ],
+          "rank_median_cv": 0.00645425293701706,
+          "rank_median_ms": [
+            1.7947005107998848,
+            1.7716821748763323
+          ],
+          "rank_median_spread_ms": 0.023018335923552513
+        },
+        "gather_fallback": {
+          "critical_path_ms": 2.1270865108817816,
+          "local_samples_ms": [
+            2.1920977160334587,
+            2.0468570291996
+          ],
+          "rank_median_cv": 0.0017918341685192595,
+          "rank_median_ms": [
+            2.1194773726165295,
+            2.1270865108817816
+          ],
+          "rank_median_spread_ms": 0.007609138265252113
+        },
+        "ideal_precomputed": {
+          "critical_path_ms": 1.5829289332032204,
+          "local_samples_ms": [
+            1.5685921534895897,
+            1.597265712916851
+          ],
+          "rank_median_cv": 0.002058023498580991,
+          "rank_median_ms": [
+            1.5829289332032204,
+            1.5764269046485424
+          ],
+          "rank_median_spread_ms": 0.006502028554677963
+        },
+        "precomputed_gather": {
+          "critical_path_ms": 2.63199582695961,
+          "local_samples_ms": [
+            2.688345964998007,
+            2.56531685590744
+          ],
+          "rank_median_cv": 0.0009820471891804708,
+          "rank_median_ms": [
+            2.6268314104527235,
+            2.63199582695961
+          ],
+          "rank_median_spread_ms": 0.005164416506886482
+        }
+      }
+    }
+  ],
+  "selected_layers": [
+    0
+  ],
+  "suite": "distributed_moe_device_fit",
+  "tile_size": 512,
+  "timestamp_utc": "2026-11-11T21:11:45Z",
+  "top_k": 8,
+  "torch": "2.13.0+cu129",
+  "trace_corpus_sha256": "08008e65c5d919ac8c45bef7d07b0b1c9ea260d257d36e9d1c3c8b93257d5ad5",
+  "trace_experts": 64,
+  "trace_model": "allenai/OLMoE-1B-7B-0924",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

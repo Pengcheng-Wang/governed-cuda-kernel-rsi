@@ -1,0 +1,418 @@
+{
+  "experiment": "E123_int8_quantized_training",
+  "mode": "smoke",
+  "world_size": 8,
+  "elapsed_s": 94.66,
+  "initial_sm_clock_mhz": 1410.0,
+  "initial_power_w": 88.63,
+  "environment": {
+    "timestamp_utc": "2026-11-15T22:44:09Z",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "cuda_driver": "580.178.04",
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "gpu_count": 8,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "gpu_memory_bytes": 85093777408,
+    "allow_tf32_matmul": false,
+    "allow_tf32_cudnn": true,
+    "triton": "3.7.1",
+    "flash_attn": "2.8.3.post1"
+  },
+  "suite_0_audits": {
+    "sm80_int8_tensor_core_roofline": {
+      "shape": {
+        "M": 2048,
+        "K": 4096,
+        "N": 14336
+      },
+      "bf16_cublas": {
+        "median_ms": 0.9202,
+        "iqr_ms": 0.0006,
+        "peak_inc_mib": 56.0,
+        "transient_workspace_mib": 56.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 88.02,
+        "tops_or_tflops": 261.38
+      },
+      "torch_int_mm_e6_contiguous_copy_and_dequant": {
+        "median_ms": 4.4111,
+        "iqr_ms": 0.0011,
+        "peak_inc_mib": 336.0,
+        "transient_workspace_mib": 336.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 88.02,
+        "tops_or_tflops": 54.53
+      },
+      "torch_int_mm_col_major_raw_s32": {
+        "median_ms": 0.5691,
+        "iqr_ms": 0.0019,
+        "peak_inc_mib": 112.0,
+        "transient_workspace_mib": 112.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 88.02,
+        "tops_or_tflops": 422.63
+      },
+      "triton_jetfire_inloop_promote_1x128x128": {
+        "median_ms": 1.2177,
+        "iqr_ms": 0.0007,
+        "peak_inc_mib": 56.0,
+        "transient_workspace_mib": 56.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 88.02,
+        "tops_or_tflops": 197.52
+      },
+      "triton_epilogue_only_coalesced_int8": {
+        "median_ms": 0.6136,
+        "iqr_ms": 0.0003,
+        "peak_inc_mib": 56.0,
+        "transient_workspace_mib": 56.0,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 88.02,
+        "tops_or_tflops": 391.98
+      },
+      "cutlass_sm80_scaled_mm_int8_to_bf16": {
+        "median_ms": 0.5234,
+        "iqr_ms": 0.015,
+        "peak_inc_mib": 56.13,
+        "transient_workspace_mib": 56.13,
+        "sm_clock_after_mhz": 1410.0,
+        "power_after_w": 93.84,
+        "tops_or_tflops": 459.53
+      }
+    },
+    "sm80_ptx_quantizer_ablation": {
+      "shape": {
+        "M": 2048,
+        "N": 14336
+      },
+      "naive_fp32_atomic_philox10_spilling_ms": 15.1243,
+      "split_s32_bitcast_splitmix_zero_spill_ms": 0.4641,
+      "speedup": 32.5885
+    },
+    "outlier_and_sr_accumulation_audit": {
+      "bf16_3gemm_parity": {
+        "y_rel_l2": 0.001659,
+        "dx_rel_l2": 0.002079,
+        "dw_rel_l2": 0.001617
+      },
+      "unrotated_switchback_3gemm_int8": {
+        "y_rel_l2": 0.012875,
+        "dx_rel_l2": 0.147607,
+        "dw_rel_l2": 0.110476
+      },
+      "halo_block128_hadamard_sr_3gemm_int8": {
+        "y_rel_l2": 0.002562,
+        "dx_rel_l2": 0.026955,
+        "dw_rel_l2": 0.020681
+      },
+      "jetfire_1x128x128_fwd_y_rel_l2": 0.007827,
+      "kronecker_64x64_hadamard_fwd_y_rel_l2": 0.002238,
+      "sub_lsb_256step_accumulation_audit": {
+        "steps": 256,
+        "rtn_int8_sub_lsb_rel_l2_bias": 1.0,
+        "sr_int8_sub_lsb_rel_l2_err": 0.086565
+      }
+    },
+    "fp64_chain_rule_refinement": {
+      "ratios_h_vs_half_h": {
+        "dx": 3.9981,
+        "dgamma": 4.0,
+        "dw_gate_up_rotated_identity": 4.0016,
+        "dw_down_rotated_identity": 4.0009
+      },
+      "min_refinement_ratio": 3.9981,
+      "max_analytical_vs_autograd_rel_l2": 4.284e-16
+    },
+    "coat_fused_kernel_parity": {
+      "rmsnorm_qnorm_dx_rel_l2": 0.00167,
+      "rmsnorm_qnorm_dgamma_rel_l2": 0.009125,
+      "coat_swiglu_mid_rel_l2": 0.014257,
+      "coat_swiglu_dgate_up_rel_l2": 0.007675
+    }
+  },
+  "suite_a_linear_3gemm_scaling": {
+    "linear_3gemm_token_scaling": {
+      "2048": {
+        "num_tokens": 2048,
+        "in_features": 4096,
+        "out_features": 14336,
+        "modes": {
+          "bf16_cublas_eager": {
+            "median_ms": 2.6841,
+            "iqr_ms": 0.0004,
+            "effective_tflops": 268.83,
+            "saved_activation_mib": 16.0,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 187.23
+          },
+          "triton_jetfire_block128_3gemm_int8": {
+            "median_ms": 4.2707,
+            "iqr_ms": 0.0023,
+            "effective_tflops": 168.95,
+            "saved_activation_mib": 8.25,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 88.02
+          },
+          "switchback_hybrid_hadamard_int8": {
+            "median_ms": 2.9694,
+            "iqr_ms": 0.0017,
+            "effective_tflops": 243.0,
+            "saved_activation_mib": 8.01,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 88.96
+          },
+          "triton_pure_halo_3gemm_sr_int8": {
+            "median_ms": 3.4863,
+            "iqr_ms": 0.0046,
+            "effective_tflops": 206.97,
+            "saved_activation_mib": 8.01,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 89.56
+          },
+          "halo_cutlass_3gemm_sr_int8_gacc1": {
+            "median_ms": 3.1499,
+            "iqr_ms": 0.0233,
+            "effective_tflops": 229.07,
+            "saved_activation_mib": 8.01,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 353.35
+          },
+          "halo_cutlass_3gemm_sr_int8_gacc4": {
+            "median_ms": 2.6146,
+            "iqr_ms": 0.0259,
+            "effective_tflops": 275.97,
+            "saved_activation_mib": 8.01,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 414.67
+          }
+        }
+      },
+      "8192": {
+        "num_tokens": 8192,
+        "in_features": 4096,
+        "out_features": 14336,
+        "modes": {
+          "bf16_cublas_eager": {
+            "median_ms": 10.7684,
+            "iqr_ms": 0.758,
+            "effective_tflops": 268.03,
+            "saved_activation_mib": 64.0,
+            "sm_clock_after_mhz": 1275.0,
+            "power_after_w": 121.35
+          },
+          "triton_jetfire_block128_3gemm_int8": {
+            "median_ms": 16.0897,
+            "iqr_ms": 0.0338,
+            "effective_tflops": 179.38,
+            "saved_activation_mib": 33.0,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 287.99
+          },
+          "switchback_hybrid_hadamard_int8": {
+            "median_ms": 9.2464,
+            "iqr_ms": 0.3953,
+            "effective_tflops": 312.15,
+            "saved_activation_mib": 32.03,
+            "sm_clock_after_mhz": 1305.0,
+            "power_after_w": 281.58
+          },
+          "triton_pure_halo_3gemm_sr_int8": {
+            "median_ms": 9.8318,
+            "iqr_ms": 0.0034,
+            "effective_tflops": 293.56,
+            "saved_activation_mib": 32.03,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 320.96
+          },
+          "halo_cutlass_3gemm_sr_int8_gacc1": {
+            "median_ms": 8.8623,
+            "iqr_ms": 0.0887,
+            "effective_tflops": 325.67,
+            "saved_activation_mib": 32.03,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 89.89
+          },
+          "halo_cutlass_3gemm_sr_int8_gacc4": {
+            "median_ms": 8.5253,
+            "iqr_ms": 0.2757,
+            "effective_tflops": 338.55,
+            "saved_activation_mib": 32.03,
+            "sm_clock_after_mhz": 1320.0,
+            "power_after_w": 419.21
+          }
+        }
+      }
+    }
+  },
+  "suite_b_coat_swiglu_mlp_stack": {
+    "stack_bf16_parity": {
+      "out_rel_l2": 0.033133,
+      "dx_rel_l2": 0.041595,
+      "dw_layer0_gate_up_rel_l2": 0.042853,
+      "dw_last_down_rel_l2": 0.043897
+    },
+    "token_scaling": {
+      "2048": {
+        "num_tokens": 2048,
+        "num_layers": 2,
+        "hidden": 4096,
+        "intermediate": 14336,
+        "modes": {
+          "mlp_bf16_eager": {
+            "median_ms": 20.1684,
+            "iqr_ms": 0.4792,
+            "peak_inc_mib": 208.0,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1365.0,
+            "power_after_w": 421.68,
+            "effective_tflops": 214.66,
+            "saved_activations_mib": 576.02
+          },
+          "mlp_bf16_torch_compile": {
+            "median_ms": 17.7636,
+            "iqr_ms": 0.8206,
+            "peak_inc_mib": 144.0,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1290.0,
+            "power_after_w": 453.68,
+            "effective_tflops": 243.72,
+            "saved_activations_mib": 384.02
+          },
+          "mlp_bf16_full_checkpoint": {
+            "median_ms": 24.8448,
+            "iqr_ms": 0.7193,
+            "peak_inc_mib": 208.0,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1320.0,
+            "power_after_w": 410.67,
+            "effective_tflops": 174.25,
+            "saved_activations_mib": 16.0
+          },
+          "mlp_halo_coat_int8_fused": {
+            "median_ms": 20.8916,
+            "iqr_ms": 0.1504,
+            "peak_inc_mib": 413.17,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1410.0,
+            "power_after_w": 395.76,
+            "effective_tflops": 207.23,
+            "saved_activations_mib": 185.8
+          }
+        }
+      },
+      "4096": {
+        "num_tokens": 4096,
+        "num_layers": 2,
+        "hidden": 4096,
+        "intermediate": 14336,
+        "modes": {
+          "mlp_bf16_eager": {
+            "median_ms": 39.5032,
+            "iqr_ms": 0.0854,
+            "peak_inc_mib": 816.02,
+            "transient_workspace_mib": 112.0,
+            "sm_clock_after_mhz": 1320.0,
+            "power_after_w": 399.11,
+            "effective_tflops": 219.19,
+            "saved_activations_mib": 1152.03
+          },
+          "mlp_bf16_torch_compile": {
+            "median_ms": 35.0655,
+            "iqr_ms": 0.2924,
+            "peak_inc_mib": 432.02,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1305.0,
+            "power_after_w": 412.2,
+            "effective_tflops": 246.93,
+            "saved_activations_mib": 768.03
+          },
+          "mlp_bf16_full_checkpoint": {
+            "median_ms": 48.7856,
+            "iqr_ms": 0.1643,
+            "peak_inc_mib": 608.01,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1320.0,
+            "power_after_w": 422.29,
+            "effective_tflops": 177.48,
+            "saved_activations_mib": 32.0
+          },
+          "mlp_halo_coat_int8_fused": {
+            "median_ms": 34.0245,
+            "iqr_ms": 0.2133,
+            "peak_inc_mib": 602.09,
+            "transient_workspace_mib": 0.0,
+            "sm_clock_after_mhz": 1380.0,
+            "power_after_w": 414.94,
+            "effective_tflops": 254.48,
+            "saved_activations_mib": 371.59
+          }
+        }
+      }
+    }
+  },
+  "suite_c_quantized_fsdp2_8gpu": {
+    "distributed_gradient_parity": {
+      "fsdp2_bf16_vs_1gpu": {
+        "dw_layer0_wqkv_rel_l2": 0.007465,
+        "dw_layer0_wgu_rel_l2": 0.006088,
+        "dw_layer1_wdn_rel_l2": 0.006277
+      },
+      "halo_coat_quant_fsdp2_vs_1gpu": {
+        "dw_layer0_wqkv_rel_l2": 0.036304,
+        "dw_layer0_wgu_rel_l2": 0.036594,
+        "dw_layer1_wdn_rel_l2": 0.036286
+      },
+      "naive_per_tensor_rtn_int8_grad_comm_bias_rel_l2": 0.924293
+    },
+    "fsdp2_8gpu_training_scaling": {
+      "num_layers": 2,
+      "params_billions": 0.436,
+      "local_tokens_per_gpu": 2048,
+      "global_tokens_per_step": 16384,
+      "seq_len": 2048,
+      "bf16_allgather_mib_per_step": 1664.0,
+      "int8_allgather_mib_per_step": 832.8,
+      "modes": {
+        "fsdp2_bf16_eager_reshard": {
+          "step_ms_median": 42.8646,
+          "step_ms_iqr": 0.6172,
+          "per_rank_peak_inc_mib": 2004.34,
+          "global_tokens_per_s": 382226.5,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 96.59
+        },
+        "fsdp2_bf16_compile_reshard": {
+          "step_ms_median": 40.0722,
+          "step_ms_iqr": 0.5544,
+          "per_rank_peak_inc_mib": 1916.34,
+          "global_tokens_per_s": 408861.8,
+          "sm_clock_after_mhz": 1395.0,
+          "power_after_w": 90.08
+        },
+        "fsdp2_bf16_act_checkpoint": {
+          "step_ms_median": 50.5126,
+          "step_ms_iqr": 0.2413,
+          "per_rank_peak_inc_mib": 1828.3,
+          "global_tokens_per_s": 324354.4,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 92.03
+        },
+        "halo_coat_quant_fsdp2": {
+          "step_ms_median": 41.1616,
+          "step_ms_iqr": 0.0414,
+          "per_rank_peak_inc_mib": 996.52,
+          "global_tokens_per_s": 398040.9,
+          "sm_clock_after_mhz": 1410.0,
+          "power_after_w": 329.16
+        }
+      }
+    }
+  }
+}

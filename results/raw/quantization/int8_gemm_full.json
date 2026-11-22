@@ -1,0 +1,304 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-10T10:42:53Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "notes": [
+    "INT8 tensors are prequantized; quantization cost is excluded.",
+    "torch._int_mm in this build requires M > 16, so the smallest case uses M=32.",
+    "The unfused dequant path materializes INT32 and FP32 intermediates.",
+    "Production W8A8 kernels normally fuse scaling and output conversion."
+  ],
+  "profile": "full",
+  "records": [
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "bf16_cublas",
+      "iterations_per_group": 10,
+      "max_ms": 0.028259199857711793,
+      "mean_ms": 0.027151085649217876,
+      "median_ms": 0.027088001370429993,
+      "min_ms": 0.026649600267410277,
+      "quantization_quality": null,
+      "shape_mnk": [
+        32,
+        4096,
+        4096
+      ],
+      "tflop_s": 39.63901984928744,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_int32_kernel",
+      "iterations_per_group": 10,
+      "max_ms": 0.24143679141998292,
+      "mean_ms": 0.24133577006203785,
+      "median_ms": 0.24131200313568116,
+      "min_ms": 0.24127678871154784,
+      "quantization_quality": {
+        "cosine_similarity": 0.9999047517776489,
+        "max_abs_error": 4.5,
+        "max_rel_error": 2065.25390625,
+        "mean_abs_error": 0.6928912401199341,
+        "mean_rel_error": 0.13863304257392883,
+        "normalized_rmse": 0.013805277645587921
+      },
+      "shape_mnk": [
+        32,
+        4096,
+        4096
+      ],
+      "tops": 4.449599730007103,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_with_unfused_dequant",
+      "iterations_per_group": 10,
+      "max_ms": 0.25640320777893066,
+      "mean_ms": 0.25624685968671523,
+      "median_ms": 0.2562592029571533,
+      "min_ms": 0.25604801177978515,
+      "quantization_quality": {
+        "cosine_similarity": 0.9999047517776489,
+        "max_abs_error": 4.5,
+        "max_rel_error": 2065.25390625,
+        "mean_abs_error": 0.6928912401199341,
+        "mean_rel_error": 0.13863304257392883,
+        "normalized_rmse": 0.013805277645587921
+      },
+      "shape_mnk": [
+        32,
+        4096,
+        4096
+      ],
+      "tops": 4.1900615143157625,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "bf16_cublas",
+      "iterations_per_group": 10,
+      "max_ms": 0.04434880018234253,
+      "mean_ms": 0.043634742924145285,
+      "median_ms": 0.043568000197410583,
+      "min_ms": 0.04329279959201813,
+      "quantization_quality": null,
+      "shape_mnk": [
+        128,
+        4096,
+        4096
+      ],
+      "tflop_s": 98.58077663741992,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_int32_kernel",
+      "iterations_per_group": 10,
+      "max_ms": 0.244979190826416,
+      "mean_ms": 0.24276571614401682,
+      "median_ms": 0.24240639209747314,
+      "min_ms": 0.2423487901687622,
+      "quantization_quality": {
+        "cosine_similarity": 0.9998948574066162,
+        "max_abs_error": 4.5,
+        "max_rel_error": 2796875.0,
+        "mean_abs_error": 0.7306625843048096,
+        "mean_rel_error": 238.61880493164062,
+        "normalized_rmse": 0.014500037766993046
+      },
+      "shape_mnk": [
+        128,
+        4096,
+        4096
+      ],
+      "tops": 17.718044721662977,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_with_unfused_dequant",
+      "iterations_per_group": 10,
+      "max_ms": 0.26070079803466795,
+      "mean_ms": 0.26055634362357,
+      "median_ms": 0.260534405708313,
+      "min_ms": 0.2604991912841797,
+      "quantization_quality": {
+        "cosine_similarity": 0.9998948574066162,
+        "max_abs_error": 4.5,
+        "max_rel_error": 2796875.0,
+        "mean_abs_error": 0.7306625843048096,
+        "mean_rel_error": 238.61880493164062,
+        "normalized_rmse": 0.014500037766993046
+      },
+      "shape_mnk": [
+        128,
+        4096,
+        4096
+      ],
+      "tops": 16.48522115274297,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "bf16_cublas",
+      "iterations_per_group": 10,
+      "max_ms": 0.11419199705123902,
+      "mean_ms": 0.1135990858078003,
+      "median_ms": 0.11348160505294799,
+      "min_ms": 0.11330560445785523,
+      "quantization_quality": null,
+      "shape_mnk": [
+        512,
+        4096,
+        4096
+      ],
+      "tflop_s": 151.38902182414722,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_int32_kernel",
+      "iterations_per_group": 10,
+      "max_ms": 0.48398399353027344,
+      "mean_ms": 0.4792223998478481,
+      "median_ms": 0.4784704208374023,
+      "min_ms": 0.47819199562072756,
+      "quantization_quality": {
+        "cosine_similarity": 0.9998878240585327,
+        "max_abs_error": 5.0,
+        "max_rel_error": 31452.427734375,
+        "mean_abs_error": 0.7546167373657227,
+        "mean_rel_error": 0.13091854751110077,
+        "normalized_rmse": 0.014979284256696701
+      },
+      "shape_mnk": [
+        512,
+        4096,
+        4096
+      ],
+      "tops": 35.905812430227954,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_with_unfused_dequant",
+      "iterations_per_group": 10,
+      "max_ms": 0.5124383926391601,
+      "mean_ms": 0.4416132586342948,
+      "median_ms": 0.4214015960693359,
+      "min_ms": 0.4203487873077393,
+      "quantization_quality": {
+        "cosine_similarity": 0.9998878240585327,
+        "max_abs_error": 5.0,
+        "max_rel_error": 31452.427734375,
+        "mean_abs_error": 0.7546167373657227,
+        "mean_rel_error": 0.13091854751110077,
+        "normalized_rmse": 0.014979284256696701
+      },
+      "shape_mnk": [
+        512,
+        4096,
+        4096
+      ],
+      "tops": 40.768400841968536,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "bf16_cublas",
+      "iterations_per_group": 10,
+      "max_ms": 0.5339231967926026,
+      "mean_ms": 0.5209952013833182,
+      "median_ms": 0.515231990814209,
+      "min_ms": 0.5136000156402588,
+      "quantization_quality": null,
+      "shape_mnk": [
+        4096,
+        4096,
+        4096
+      ],
+      "tflop_s": 266.75159136529635,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_int32_kernel",
+      "iterations_per_group": 10,
+      "max_ms": 1.995462417602539,
+      "mean_ms": 1.9610752378191267,
+      "median_ms": 1.954899215698242,
+      "min_ms": 1.9476224899291992,
+      "quantization_quality": {
+        "cosine_similarity": 0.9998770952224731,
+        "max_abs_error": 5.5,
+        "max_rel_error": 436907.65625,
+        "mean_abs_error": 0.7913217544555664,
+        "mean_rel_error": 0.17676503956317902,
+        "normalized_rmse": 0.015678074210882187
+      },
+      "shape_mnk": [
+        4096,
+        4096,
+        4096
+      ],
+      "tops": 70.30487933512734,
+      "warmup": 10
+    },
+    {
+      "experiment": "symmetric_w8a8_gemm",
+      "groups": 7,
+      "implementation": "int8_with_unfused_dequant",
+      "iterations_per_group": 10,
+      "max_ms": 2.1772735595703123,
+      "mean_ms": 2.1676045554024834,
+      "median_ms": 2.1724639892578126,
+      "min_ms": 2.155936050415039,
+      "quantization_quality": {
+        "cosine_similarity": 0.9998770952224731,
+        "max_abs_error": 5.5,
+        "max_rel_error": 436907.65625,
+        "mean_abs_error": 0.7913217544555664,
+        "mean_rel_error": 0.17676503956317902,
+        "normalized_rmse": 0.015678074210882187
+      },
+      "shape_mnk": [
+        4096,
+        4096,
+        4096
+      ],
+      "tops": 63.26408822037773,
+      "warmup": 10
+    }
+  ],
+  "suite": "int8_gemm"
+}

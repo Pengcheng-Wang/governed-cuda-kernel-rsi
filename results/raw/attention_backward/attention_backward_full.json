@@ -1,0 +1,596 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-10T11:05:20Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "profile": "full",
+  "profiler_summaries": [
+    {
+      "implementation": "torch_sdpa_flash",
+      "shape_bshd": [
+        2,
+        2048,
+        16,
+        128
+      ],
+      "table": "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                        aten::_flash_attention_backward         0.64%      27.641us         2.87%     124.032us     124.032us     690.385us        51.81%     732.144us     732.144us           0 B           0 B      48.00 MB     -48.25 MB             1  \nvoid pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_par...         0.00%       0.000us         0.00%       0.000us       0.000us     617.235us        46.32%     617.235us     617.235us           0 B           0 B           0 B           0 B             1  \n                         aten::_flash_attention_forward         1.43%      61.832us        66.61%       2.875ms       2.875ms     280.634us        21.06%     561.268us     561.268us           0 B           0 B      16.25 MB           0 B             1  \n                                Activity Buffer Request        47.91%       2.068ms        47.91%       2.068ms       2.068ms     280.634us        21.06%     280.634us     280.634us           0 B           0 B           0 B           0 B             1  \nvoid pytorch_flash::flash_fwd_kernel<Flash_fwd_kerne...         0.00%       0.000us         0.00%       0.000us       0.000us     280.634us        21.06%     280.634us     280.634us           0 B           0 B           0 B           0 B             1  \n                                            aten::copy_         1.02%      43.872us         2.42%     104.605us      26.151us     155.996us        11.71%     155.996us      38.999us           0 B           0 B           0 B           0 B             4  \n                                              aten::mul         0.74%      32.039us         1.11%      47.709us      23.854us     105.182us         7.89%     105.182us      52.591us           0 B           0 B      64.00 MB      64.00 MB             2  \nvoid at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      65.983us         4.95%      65.983us      65.983us           0 B           0 B           0 B           0 B             1  \nvoid at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      45.663us         3.43%      45.663us      45.663us           0 B           0 B           0 B           0 B             1  \nvoid at::native::elementwise_kernel<128, 4, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      41.759us         3.13%      41.759us      41.759us           0 B           0 B           0 B           0 B             1  \n                                              aten::pow         1.28%      55.134us         2.27%      98.034us      49.017us      39.743us         2.98%      79.422us      39.711us           0 B           0 B      64.00 MB      64.00 MB             2  \nvoid at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      39.743us         2.98%      39.743us      39.743us           0 B           0 B           0 B           0 B             1  \n                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us      39.679us         2.98%      39.679us      39.679us           0 B           0 B           0 B           0 B             1  \nvoid at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      39.199us         2.94%      39.199us      39.199us           0 B           0 B           0 B           0 B             1  \nvoid pytorch_flash::flash_bwd_dot_do_o_kernel<true, ...         0.00%       0.000us         0.00%       0.000us       0.000us      37.183us         2.79%      37.183us      37.183us           0 B           0 B           0 B           0 B             1  \nvoid pytorch_flash::flash_bwd_convert_dq_kernel<Flas...         0.00%       0.000us         0.00%       0.000us       0.000us      35.967us         2.70%      35.967us      35.967us           0 B           0 B           0 B           0 B             1  \n                                             aten::mean         1.08%      46.668us         1.70%      73.518us      73.518us      31.871us         2.39%      31.871us      31.871us           0 B           0 B         512 B         512 B             1  \nvoid at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us      30.815us         2.31%      30.815us      30.815us           0 B           0 B           0 B           0 B             1  \nvoid at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      28.895us         2.17%      28.895us      28.895us           0 B           0 B           0 B           0 B             1  \n                                              aten::div         1.47%      63.548us         1.88%      81.011us      81.011us      26.816us         2.01%      26.816us      26.816us           0 B           0 B      32.00 MB      32.00 MB             1  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 4.316ms\nSelf CUDA time total: 1.332ms\n",
+      "top_cuda_events": [
+        {
+          "count": 1,
+          "device_time_us": 732.1440000000002,
+          "input_shapes": "",
+          "name": "aten::_flash_attention_backward",
+          "self_device_time_us": 690.3850000000002
+        },
+        {
+          "count": 1,
+          "device_time_us": 617.2350000000006,
+          "input_shapes": "",
+          "name": "void pytorch_flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 128, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(pytorch_flash::Flash_bwd_params)",
+          "self_device_time_us": 617.2350000000006
+        },
+        {
+          "count": 1,
+          "device_time_us": 561.268,
+          "input_shapes": "",
+          "name": "aten::_flash_attention_forward",
+          "self_device_time_us": 280.634
+        },
+        {
+          "count": 1,
+          "device_time_us": 280.634,
+          "input_shapes": "",
+          "name": "Activity Buffer Request",
+          "self_device_time_us": 280.634
+        },
+        {
+          "count": 1,
+          "device_time_us": 280.634,
+          "input_shapes": "",
+          "name": "void pytorch_flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 128, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 128, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(pytorch_flash::Flash_fwd_params)",
+          "self_device_time_us": 280.634
+        },
+        {
+          "count": 4,
+          "device_time_us": 155.99599999999964,
+          "input_shapes": "",
+          "name": "aten::copy_",
+          "self_device_time_us": 155.99599999999964
+        },
+        {
+          "count": 2,
+          "device_time_us": 105.1820000000007,
+          "input_shapes": "",
+          "name": "aten::mul",
+          "self_device_time_us": 105.1820000000007
+        },
+        {
+          "count": 1,
+          "device_time_us": 65.98300000000017,
+          "input_shapes": "",
+          "name": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+          "self_device_time_us": 65.98300000000017
+        },
+        {
+          "count": 1,
+          "device_time_us": 45.66300000000001,
+          "input_shapes": "",
+          "name": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+          "self_device_time_us": 45.66300000000001
+        },
+        {
+          "count": 1,
+          "device_time_us": 41.759000000000015,
+          "input_shapes": "",
+          "name": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1}>(at::TensorIteratorBase&, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#12}::operator()() const::{lambda(c10::BFloat16)#1} const&)::{lambda(int)#1})",
+          "self_device_time_us": 41.759000000000015
+        },
+        {
+          "count": 2,
+          "device_time_us": 79.42200000000003,
+          "input_shapes": "",
+          "name": "aten::pow",
+          "self_device_time_us": 39.74299999999994
+        },
+        {
+          "count": 1,
+          "device_time_us": 39.74299999999994,
+          "input_shapes": "",
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul>)",
+          "self_device_time_us": 39.74299999999994
+        },
+        {
+          "count": 1,
+          "device_time_us": 39.67900000000009,
+          "input_shapes": "",
+          "name": "Memcpy DtoD (Device -> Device)",
+          "self_device_time_us": 39.67900000000009
+        },
+        {
+          "count": 1,
+          "device_time_us": 39.199000000000524,
+          "input_shapes": "",
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul>)",
+          "self_device_time_us": 39.199000000000524
+        },
+        {
+          "count": 1,
+          "device_time_us": 37.18299999999999,
+          "input_shapes": "",
+          "name": "void pytorch_flash::flash_bwd_dot_do_o_kernel<true, Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 128, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params)",
+          "self_device_time_us": 37.18299999999999
+        },
+        {
+          "count": 1,
+          "device_time_us": 35.96699999999964,
+          "input_shapes": "",
+          "name": "void pytorch_flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 128, 8, cutlass::bfloat16_t> > >(pytorch_flash::Flash_bwd_params, int)",
+          "self_device_time_us": 35.96699999999964
+        },
+        {
+          "count": 1,
+          "device_time_us": 31.871000000000095,
+          "input_shapes": "",
+          "name": "aten::mean",
+          "self_device_time_us": 31.871000000000095
+        },
+        {
+          "count": 1,
+          "device_time_us": 30.815000000000055,
+          "input_shapes": "",
+          "name": "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4> >(at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4>)",
+          "self_device_time_us": 30.815000000000055
+        },
+        {
+          "count": 1,
+          "device_time_us": 28.894999999999527,
+          "input_shapes": "",
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul>)",
+          "self_device_time_us": 28.894999999999527
+        },
+        {
+          "count": 1,
+          "device_time_us": 26.816000000000713,
+          "input_shapes": "",
+          "name": "aten::div",
+          "self_device_time_us": 26.816000000000713
+        }
+      ]
+    },
+    {
+      "implementation": "flash_attn",
+      "shape_bshd": [
+        2,
+        2048,
+        16,
+        128
+      ],
+      "table": "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg       CPU Mem  Self CPU Mem      CUDA Mem  Self CUDA Mem    # of Calls  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                       flash_attn::_flash_attn_backward         6.18%     221.966us         7.28%     261.508us     261.508us     667.605us        54.03%     667.605us     667.605us           0 B           0 B     256.00 KB     -32.00 MB             1  \nvoid flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_ke...         0.00%       0.000us         0.00%       0.000us       0.000us     595.702us        48.21%     595.702us     595.702us           0 B           0 B           0 B           0 B             1  \n                        flash_attn::_flash_attn_forward         2.74%      98.323us        63.01%       2.265ms       2.265ms     247.579us        20.04%     495.158us     495.158us           0 B           0 B      16.25 MB           0 B             1  \n                                Activity Buffer Request        58.32%       2.096ms        58.32%       2.096ms       2.096ms     247.579us        20.04%     247.579us     247.579us           0 B           0 B           0 B           0 B             1  \nvoid flash::flash_fwd_kernel<Flash_fwd_kernel_traits...         0.00%       0.000us         0.00%       0.000us       0.000us     247.579us        20.04%     247.579us     247.579us           0 B           0 B           0 B           0 B             1  \n                                            aten::copy_         0.64%      22.953us         1.80%      64.571us      21.524us     114.431us         9.26%     114.431us      38.144us           0 B           0 B           0 B           0 B             3  \n                                              aten::mul         0.66%      23.874us         1.04%      37.490us      18.745us     105.567us         8.54%     105.567us      52.784us           0 B           0 B      64.00 MB      64.00 MB             2  \nvoid at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      65.855us         5.33%      65.855us      65.855us           0 B           0 B           0 B           0 B             1  \nvoid at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us      45.248us         3.66%      45.248us      45.248us           0 B           0 B           0 B           0 B             1  \n                         Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us      40.255us         3.26%      40.255us      40.255us           0 B           0 B           0 B           0 B             1  \nvoid at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      39.712us         3.21%      39.712us      39.712us           0 B           0 B           0 B           0 B             1  \n                                              aten::pow         0.90%      32.299us         1.82%      65.481us      32.741us      39.583us         3.20%      79.838us      39.919us           0 B           0 B      64.00 MB      64.00 MB             2  \nvoid at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      39.583us         3.20%      39.583us      39.583us           0 B           0 B           0 B           0 B             1  \nvoid flash::flash_bwd_convert_dq_kernel<Flash_bwd_ke...         0.00%       0.000us         0.00%       0.000us       0.000us      36.544us         2.96%      36.544us      36.544us           0 B           0 B           0 B           0 B             1  \nvoid flash::flash_bwd_dot_do_o_kernel<true, Flash_bw...         0.00%       0.000us         0.00%       0.000us       0.000us      35.359us         2.86%      35.359us      35.359us           0 B           0 B           0 B           0 B             1  \n                                             aten::mean         0.83%      29.894us         1.38%      49.432us      49.432us      32.415us         2.62%      32.415us      32.415us           0 B           0 B         512 B         512 B             1  \nvoid at::native::reduce_kernel<512, 1, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us      31.359us         2.54%      31.359us      31.359us           0 B           0 B           0 B           0 B             1  \nvoid at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      28.928us         2.34%      28.928us      28.928us           0 B           0 B           0 B           0 B             1  \n                                              aten::div         1.94%      69.650us         2.37%      85.129us      85.129us      26.719us         2.16%      26.719us      26.719us           0 B           0 B      32.00 MB      32.00 MB             1  \nvoid at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      26.719us         2.16%      26.719us      26.719us           0 B           0 B           0 B           0 B             1  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 3.594ms\nSelf CUDA time total: 1.236ms\n",
+      "top_cuda_events": [
+        {
+          "count": 1,
+          "device_time_us": 667.6049999999996,
+          "input_shapes": "",
+          "name": "flash_attn::_flash_attn_backward",
+          "self_device_time_us": 667.6049999999996
+        },
+        {
+          "count": 1,
+          "device_time_us": 595.7019999999998,
+          "input_shapes": "",
+          "name": "void flash::flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 128, 8, cutlass::bfloat16_t> >, false, true, false, false, true, true, false>(flash::Flash_bwd_params)",
+          "self_device_time_us": 595.7019999999998
+        },
+        {
+          "count": 1,
+          "device_time_us": 495.15799999999945,
+          "input_shapes": "",
+          "name": "flash_attn::_flash_attn_forward",
+          "self_device_time_us": 247.57899999999972
+        },
+        {
+          "count": 1,
+          "device_time_us": 247.57899999999972,
+          "input_shapes": "",
+          "name": "Activity Buffer Request",
+          "self_device_time_us": 247.57899999999972
+        },
+        {
+          "count": 1,
+          "device_time_us": 247.57899999999972,
+          "input_shapes": "",
+          "name": "void flash::flash_fwd_kernel<Flash_fwd_kernel_traits<128, 128, 64, 4, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 128, 64, 4, cutlass::bfloat16_t> >, false, true, false, false, true, true, false, false>(flash::Flash_fwd_params)",
+          "self_device_time_us": 247.57899999999972
+        },
+        {
+          "count": 3,
+          "device_time_us": 114.43100000000004,
+          "input_shapes": "",
+          "name": "aten::copy_",
+          "self_device_time_us": 114.43100000000004
+        },
+        {
+          "count": 2,
+          "device_time_us": 105.56700000000001,
+          "input_shapes": "",
+          "name": "aten::mul",
+          "self_device_time_us": 105.56700000000001
+        },
+        {
+          "count": 1,
+          "device_time_us": 65.85500000000002,
+          "input_shapes": "",
+          "name": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BinaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+          "self_device_time_us": 65.85500000000002
+        },
+        {
+          "count": 1,
+          "device_time_us": 45.24800000000005,
+          "input_shapes": "",
+          "name": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, 4, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1> >(int, at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const::{lambda()#7}::operator()() const::{lambda(float)#1}, std::array<char*, 2ul>, TrivialOffsetCalculator<1, unsigned int>, TrivialOffsetCalculator<1, unsigned int>, at::native::memory::LoadWithCast<1>, at::native::memory::StoreWithCast<1>)",
+          "self_device_time_us": 45.24800000000005
+        },
+        {
+          "count": 1,
+          "device_time_us": 40.25500000000011,
+          "input_shapes": "",
+          "name": "Memcpy DtoD (Device -> Device)",
+          "self_device_time_us": 40.25500000000011
+        },
+        {
+          "count": 1,
+          "device_time_us": 39.71199999999999,
+          "input_shapes": "",
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul> >(int, at::native::AUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> >, std::array<char*, 2ul>)",
+          "self_device_time_us": 39.71199999999999
+        },
+        {
+          "count": 2,
+          "device_time_us": 79.83800000000019,
+          "input_shapes": "",
+          "name": "aten::pow",
+          "self_device_time_us": 39.583000000000084
+        },
+        {
+          "count": 1,
+          "device_time_us": 39.583000000000084,
+          "input_shapes": "",
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::(anonymous namespace)::pow_tensor_scalar_kernel_impl<float, float>(at::TensorIteratorBase&, float)::{lambda(float)#1}, std::array<char*, 2ul>)",
+          "self_device_time_us": 39.583000000000084
+        },
+        {
+          "count": 1,
+          "device_time_us": 36.54399999999987,
+          "input_shapes": "",
+          "name": "void flash::flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 128, 8, cutlass::bfloat16_t> > >(flash::Flash_bwd_params, int)",
+          "self_device_time_us": 36.54399999999987
+        },
+        {
+          "count": 1,
+          "device_time_us": 35.358999999999924,
+          "input_shapes": "",
+          "name": "void flash::flash_bwd_dot_do_o_kernel<true, Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, false, false, cutlass::bfloat16_t, Flash_kernel_traits<128, 64, 128, 8, cutlass::bfloat16_t> > >(flash::Flash_bwd_params)",
+          "self_device_time_us": 35.358999999999924
+        },
+        {
+          "count": 1,
+          "device_time_us": 32.41500000000042,
+          "input_shapes": "",
+          "name": "aten::mean",
+          "self_device_time_us": 32.41500000000042
+        },
+        {
+          "count": 1,
+          "device_time_us": 31.35900000000038,
+          "input_shapes": "",
+          "name": "void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4> >(at::native::ReduceOp<float, at::native::MeanOps<float, float, float, float>, unsigned int, float, 4, 4>)",
+          "self_device_time_us": 31.35900000000038
+        },
+        {
+          "count": 1,
+          "device_time_us": 28.927999999999884,
+          "input_shapes": "",
+          "name": "void at::native::vectorized_elementwise_kernel<4, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul> >(int, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::array<char*, 2ul>)",
+          "self_device_time_us": 28.927999999999884
+        },
+        {
+          "count": 1,
+          "device_time_us": 26.718999999999596,
+          "input_shapes": "",
+          "name": "aten::div",
+          "self_device_time_us": 26.718999999999596
+        },
+        {
+          "count": 1,
+          "device_time_us": 26.718999999999596,
+          "input_shapes": "",
+          "name": "void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_impl_nocast<at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1}>(int, at::native::gpu_kernel_impl_nocast<at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > >(at::TensorIteratorBase&, at::native::BUnaryFunctor<float, float, float, at::native::binary_internal::MulFunctor<float> > const&)::{lambda(int)#1})",
+          "self_device_time_us": 26.718999999999596
+        }
+      ]
+    }
+  ],
+  "records": [
+    {
+      "dk_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dq_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "dv_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "experiment": "causal_attention_forward_backward",
+      "groups": 5,
+      "implementation": "torch_sdpa_math",
+      "iterations_per_group": 5,
+      "max_ms": 3.4444606781005858,
+      "mean_ms": 3.4415564727783208,
+      "median_ms": 3.441632080078125,
+      "min_ms": 3.4387454986572266,
+      "output_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "peak_incremental_memory_bytes": 327156736,
+      "shape_bshd": [
+        4,
+        512,
+        16,
+        128
+      ],
+      "tokens_per_second": 595066.5127323867,
+      "warmup": 5
+    },
+    {
+      "dk_correctness": {
+        "max_abs_error": 2.9802322387695312e-08,
+        "max_rel_error": 0.014901161193847656,
+        "mean_abs_error": 4.313911033948514e-11,
+        "mean_rel_error": 4.237613029545173e-05
+      },
+      "dq_correctness": {
+        "max_abs_error": 1.4901161193847656e-08,
+        "max_rel_error": 0.01210719347000122,
+        "mean_abs_error": 5.59884708040137e-11,
+        "mean_rel_error": 5.54876824025996e-05
+      },
+      "dtype": "torch.bfloat16",
+      "dv_correctness": {
+        "max_abs_error": 2.9802322387695312e-08,
+        "max_rel_error": 0.0078125,
+        "mean_abs_error": 1.7646417313499363e-11,
+        "mean_rel_error": 1.7389778804499656e-05
+      },
+      "experiment": "causal_attention_forward_backward",
+      "groups": 5,
+      "implementation": "torch_sdpa_flash",
+      "iterations_per_group": 5,
+      "max_ms": 0.5315968036651612,
+      "mean_ms": 0.520128002166748,
+      "median_ms": 0.5160768032073975,
+      "min_ms": 0.5125504016876221,
+      "output_correctness": {
+        "max_abs_error": 0.015625,
+        "max_rel_error": 317.88275146484375,
+        "mean_abs_error": 0.00013253689394332469,
+        "mean_rel_error": 0.010587718337774277
+      },
+      "peak_incremental_memory_bytes": 92407808,
+      "shape_bshd": [
+        4,
+        512,
+        16,
+        128
+      ],
+      "tokens_per_second": 3968401.5775786834,
+      "warmup": 5
+    },
+    {
+      "dk_correctness": {
+        "max_abs_error": 2.9802322387695312e-08,
+        "max_rel_error": 0.014901161193847656,
+        "mean_abs_error": 4.313908952280343e-11,
+        "mean_rel_error": 4.237610846757889e-05
+      },
+      "dq_correctness": {
+        "max_abs_error": 1.4901161193847656e-08,
+        "max_rel_error": 0.01210719347000122,
+        "mean_abs_error": 5.598803712314471e-11,
+        "mean_rel_error": 5.548724948312156e-05
+      },
+      "dtype": "torch.bfloat16",
+      "dv_correctness": {
+        "max_abs_error": 2.9802322387695312e-08,
+        "max_rel_error": 0.0078125,
+        "mean_abs_error": 1.764675905402413e-11,
+        "mean_rel_error": 1.7390122593496926e-05
+      },
+      "experiment": "causal_attention_forward_backward",
+      "groups": 5,
+      "implementation": "flash_attn",
+      "iterations_per_group": 5,
+      "max_ms": 0.772211217880249,
+      "mean_ms": 0.7692185688018799,
+      "median_ms": 0.7696832180023193,
+      "min_ms": 0.7659200191497803,
+      "output_correctness": {
+        "max_abs_error": 0.015625,
+        "max_rel_error": 317.88275146484375,
+        "mean_abs_error": 0.00013253650104161352,
+        "mean_rel_error": 0.01058785617351532
+      },
+      "peak_incremental_memory_bytes": 92407296,
+      "shape_bshd": [
+        4,
+        512,
+        16,
+        128
+      ],
+      "tokens_per_second": 2660834.941049512,
+      "warmup": 5
+    },
+    {
+      "dk_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dq_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "dv_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "experiment": "causal_attention_forward_backward",
+      "groups": 5,
+      "implementation": "torch_sdpa_math",
+      "iterations_per_group": 5,
+      "max_ms": 17.76216278076172,
+      "mean_ms": 17.72880126953125,
+      "median_ms": 17.71912384033203,
+      "min_ms": 17.715257263183595,
+      "output_correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "peak_incremental_memory_bytes": 2264925184,
+      "shape_bshd": [
+        2,
+        2048,
+        16,
+        128
+      ],
+      "tokens_per_second": 231162.671298495,
+      "warmup": 5
+    },
+    {
+      "dk_correctness": {
+        "max_abs_error": 7.450580596923828e-09,
+        "max_rel_error": 0.007450580596923828,
+        "mean_abs_error": 6.387365029253411e-12,
+        "mean_rel_error": 6.382359060808085e-06
+      },
+      "dq_correctness": {
+        "max_abs_error": 7.450580596923828e-09,
+        "max_rel_error": 0.007450580596923828,
+        "mean_abs_error": 8.465598014262277e-12,
+        "mean_rel_error": 8.464661732432432e-06
+      },
+      "dtype": "torch.bfloat16",
+      "dv_correctness": {
+        "max_abs_error": 7.450580596923828e-09,
+        "max_rel_error": 0.007450580596923828,
+        "mean_abs_error": 2.95569688515962e-12,
+        "mean_rel_error": 2.951822807517601e-06
+      },
+      "experiment": "causal_attention_forward_backward",
+      "groups": 5,
+      "implementation": "torch_sdpa_flash",
+      "iterations_per_group": 5,
+      "max_ms": 1.3615936279296874,
+      "mean_ms": 1.3537126541137696,
+      "median_ms": 1.3532480239868163,
+      "min_ms": 1.3469823837280273,
+      "output_correctness": {
+        "max_abs_error": 0.015625,
+        "max_rel_error": 255.42266845703125,
+        "mean_abs_error": 7.629819447174668e-05,
+        "mean_rel_error": 0.011002800427377224
+      },
+      "peak_incremental_memory_bytes": 184813568,
+      "shape_bshd": [
+        2,
+        2048,
+        16,
+        128
+      ],
+      "tokens_per_second": 3026791.7834697715,
+      "warmup": 5
+    },
+    {
+      "dk_correctness": {
+        "max_abs_error": 7.450580596923828e-09,
+        "max_rel_error": 0.007450580596923828,
+        "mean_abs_error": 6.387015048792133e-12,
+        "mean_rel_error": 6.382008905347902e-06
+      },
+      "dq_correctness": {
+        "max_abs_error": 7.450580596923828e-09,
+        "max_rel_error": 0.007450580596923828,
+        "mean_abs_error": 8.465603218432705e-12,
+        "mean_rel_error": 8.464669008390047e-06
+      },
+      "dtype": "torch.bfloat16",
+      "dv_correctness": {
+        "max_abs_error": 7.450580596923828e-09,
+        "max_rel_error": 0.007450580596923828,
+        "mean_abs_error": 2.9555613598880592e-12,
+        "mean_rel_error": 2.9516875201807125e-06
+      },
+      "experiment": "causal_attention_forward_backward",
+      "groups": 5,
+      "implementation": "flash_attn",
+      "iterations_per_group": 5,
+      "max_ms": 1.2842687606811523,
+      "mean_ms": 1.2814694213867188,
+      "median_ms": 1.2816384315490723,
+      "min_ms": 1.2788543701171875,
+      "output_correctness": {
+        "max_abs_error": 0.015625,
+        "max_rel_error": 255.42266845703125,
+        "mean_abs_error": 7.629742322023958e-05,
+        "mean_rel_error": 0.011002730578184128
+      },
+      "peak_incremental_memory_bytes": 184813056,
+      "shape_bshd": [
+        2,
+        2048,
+        16,
+        128
+      ],
+      "tokens_per_second": 3195909.1575065404,
+      "warmup": 5
+    }
+  ],
+  "suite": "attention_backward"
+}

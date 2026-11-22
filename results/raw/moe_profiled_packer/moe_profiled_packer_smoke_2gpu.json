@@ -1,0 +1,653 @@
+{
+  "cuda": "12.9",
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "The experiment uses the lossless calibrated additive-margin matrix from the profiled transport study.",
+    "The two-sort baseline preserves the v28 highest-weight clipping implementation even though the measured profile is lossless.",
+    "Destination sort removes weight ordering and is valid only when every source-destination count fits its fixed profile.",
+    "The Triton path uses one program per assignment, an atomic destination counter, and fused hidden/ID/weight/token-index scatter.",
+    "Packing-only timing reuses router outputs; route timing includes router projection and fused top-k; end-to-end timing adds fixed dispatch, experts, return, and combine.",
+    "All optimized routes must report zero overflow, retain the same assignments, and match the dynamic and masked outputs exactly."
+  ],
+  "packer_order": "ascending",
+  "profile": "smoke",
+  "records": [
+    {
+      "accepted_count_matrix": [
+        [
+          104,
+          96
+        ],
+        [
+          97,
+          103
+        ]
+      ],
+      "calibration_batches": 4,
+      "calibration_margin": 16,
+      "capacity": {
+        "accepted_assignments": 400,
+        "dropped_assignment_fraction": 0.0,
+        "lossless": true,
+        "planned_assignments": 400,
+        "retained_router_weight_fraction": 1.0
+      },
+      "capacity_matrix": [
+        [
+          132,
+          125
+        ],
+        [
+          121,
+          122
+        ]
+      ],
+      "correctness": {
+        "output": {
+          "destination_sort_vs_dynamic": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "destination_sort_vs_masked_reference": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "destination_sort_vs_two_sort": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "dynamic_vs_masked_reference": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "triton_atomic_vs_dynamic": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "triton_atomic_vs_masked_reference": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "triton_atomic_vs_two_sort": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "two_sort_vs_dynamic": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "two_sort_vs_masked_reference": {
+            "cosine_similarity": 1.0,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          }
+        },
+        "selection_equal": {
+          "destination_sort": true,
+          "triton_atomic": true,
+          "two_sort": true
+        }
+      },
+      "crossover": {
+        "end_to_end": null,
+        "pack_only": null,
+        "route_capacity": null
+      },
+      "evaluation_count_matrix": [
+        [
+          104,
+          96
+        ],
+        [
+          97,
+          103
+        ]
+      ],
+      "experts_per_rank": 2,
+      "grouped_speedups": {
+        "destination_sort_vs_dynamic_e2e": 0.9514340415197241,
+        "destination_sort_vs_two_sort_e2e": 1.057274748119725,
+        "destination_sort_vs_two_sort_pack": 1.1061927579304907,
+        "destination_sort_vs_two_sort_route": 1.0954156441741052,
+        "triton_atomic_vs_dynamic_e2e": 1.3791483278672536,
+        "triton_atomic_vs_two_sort_e2e": 1.5325694029577792,
+        "triton_atomic_vs_two_sort_pack": 3.4253972949432203,
+        "triton_atomic_vs_two_sort_route": 2.5311002437399286,
+        "two_sort_vs_dynamic_e2e": 0.8998929022108683
+      },
+      "hidden": 512,
+      "hot_bias": 0.0,
+      "intermediate": 1024,
+      "iterations": 2,
+      "num_experts": 4,
+      "overflow_by_packer": {
+        "destination_sort": 0,
+        "triton_atomic": 0,
+        "two_sort": 0
+      },
+      "packers": {
+        "destination_sort": "lossless-only stable destination sort with no weight ordering",
+        "triton_atomic": "lossless-only fused Triton atomic histogram and hidden/metadata scatter",
+        "two_sort": "stable weight sort followed by stable destination sort"
+      },
+      "profile_name": "calibrated_plus_margin",
+      "quality_vs_uncapped": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "route": "balanced",
+      "timings": {
+        "end_to_end": {
+          "destination_sort": {
+            "critical_path_ms": 1.9931041169911623,
+            "local_samples_ms": [
+              1.9940813072025776,
+              1.992126926779747
+            ],
+            "rank_median_cv": 0.01208019587282832,
+            "rank_median_ms": [
+              1.9931041169911623,
+              1.9455247092992067
+            ],
+            "rank_median_spread_ms": 0.047579407691955566
+          },
+          "dynamic": {
+            "critical_path_ms": 1.8963071051985025,
+            "local_samples_ms": [
+              1.9084000959992409,
+              1.8842141143977642
+            ],
+            "rank_median_cv": 0.014084112467208644,
+            "rank_median_ms": [
+              1.8963071051985025,
+              1.8436333630234003
+            ],
+            "rank_median_spread_ms": 0.052673742175102234
+          },
+          "triton_atomic": {
+            "critical_path_ms": 1.374984160065651,
+            "local_samples_ms": [
+              1.3902382925152779,
+              1.359730027616024
+            ],
+            "rank_median_cv": 0.0070498461802909725,
+            "rank_median_ms": [
+              1.374984160065651,
+              1.355733023956418
+            ],
+            "rank_median_spread_ms": 0.019251136109232903
+          },
+          "two_sort": {
+            "critical_path_ms": 2.107258653268218,
+            "local_samples_ms": [
+              2.098557073622942,
+              2.115960232913494
+            ],
+            "rank_median_cv": 0.016550008996706597,
+            "rank_median_ms": [
+              2.107258653268218,
+              2.03864392824471
+            ],
+            "rank_median_spread_ms": 0.06861472502350807
+          }
+        },
+        "pack_only": {
+          "destination_sort": {
+            "critical_path_ms": 0.9212829172611237,
+            "local_samples_ms": [
+              0.9033540263772011,
+              0.9392118081450462
+            ],
+            "rank_median_cv": 0.018031303932596412,
+            "rank_median_ms": [
+              0.9212829172611237,
+              0.8886475116014481
+            ],
+            "rank_median_spread_ms": 0.0326354056596756
+          },
+          "triton_atomic": {
+            "critical_path_ms": 0.2975177485495806,
+            "local_samples_ms": [
+              0.287648756057024,
+              0.30738674104213715
+            ],
+            "rank_median_cv": 0.018345421494426643,
+            "rank_median_ms": [
+              0.2975177485495806,
+              0.2867982257157564
+            ],
+            "rank_median_spread_ms": 0.010719522833824158
+          },
+          "two_sort": {
+            "critical_path_ms": 1.0191164910793304,
+            "local_samples_ms": [
+              1.026064157485962,
+              1.012168824672699
+            ],
+            "rank_median_cv": 0.013856271039140416,
+            "rank_median_ms": [
+              1.0191164910793304,
+              0.9912601672112942
+            ],
+            "rank_median_spread_ms": 0.02785632386803627
+          }
+        },
+        "route_capacity": {
+          "destination_sort": {
+            "critical_path_ms": 1.0746910702437162,
+            "local_samples_ms": [
+              1.0730428621172905,
+              1.076339278370142
+            ],
+            "rank_median_cv": 0.013703043549302407,
+            "rank_median_ms": [
+              1.0746910702437162,
+              1.0456361342221498
+            ],
+            "rank_median_spread_ms": 0.02905493602156639
+          },
+          "dynamic": {
+            "critical_path_ms": 0.8241455070674419,
+            "local_samples_ms": [
+              0.8223117329180241,
+              0.8259792812168598
+            ],
+            "rank_median_cv": 0.01286353555581722,
+            "rank_median_ms": [
+              0.8241455070674419,
+              0.8032119367271662
+            ],
+            "rank_median_spread_ms": 0.020933570340275764
+          },
+          "triton_atomic": {
+            "critical_path_ms": 0.4651073832064867,
+            "local_samples_ms": [
+              0.4534609615802765,
+              0.4767538048326969
+            ],
+            "rank_median_cv": 0.009508259020843882,
+            "rank_median_ms": [
+              0.4651073832064867,
+              0.4563459660857916
+            ],
+            "rank_median_spread_ms": 0.008761417120695114
+          },
+          "two_sort": {
+            "critical_path_ms": 1.1772334109991789,
+            "local_samples_ms": [
+              1.190793700516224,
+              1.1636731214821339
+            ],
+            "rank_median_cv": 0.015289546572600421,
+            "rank_median_ms": [
+              1.1772334109991789,
+              1.1417767964303493
+            ],
+            "rank_median_spread_ms": 0.035456614568829536
+          }
+        }
+      },
+      "tokens_per_rank": 100,
+      "top_k": 2,
+      "transport": {
+        "fixed_recv_rows_by_rank": [
+          253,
+          247
+        ],
+        "fixed_send_rows_by_rank": [
+          257,
+          243
+        ],
+        "global_fixed_rows": 500,
+        "global_padding_fraction": 0.19999999999999996,
+        "valid_recv_rows_by_rank": [
+          201,
+          199
+        ]
+      },
+      "warmup": 1
+    },
+    {
+      "accepted_count_matrix": [
+        [
+          143,
+          57
+        ],
+        [
+          144,
+          56
+        ]
+      ],
+      "calibration_batches": 4,
+      "calibration_margin": 16,
+      "capacity": {
+        "accepted_assignments": 400,
+        "dropped_assignment_fraction": 0.0,
+        "lossless": true,
+        "planned_assignments": 400,
+        "retained_router_weight_fraction": 1.0
+      },
+      "capacity_matrix": [
+        [
+          168,
+          74
+        ],
+        [
+          173,
+          76
+        ]
+      ],
+      "correctness": {
+        "output": {
+          "destination_sort_vs_dynamic": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "destination_sort_vs_masked_reference": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "destination_sort_vs_two_sort": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "dynamic_vs_masked_reference": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "triton_atomic_vs_dynamic": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "triton_atomic_vs_masked_reference": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "triton_atomic_vs_two_sort": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "two_sort_vs_dynamic": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          },
+          "two_sort_vs_masked_reference": {
+            "cosine_similarity": 1.0000001192092896,
+            "max_abs_error": 0.0,
+            "mean_abs_error": 0.0,
+            "normalized_rmse": 0.0
+          }
+        },
+        "selection_equal": {
+          "destination_sort": true,
+          "triton_atomic": true,
+          "two_sort": true
+        }
+      },
+      "crossover": {
+        "end_to_end": null,
+        "pack_only": null,
+        "route_capacity": null
+      },
+      "evaluation_count_matrix": [
+        [
+          143,
+          57
+        ],
+        [
+          144,
+          56
+        ]
+      ],
+      "experts_per_rank": 2,
+      "grouped_speedups": {
+        "destination_sort_vs_dynamic_e2e": 0.9489475143116535,
+        "destination_sort_vs_two_sort_e2e": 1.0484573672699031,
+        "destination_sort_vs_two_sort_pack": 1.108642812199434,
+        "destination_sort_vs_two_sort_route": 1.090626184901384,
+        "triton_atomic_vs_dynamic_e2e": 1.394240134600231,
+        "triton_atomic_vs_two_sort_e2e": 1.5404448811116318,
+        "triton_atomic_vs_two_sort_pack": 3.6852634931977835,
+        "triton_atomic_vs_two_sort_route": 2.5559907724206834,
+        "two_sort_vs_dynamic_e2e": 0.9050892710903782
+      },
+      "hidden": 512,
+      "hot_bias": 1.0,
+      "intermediate": 1024,
+      "iterations": 2,
+      "num_experts": 4,
+      "overflow_by_packer": {
+        "destination_sort": 0,
+        "triton_atomic": 0,
+        "two_sort": 0
+      },
+      "packers": {
+        "destination_sort": "lossless-only stable destination sort with no weight ordering",
+        "triton_atomic": "lossless-only fused Triton atomic histogram and hidden/metadata scatter",
+        "two_sort": "stable weight sort followed by stable destination sort"
+      },
+      "profile_name": "calibrated_plus_margin",
+      "quality_vs_uncapped": {
+        "cosine_similarity": 1.0000001192092896,
+        "max_abs_error": 0.0,
+        "mean_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "route": "global_bias1",
+      "timings": {
+        "end_to_end": {
+          "destination_sort": {
+            "critical_path_ms": 1.9713889341801405,
+            "local_samples_ms": [
+              1.9683027639985085,
+              1.9744751043617725
+            ],
+            "rank_median_cv": 0.013115319217648035,
+            "rank_median_ms": [
+              1.9713889341801405,
+              1.9203475676476955
+            ],
+            "rank_median_spread_ms": 0.051041366532444954
+          },
+          "dynamic": {
+            "critical_path_ms": 1.8707446288317442,
+            "local_samples_ms": [
+              1.8592081032693386,
+              1.8822811543941498
+            ],
+            "rank_median_cv": 0.01777756834776057,
+            "rank_median_ms": [
+              1.8707446288317442,
+              1.8053918611258268
+            ],
+            "rank_median_spread_ms": 0.06535276770591736
+          },
+          "triton_atomic": {
+            "critical_path_ms": 1.341766444966197,
+            "local_samples_ms": [
+              1.331767998635769,
+              1.3517648912966251
+            ],
+            "rank_median_cv": 0.011561836627171734,
+            "rank_median_ms": [
+              1.341766444966197,
+              1.3110945001244545
+            ],
+            "rank_median_spread_ms": 0.030671944841742516
+          },
+          "two_sort": {
+            "critical_path_ms": 2.0669172517955303,
+            "local_samples_ms": [
+              2.069772221148014,
+              2.0640622824430466
+            ],
+            "rank_median_cv": 0.013232521513526396,
+            "rank_median_ms": [
+              2.0669172517955303,
+              2.012930577620864
+            ],
+            "rank_median_spread_ms": 0.053986674174666405
+          }
+        },
+        "pack_only": {
+          "destination_sort": {
+            "critical_path_ms": 0.9184335358440876,
+            "local_samples_ms": [
+              0.9228219278156757,
+              0.9140451438724995
+            ],
+            "rank_median_cv": 0.018434038147624374,
+            "rank_median_ms": [
+              0.9184335358440876,
+              0.8851855527609587
+            ],
+            "rank_median_spread_ms": 0.03324798308312893
+          },
+          "triton_atomic": {
+            "critical_path_ms": 0.2762936055660248,
+            "local_samples_ms": [
+              0.2779723145067692,
+              0.2746148966252804
+            ],
+            "rank_median_cv": 0.01411219078441083,
+            "rank_median_ms": [
+              0.2762936055660248,
+              0.26860390789806843
+            ],
+            "rank_median_spread_ms": 0.007689697667956352
+          },
+          "two_sort": {
+            "critical_path_ms": 1.018214737996459,
+            "local_samples_ms": [
+              1.0290001519024372,
+              1.0074293240904808
+            ],
+            "rank_median_cv": 0.020783661482179056,
+            "rank_median_ms": [
+              1.018214737996459,
+              0.9767520241439342
+            ],
+            "rank_median_spread_ms": 0.04146271385252476
+          }
+        },
+        "route_capacity": {
+          "destination_sort": {
+            "critical_path_ms": 1.0868790559470654,
+            "local_samples_ms": [
+              1.0699271224439144,
+              1.1038309894502163
+            ],
+            "rank_median_cv": 0.020425851621816968,
+            "rank_median_ms": [
+              1.0868790559470654,
+              1.0433669667690992
+            ],
+            "rank_median_spread_ms": 0.04351208917796612
+          },
+          "dynamic": {
+            "critical_path_ms": 0.8347909897565842,
+            "local_samples_ms": [
+              0.8341348730027676,
+              0.8354471065104008
+            ],
+            "rank_median_cv": 0.01204609786141963,
+            "rank_median_ms": [
+              0.8347909897565842,
+              0.8149184286594391
+            ],
+            "rank_median_spread_ms": 0.01987256109714508
+          },
+          "triton_atomic": {
+            "critical_path_ms": 0.4637648817151785,
+            "local_samples_ms": [
+              0.47871796414256096,
+              0.448811799287796
+            ],
+            "rank_median_cv": 0.029015493183309312,
+            "rank_median_ms": [
+              0.4637648817151785,
+              0.4376110155135393
+            ],
+            "rank_median_spread_ms": 0.026153866201639175
+          },
+          "two_sort": {
+            "critical_path_ms": 1.1853787582367659,
+            "local_samples_ms": [
+              1.20064290240407,
+              1.1701146140694618
+            ],
+            "rank_median_cv": 0.017306139298940454,
+            "rank_median_ms": [
+              1.1853787582367659,
+              1.1450480669736862
+            ],
+            "rank_median_spread_ms": 0.04033069126307964
+          }
+        }
+      },
+      "tokens_per_rank": 100,
+      "top_k": 2,
+      "transport": {
+        "fixed_recv_rows_by_rank": [
+          341,
+          150
+        ],
+        "fixed_send_rows_by_rank": [
+          242,
+          249
+        ],
+        "global_fixed_rows": 491,
+        "global_padding_fraction": 0.185336048879837,
+        "valid_recv_rows_by_rank": [
+          287,
+          113
+        ]
+      },
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_profiled_packer",
+  "timestamp_utc": "2026-11-11T16:00:35Z",
+  "torch": "2.13.0+cu129",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

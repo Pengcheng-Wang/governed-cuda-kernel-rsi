@@ -1,0 +1,369 @@
+{
+  "global_step_ms": 43.207008361816406,
+  "global_tokens_per_second": 47399.71772287506,
+  "global_tokens_per_step": 2048,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 8,
+  "hostname": "node-0",
+  "max_peak_allocated_bytes": 4578715648.0,
+  "max_peak_incremental_allocated_bytes": 3341583872.0,
+  "max_peak_reserved_bytes": 9676259328.0,
+  "model": {
+    "compute_dtype": "torch.bfloat16",
+    "depth": 12,
+    "fsdp_groups": 1,
+    "heads": 16,
+    "hidden": 2048,
+    "intermediate": 5504,
+    "master_parameter_dtype": "torch.float32",
+    "parameter_count": 607174656,
+    "reduce_dtype": "torch.float32",
+    "reshard_after_forward": true
+  },
+  "nodes": 1,
+  "optimizer": {
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "lr": 0.0001,
+    "name": "AdamW",
+    "weight_decay": 0.1
+  },
+  "per_gpu_batch": 1,
+  "profile": "full",
+  "profiler_summary": {
+    "communication_events": [
+      {
+        "count": 2,
+        "device_time_us": 23757.514,
+        "name": "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+        "self_device_time_us": 23757.514
+      },
+      {
+        "count": 2,
+        "device_time_us": 23757.514,
+        "name": "nccl:_all_gather_base",
+        "self_device_time_us": 23757.514
+      },
+      {
+        "count": 1,
+        "device_time_us": 15913.262999999999,
+        "name": "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+        "self_device_time_us": 15913.262999999999
+      },
+      {
+        "count": 1,
+        "device_time_us": 15913.262999999999,
+        "name": "nccl:_reduce_scatter_base",
+        "self_device_time_us": 15913.262999999999
+      },
+      {
+        "count": 2,
+        "device_time_us": 2902.182000000008,
+        "name": "FSDP::all_gather_copy_out",
+        "self_device_time_us": 2902.182000000008
+      },
+      {
+        "count": 2,
+        "device_time_us": 1654.1609999999991,
+        "name": "FSDP::all_gather",
+        "self_device_time_us": 1654.1609999999991
+      },
+      {
+        "count": 2,
+        "device_time_us": 36915.793999999994,
+        "name": "FSDP::all_gather",
+        "self_device_time_us": 0.0
+      },
+      {
+        "count": 2,
+        "device_time_us": 460.7629999999981,
+        "name": "fsdp::all_gather_copy_in",
+        "self_device_time_us": 0.0
+      },
+      {
+        "count": 2,
+        "device_time_us": 2892.9020000000055,
+        "name": "FSDP::all_gather_copy_out",
+        "self_device_time_us": 0.0
+      },
+      {
+        "count": 1,
+        "device_time_us": 15913.262999999999,
+        "name": "c10d::_reduce_scatter_base_",
+        "self_device_time_us": 0.0
+      }
+    ],
+    "table": "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \n                                     record_param_comms         0.82%     473.931us         0.97%     560.322us     186.774us      39.671ms        66.78%      39.671ms      13.224ms             3  \nncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsSto...         0.00%       0.000us         0.00%       0.000us       0.000us      23.758ms        39.99%      23.758ms      11.879ms             2  \n                                  nccl:_all_gather_base         0.00%       0.000us         0.00%       0.000us       0.000us      23.758ms        39.99%      23.758ms      11.879ms             2  \nncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevK...         0.00%       0.000us         0.00%       0.000us       0.000us      15.913ms        26.79%      15.913ms      15.913ms             1  \n                              nccl:_reduce_scatter_base         0.00%       0.000us         0.00%       0.000us       0.000us      15.913ms        26.79%      15.913ms      15.913ms             1  \n                                  cudaStreamIsCapturing         0.08%      44.593us         0.08%      44.593us       1.205us      12.089ms        20.35%      12.089ms     326.722us            37  \n                                               aten::mm         5.64%       3.244ms         8.30%       4.775ms      33.160us       5.994ms        10.09%       5.994ms      41.626us           144  \n                              Optimizer.step#AdamW.step         0.00%       0.000us         0.00%       0.000us       0.000us       3.899ms         6.56%       3.899ms       3.899ms             1  \n                             FSDP::post_backward_reduce         0.00%       0.000us         0.00%       0.000us       0.000us       3.206ms         5.40%       3.206ms       3.206ms             1  \n                                       aten::_chunk_cat         1.27%     732.766us         1.44%     827.523us     827.523us       3.130ms         5.27%       3.195ms       3.195ms             1  \nvoid at::native::detail::chunk_cat_cuda_kernel<float...         0.00%       0.000us         0.00%       0.000us       0.000us       3.130ms         5.27%       3.130ms       3.130ms             1  \n                              FSDP::all_gather_copy_out         0.00%       0.000us         0.00%       0.000us       0.000us       2.902ms         4.89%       2.902ms       1.451ms             2  \n                            aten::split_with_sizes_copy         0.21%     120.859us         0.59%     339.147us     169.574us       2.882ms         4.85%       2.893ms       1.446ms             2  \nat::native::detail::split_with_sizes_copy_out_contig...         0.00%       0.000us         0.00%       0.000us       0.000us       2.882ms         4.85%       2.882ms       1.441ms             2  \nampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.772ms         2.98%       1.772ms      49.232us            36  \n                                       FSDP::all_gather         0.00%       0.000us         0.00%       0.000us       0.000us       1.654ms         2.78%       1.654ms     827.080us             2  \nampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.472ms         2.48%       1.472ms      40.875us            36  \n                                   aten::_foreach_copy_         0.35%     202.030us         0.60%     342.453us      85.613us       1.070ms         1.80%       1.070ms     267.389us             4  \nampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us     975.318us         1.64%     975.318us      40.638us            24  \nampere_bf16_s16816gemm_bf16_128x256_ldg8_f2f_stages_...         0.00%       0.000us         0.00%       0.000us       0.000us     794.840us         1.34%     794.840us      66.237us            12  \n                                    aten::_foreach_mul_         0.17%      98.173us         0.99%     569.808us     142.452us     764.856us         1.29%       1.530ms     382.428us             4  \nvoid at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us     764.856us         1.29%     764.856us      95.607us             8  \n                                aten::_foreach_addcdiv_         0.16%      94.026us         0.54%     308.749us     154.375us     740.345us         1.25%       1.481ms     740.345us             2  \nvoid at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us     740.345us         1.25%     740.345us     185.086us             4  \n                                            aten::copy_         1.60%     920.970us         4.01%       2.307ms      15.487us     694.011us         1.17%     694.011us       4.658us           149  \nvoid at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us     608.794us         1.02%     608.794us      76.099us             8  \n                                aten::_foreach_addcmul_         0.10%      54.892us         0.47%     270.697us     135.349us     573.564us         0.97%       1.147ms     573.564us             2  \nvoid at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us     573.564us         0.97%     573.564us     143.391us             4  \n                                   aten::_foreach_lerp_         0.09%      53.671us         0.44%     254.939us     127.469us     568.379us         0.96%       1.137ms     568.379us             2  \nvoid at::native::(anonymous namespace)::multi_tensor...         0.00%       0.000us         0.00%       0.000us       0.000us     568.379us         0.96%     568.379us     142.095us             4  \n-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  \nSelf CPU time total: 57.555ms\nSelf CUDA time total: 59.401ms\n",
+    "top_cuda_events": [
+      {
+        "count": 3,
+        "device_time_us": 39670.777,
+        "name": "record_param_comms",
+        "self_device_time_us": 39670.777
+      },
+      {
+        "count": 2,
+        "device_time_us": 23757.514,
+        "name": "ncclDevKernel_AllGather_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+        "self_device_time_us": 23757.514
+      },
+      {
+        "count": 2,
+        "device_time_us": 23757.514,
+        "name": "nccl:_all_gather_base",
+        "self_device_time_us": 23757.514
+      },
+      {
+        "count": 1,
+        "device_time_us": 15913.262999999999,
+        "name": "ncclDevKernel_ReduceScatter_Sum_f32_RING_LL(ncclDevKernelArgsStorage<4096ul>)",
+        "self_device_time_us": 15913.262999999999
+      },
+      {
+        "count": 1,
+        "device_time_us": 15913.262999999999,
+        "name": "nccl:_reduce_scatter_base",
+        "self_device_time_us": 15913.262999999999
+      },
+      {
+        "count": 37,
+        "device_time_us": 12088.722999999998,
+        "name": "cudaStreamIsCapturing",
+        "self_device_time_us": 12088.722999999998
+      },
+      {
+        "count": 144,
+        "device_time_us": 5994.091000000026,
+        "name": "aten::mm",
+        "self_device_time_us": 5994.091000000026
+      },
+      {
+        "count": 1,
+        "device_time_us": 3899.291999999994,
+        "name": "Optimizer.step#AdamW.step",
+        "self_device_time_us": 3899.291999999994
+      },
+      {
+        "count": 1,
+        "device_time_us": 3205.859000000004,
+        "name": "FSDP::post_backward_reduce",
+        "self_device_time_us": 3205.859000000004
+      },
+      {
+        "count": 1,
+        "device_time_us": 3195.1070000000036,
+        "name": "aten::_chunk_cat",
+        "self_device_time_us": 3129.5080000000016
+      },
+      {
+        "count": 1,
+        "device_time_us": 3129.5080000000016,
+        "name": "void at::native::detail::chunk_cat_cuda_kernel<float, c10::BFloat16>(c10::BFloat16**, float*, long*, long*, long*, long*, long*, long*, long, long, long)",
+        "self_device_time_us": 3129.5080000000016
+      },
+      {
+        "count": 2,
+        "device_time_us": 2902.182000000008,
+        "name": "FSDP::all_gather_copy_out",
+        "self_device_time_us": 2902.182000000008
+      },
+      {
+        "count": 2,
+        "device_time_us": 2892.9020000000055,
+        "name": "aten::split_with_sizes_copy",
+        "self_device_time_us": 2881.7010000000046
+      },
+      {
+        "count": 2,
+        "device_time_us": 2881.7010000000046,
+        "name": "at::native::detail::split_with_sizes_copy_out_contiguous_no_cast_kernel(char**, char**, long*, long*, long*, long, long)",
+        "self_device_time_us": 2881.7010000000046
+      },
+      {
+        "count": 36,
+        "device_time_us": 1772.3680000000022,
+        "name": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_32x5_nt",
+        "self_device_time_us": 1772.3680000000022
+      },
+      {
+        "count": 2,
+        "device_time_us": 1654.1609999999991,
+        "name": "FSDP::all_gather",
+        "self_device_time_us": 1654.1609999999991
+      },
+      {
+        "count": 36,
+        "device_time_us": 1471.5100000000239,
+        "name": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_nn",
+        "self_device_time_us": 1471.5100000000239
+      },
+      {
+        "count": 4,
+        "device_time_us": 1069.5570000000025,
+        "name": "aten::_foreach_copy_",
+        "self_device_time_us": 1069.5570000000025
+      },
+      {
+        "count": 24,
+        "device_time_us": 975.317999999992,
+        "name": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_tn",
+        "self_device_time_us": 975.317999999992
+      },
+      {
+        "count": 12,
+        "device_time_us": 794.8400000000074,
+        "name": "ampere_bf16_s16816gemm_bf16_128x256_ldg8_f2f_stages_64x3_tn",
+        "self_device_time_us": 794.8400000000074
+      },
+      {
+        "count": 4,
+        "device_time_us": 1529.7119999999995,
+        "name": "aten::_foreach_mul_",
+        "self_device_time_us": 764.8559999999998
+      },
+      {
+        "count": 8,
+        "device_time_us": 764.8559999999998,
+        "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<1>, at::native::(anonymous namespace)::BinaryOpScalarFunctor<float, 1, 1, 0>, std::multiplies<float>, float>(at::native::(anonymous namespace)::TensorListMetadata<1>, at::native::(anonymous namespace)::BinaryOpScalarFunctor<float, 1, 1, 0>, std::multiplies<float>, float)",
+        "self_device_time_us": 764.8559999999998
+      },
+      {
+        "count": 2,
+        "device_time_us": 1480.6900000000023,
+        "name": "aten::_foreach_addcdiv_",
+        "self_device_time_us": 740.3450000000012
+      },
+      {
+        "count": 4,
+        "device_time_us": 740.3450000000012,
+        "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListScalarListMetadata<float, 3>, at::native::(anonymous namespace)::PointwiseOpScalarListFunctor<float, 3, 3, 0>, std::divides<float> >(at::native::(anonymous namespace)::TensorListScalarListMetadata<float, 3>, at::native::(anonymous namespace)::PointwiseOpScalarListFunctor<float, 3, 3, 0>, std::divides<float>)",
+        "self_device_time_us": 740.3450000000012
+      },
+      {
+        "count": 149,
+        "device_time_us": 694.0110000000168,
+        "name": "aten::copy_",
+        "self_device_time_us": 694.0110000000168
+      },
+      {
+        "count": 8,
+        "device_time_us": 608.7940000000044,
+        "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float> >(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::CopyFunctor<c10::BFloat16, float, 2, 1, 1>, at::native::Copy<c10::BFloat16, float>)",
+        "self_device_time_us": 608.7940000000044
+      },
+      {
+        "count": 2,
+        "device_time_us": 1147.127999999997,
+        "name": "aten::_foreach_addcmul_",
+        "self_device_time_us": 573.5639999999985
+      },
+      {
+        "count": 4,
+        "device_time_us": 573.5639999999985,
+        "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<3>, at::native::(anonymous namespace)::PointwiseOpScalarFunctor<float, 3, 3, 0>, std::multiplies<float>, float>(at::native::(anonymous namespace)::TensorListMetadata<3>, at::native::(anonymous namespace)::PointwiseOpScalarFunctor<float, 3, 3, 0>, std::multiplies<float>, float)",
+        "self_device_time_us": 573.5639999999985
+      },
+      {
+        "count": 2,
+        "device_time_us": 1136.7580000000016,
+        "name": "aten::_foreach_lerp_",
+        "self_device_time_us": 568.3790000000008
+      },
+      {
+        "count": 4,
+        "device_time_us": 568.3790000000008,
+        "name": "void at::native::(anonymous namespace)::multi_tensor_apply_kernel<at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::TernaryOpScalarFunctor<float, 2, 2, 0>, at::native::LerpFunctor<float>, float>(at::native::(anonymous namespace)::TensorListMetadata<2>, at::native::(anonymous namespace)::TernaryOpScalarFunctor<float, 2, 2, 0>, at::native::LerpFunctor<float>, float)",
+        "self_device_time_us": 568.3790000000008
+      }
+    ]
+  },
+  "rank_baseline_allocated_bytes": [
+    1237131776.0,
+    1237131776.0,
+    1237131776.0,
+    1237131776.0,
+    1237131776.0,
+    1237131776.0,
+    1237131776.0,
+    1237131776.0
+  ],
+  "rank_baseline_reserved_bytes": [
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0
+  ],
+  "rank_final_losses": [
+    0.2518742084503174,
+    0.2518742084503174,
+    0.2518742084503174,
+    0.2518742084503174,
+    0.2518742084503174,
+    0.2518742084503174,
+    0.2518742084503174,
+    0.2518742084503174
+  ],
+  "rank_initial_losses": [
+    1.204796314239502,
+    1.204796314239502,
+    1.204796314239502,
+    1.204796314239502,
+    1.204796314239502,
+    1.204796314239502,
+    1.204796314239502,
+    1.204796314239502
+  ],
+  "rank_local_parameter_bytes": [
+    303587328.0,
+    303587328.0,
+    303587328.0,
+    303587328.0,
+    303587328.0,
+    303587328.0,
+    303587328.0,
+    303587328.0
+  ],
+  "rank_median_ms": [
+    43.188480377197266,
+    43.18761444091797,
+    43.181121826171875,
+    43.207008361816406,
+    43.196224212646484,
+    43.168128967285156,
+    43.16889572143555,
+    43.167903900146484
+  ],
+  "rank_peak_allocated_bytes": [
+    4578715648.0,
+    4578715648.0,
+    4578715648.0,
+    4578715648.0,
+    4578715648.0,
+    4578715648.0,
+    4578715648.0,
+    4578715648.0
+  ],
+  "rank_peak_reserved_bytes": [
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0,
+    9676259328.0
+  ],
+  "sequence": 256,
+  "strategy": "fsdp_root",
+  "suite": "fsdp2_training",
+  "timestamp_utc": "2026-11-10T12:11:11Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "world_size": 8
+}

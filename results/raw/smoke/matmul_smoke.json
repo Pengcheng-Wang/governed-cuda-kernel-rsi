@@ -1,0 +1,76 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-10T10:07:34Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "profile": "smoke",
+  "records": [
+    {
+      "autotune_or_setup_seconds": 0.0,
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "experiment": "bf16_matmul",
+      "groups": 3,
+      "implementation": "torch_cublas",
+      "iterations_per_group": 3,
+      "max_ms": 0.033930666744709015,
+      "mean_ms": 0.026623999906910792,
+      "median_ms": 0.02456533412138621,
+      "min_ms": 0.021375998854637146,
+      "shape_mnk": [
+        256,
+        1024,
+        1024
+      ],
+      "tflop_s": 21.854818230728164,
+      "warmup": 3
+    },
+    {
+      "autotune_or_setup_seconds": 3.3122496092692018,
+      "correctness": {
+        "max_abs_error": 0.5,
+        "max_rel_error": 0.12037037312984467,
+        "mean_abs_error": 1.740508378134109e-05,
+        "mean_rel_error": 2.4532837414881214e-06
+      },
+      "dtype": "torch.bfloat16",
+      "experiment": "bf16_matmul",
+      "groups": 3,
+      "implementation": "triton_autotuned",
+      "iterations_per_group": 3,
+      "max_ms": 0.07334400216738383,
+      "mean_ms": 0.0691840002934138,
+      "median_ms": 0.06718933085600536,
+      "min_ms": 0.06701866785685222,
+      "shape_mnk": [
+        256,
+        1024,
+        1024
+      ],
+      "tflop_s": 7.990419091247948,
+      "warmup": 3
+    }
+  ],
+  "suite": "matmul"
+}

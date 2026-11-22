@@ -1,0 +1,126 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-10T10:10:08Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "profile": "smoke",
+  "records": [
+    {
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "experiment": "decode_mlp_fixed_shape",
+      "groups": 3,
+      "implementation": "torch_eager",
+      "iterations_per_group": 3,
+      "max_ms": 0.11677866180737813,
+      "mean_ms": 0.10889955361684163,
+      "median_ms": 0.10802132884661357,
+      "min_ms": 0.1018986701965332,
+      "setup_seconds": 0.0,
+      "shape": [
+        1,
+        1024,
+        2816
+      ],
+      "tokens_per_second": 9257.43101549847,
+      "warmup": 3
+    },
+    {
+      "correctness": {
+        "max_abs_error": 0.001953125,
+        "max_rel_error": 16.55223846435547,
+        "mean_abs_error": 0.0002461266121827066,
+        "mean_rel_error": 0.034209027886390686
+      },
+      "dtype": "torch.bfloat16",
+      "experiment": "decode_mlp_fixed_shape",
+      "groups": 3,
+      "implementation": "torch_compile_default",
+      "iterations_per_group": 3,
+      "max_ms": 0.1987946629524231,
+      "mean_ms": 0.1916408869955275,
+      "median_ms": 0.19379200537999472,
+      "min_ms": 0.18233599265416464,
+      "setup_seconds": 3.5240192972123623,
+      "shape": [
+        1,
+        1024,
+        2816
+      ],
+      "tokens_per_second": 5160.1715872600735,
+      "warmup": 3
+    },
+    {
+      "correctness": {
+        "max_abs_error": 0.001953125,
+        "max_rel_error": 16.55223846435547,
+        "mean_abs_error": 0.0002461266121827066,
+        "mean_rel_error": 0.034209027886390686
+      },
+      "dtype": "torch.bfloat16",
+      "experiment": "decode_mlp_fixed_shape",
+      "groups": 3,
+      "implementation": "torch_compile_reduce_overhead",
+      "iterations_per_group": 3,
+      "max_ms": 0.18081067005793253,
+      "mean_ms": 0.17205689350763956,
+      "median_ms": 0.17430400848388672,
+      "min_ms": 0.16105600198109946,
+      "setup_seconds": 0.0887413821183145,
+      "shape": [
+        1,
+        1024,
+        2816
+      ],
+      "tokens_per_second": 5737.102713231312,
+      "warmup": 3
+    },
+    {
+      "correctness": {
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0,
+        "mean_abs_error": 0.0,
+        "mean_rel_error": 0.0
+      },
+      "dtype": "torch.bfloat16",
+      "experiment": "decode_mlp_fixed_shape",
+      "groups": 3,
+      "implementation": "explicit_cuda_graph",
+      "iterations_per_group": 3,
+      "max_ms": 0.04398933549722036,
+      "mean_ms": 0.04381866753101349,
+      "median_ms": 0.04378666480382284,
+      "min_ms": 0.043680002291997276,
+      "setup_seconds": 0.0008230921812355518,
+      "shape": [
+        1,
+        1024,
+        2816
+      ],
+      "tokens_per_second": 22838.003407665205,
+      "warmup": 3
+    }
+  ],
+  "suite": "decode_graphs"
+}

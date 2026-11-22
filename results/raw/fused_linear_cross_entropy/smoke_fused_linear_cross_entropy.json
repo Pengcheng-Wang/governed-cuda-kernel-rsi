@@ -1,0 +1,1041 @@
+{
+  "environment": {
+    "allow_tf32_cudnn": true,
+    "allow_tf32_matmul": false,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "cuda_driver": "580.178.04",
+    "final_unlocked_telemetry": {
+      "mem_clock_mhz": 1593,
+      "power_w": 82.89,
+      "pstate": 0,
+      "sm_clock_mhz": 1140,
+      "temp_c": 28
+    },
+    "flash_attn": "2.8.3.post1",
+    "gpu_count": 1,
+    "gpu_memory_bytes": 85093777408,
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "hostname": "node-0",
+    "initial_telemetry": {
+      "mem_clock_mhz": 1593,
+      "power_w": 82.29,
+      "pstate": 0,
+      "sm_clock_mhz": 1140,
+      "temp_c": 26
+    },
+    "nvml_max_clocks": {
+      "default_app_sm_clock_mhz": 1140,
+      "max_mem_clock_mhz": 1593,
+      "max_sm_clock_mhz": 1410
+    },
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "timestamp_utc": "2026-11-14T23:39:05Z",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "triton": "3.7.1"
+  },
+  "kernel_attribution_records": [
+    {
+      "ce_softmax_cast_share": 0.617999,
+      "ce_softmax_cast_us_per_step": 241.918,
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "cpu_launch_calls_per_step": 12.0,
+      "cuda_kernels_per_step": 12.0,
+      "dtype": "torch.bfloat16",
+      "experiment": "cuda_kernel_attribution",
+      "gemm_share": 0.382001,
+      "gemm_us_per_step": 149.536,
+      "implementation": "eager_fp32_logits_ce",
+      "profiled_steps": 2,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "top_cuda_kernels": [
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 73.007,
+          "kernel": "void at::native::(anonymous namespace)::cunn_SoftMaxBackward<4, float, float, float, at::native::(anonymous namespace)::LogSoftMaxBackwardEp"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 53.616,
+          "kernel": "ampere_bf16_s16816gemm_bf16_256x128_ldg8_f2f_stages_32x3_tn"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 50.768,
+          "kernel": "void at::native::(anonymous namespace)::cunn_SoftMaxForward<4, float, float, float, at::native::(anonymous namespace)::LogSoftMaxForwardEpil"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 45.296,
+          "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_nn"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 44.752,
+          "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_32x5_nt"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 43.871,
+          "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 28.736,
+          "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::bfloat16_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda(float)#1}, std::ar"
+        },
+        {
+          "calls_per_step": 2.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 19.136,
+          "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<floa"
+        }
+      ],
+      "total_cuda_kernel_us_per_step": 391.453
+    },
+    {
+      "ce_softmax_cast_share": 0.27439,
+      "ce_softmax_cast_us_per_step": 55.391,
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "cpu_launch_calls_per_step": 8.0,
+      "cuda_kernels_per_step": 8.0,
+      "dtype": "torch.bfloat16",
+      "experiment": "cuda_kernel_attribution",
+      "gemm_share": 0.72561,
+      "gemm_us_per_step": 146.478,
+      "implementation": "torch_compile_full_ce",
+      "profiled_steps": 2,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "top_cuda_kernels": [
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 53.584,
+          "kernel": "ampere_bf16_s16816gemm_bf16_256x128_ldg8_f2f_stages_32x3_tn"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 43.919,
+          "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_32x5_nt"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 43.199,
+          "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_nn"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 26.128,
+          "kernel": "triton_red_fused__log_softmax__to_copy_prepare_softmax_online_0"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 24.639,
+          "kernel": "triton_red_fused__log_softmax__log_softmax_backward_data__to_copy_arange_eq_expand_nll_loss_backward_nll_loss_forward_scalar_tensor_view_0"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "gemm",
+          "cuda_us_per_step": 5.776,
+          "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, __nv_bfloat16, __nv_bfloat16, float, __nv_bfloat16, false, __nv_bfloat16, __nv_bfloat16, __n"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 3.312,
+          "kernel": "triton_per_fused__log_softmax__to_copy_nll_loss_forward_1"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 1.312,
+          "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::array<char*, 1ul> >(int, at::native::FillFunctor<floa"
+        }
+      ],
+      "total_cuda_kernel_us_per_step": 201.869
+    },
+    {
+      "ce_softmax_cast_share": 0.448404,
+      "ce_softmax_cast_us_per_step": 304.941,
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "cpu_launch_calls_per_step": 71.0,
+      "cuda_kernels_per_step": 75.0,
+      "dtype": "torch.bfloat16",
+      "experiment": "cuda_kernel_attribution",
+      "gemm_share": 0.551596,
+      "gemm_us_per_step": 375.118,
+      "implementation": "checkpointed_chunked_compile_ce",
+      "profiled_steps": 2,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "top_cuda_kernels": [
+        {
+          "calls_per_step": 8.0,
+          "category": "gemm",
+          "cuda_us_per_step": 168.495,
+          "kernel": "ampere_bf16_s16816gemm_bf16_256x128_ldg8_f2f_stages_32x3_tn"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 110.704,
+          "kernel": "ampere_bf16_s1688gemm_bf16_256x128_ldg8_f2f_stages_32x1_nt"
+        },
+        {
+          "calls_per_step": 6.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 92.847,
+          "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunctor_add<c10::BFloat16>, std::array<char*, 3ul> >(int, at::native::CUDA"
+        },
+        {
+          "calls_per_step": 8.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 84.03,
+          "kernel": "triton_red_fused__to_copy_prepare_softmax_online_0"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 77.68,
+          "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_nn"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 49.088,
+          "kernel": "triton_red_fused__log_softmax__log_softmax_backward_data__to_copy_arange_eq_expand_nll_loss_backward_nll_loss_forward_scalar_tensor_view_0"
+        },
+        {
+          "calls_per_step": 8.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 18.273,
+          "kernel": "triton_per_fused__log_softmax__to_copy_nll_loss_forward_2"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 18.24,
+          "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, __nv_bfloat16, __nv_bfloat16, float, __nv_bfloat16, false, __nv_bfloat16, __nv_bfloat16, __n"
+        }
+      ],
+      "total_cuda_kernel_us_per_step": 680.058
+    },
+    {
+      "ce_softmax_cast_share": 0.305517,
+      "ce_softmax_cast_us_per_step": 138.367,
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "cpu_launch_calls_per_step": 30.0,
+      "cuda_kernels_per_step": 34.0,
+      "dtype": "torch.bfloat16",
+      "experiment": "cuda_kernel_attribution",
+      "gemm_share": 0.694483,
+      "gemm_us_per_step": 314.528,
+      "implementation": "triton_fused_linear_ce_bf16_dw",
+      "profiled_steps": 2,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "top_cuda_kernels": [
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 138.16,
+          "kernel": "ampere_bf16_s1688gemm_bf16_256x128_ldg8_f2f_stages_32x1_nt"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 86.16,
+          "kernel": "ampere_bf16_s16816gemm_bf16_256x128_ldg8_f2f_stages_32x3_tn"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 71.825,
+          "kernel": "ampere_bf16_s16816gemm_bf16_128x128_ldg8_f2f_stages_64x3_nn"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 62.256,
+          "kernel": "fused_cross_entropy_fwd_bwd_inplace_kernel"
+        },
+        {
+          "calls_per_step": 2.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 42.512,
+          "kernel": "void at::native::elementwise_kernel<128, 4, at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<c10::BFloat16, c10::BFloat16, c10::"
+        },
+        {
+          "calls_per_step": 4.0,
+          "category": "gemm",
+          "cuda_us_per_step": 18.384,
+          "kernel": "void cublasLt::splitKreduce_kernel<32, 16, int, __nv_bfloat16, __nv_bfloat16, float, __nv_bfloat16, false, __nv_bfloat16, __nv_bfloat16, __n"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 8.465,
+          "kernel": "void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<c10::BFloat16>, std::array<char*, 1ul> >(int, at::native::FillFunc"
+        },
+        {
+          "calls_per_step": 1.0,
+          "category": "ce_softmax_cast",
+          "cuda_us_per_step": 3.792,
+          "kernel": "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase&)::{lambda()#3}::operator()() const:"
+        }
+      ],
+      "total_cuda_kernel_us_per_step": 452.896
+    }
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.002203017336795134,
+      "dw_max_abs_error_vs_fp32": 4.735682159662247e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0029894708726782254,
+      "dx_max_abs_error_vs_fp32": 1.0787334758788347e-06,
+      "effective_3gemm_tflop_s": 60.364399902554204,
+      "experiment": "slm_llm_vocab_scaling",
+      "group_samples_ms": [
+        0.429744,
+        0.430272,
+        0.424,
+        0.424064
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "eager_fp32_logits_ce",
+      "iterations_per_group": 2,
+      "loss": 9.822061538696289,
+      "loss_abs_error_vs_fp32": 4.00543212890625e-05,
+      "max_ms": 0.430272,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.42702,
+      "mean_power_w": 148.43,
+      "median_ms": 0.426904,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.424,
+      "min_sm_clock_mhz": 1410,
+      "peak_incremental_memory_bytes": 100664320,
+      "peak_transient_workspace_bytes": 83362816,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.003229984234718392,
+      "setup_seconds": 0.0,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.0029939111543263977,
+      "tokens_per_second": 1199332.871090456,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.0022082657600103134,
+      "dw_max_abs_error_vs_fp32": 4.735682159662247e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0029916342850653606,
+      "dx_max_abs_error_vs_fp32": 1.0787334758788347e-06,
+      "effective_3gemm_tflop_s": 75.49157422076402,
+      "experiment": "slm_llm_vocab_scaling",
+      "group_samples_ms": [
+        0.34624,
+        0.3252,
+        0.344768,
+        0.337952
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "eager_bf16_logits_ce",
+      "iterations_per_group": 2,
+      "loss": 9.8125,
+      "loss_abs_error_vs_fp32": 0.009521484375,
+      "max_ms": 0.34624,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.33854,
+      "mean_power_w": 148.43,
+      "median_ms": 0.34136,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.3252,
+      "min_sm_clock_mhz": 1410,
+      "peak_incremental_memory_bytes": 50332672,
+      "peak_transient_workspace_bytes": 33031168,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.003231893000927865,
+      "setup_seconds": 0.0,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.008312330118564836,
+      "tokens_per_second": 1499882.8216545584,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.002203017336795134,
+      "dw_max_abs_error_vs_fp32": 4.735682159662247e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0029894708726782254,
+      "dx_max_abs_error_vs_fp32": 1.0787334758788347e-06,
+      "effective_3gemm_tflop_s": 47.48058712026296,
+      "experiment": "slm_llm_vocab_scaling",
+      "group_samples_ms": [
+        0.548512,
+        0.537808,
+        0.547328,
+        0.53816
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "torch_compile_full_ce",
+      "iterations_per_group": 2,
+      "loss": 9.822061538696289,
+      "loss_abs_error_vs_fp32": 4.00543212890625e-05,
+      "max_ms": 0.548512,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.542952,
+      "mean_power_w": 148.43,
+      "median_ms": 0.542744,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.537808,
+      "min_sm_clock_mhz": 1410,
+      "peak_incremental_memory_bytes": 34079744,
+      "peak_transient_workspace_bytes": 16778240,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.003229991509441743,
+      "setup_seconds": 2.7268292428925633,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.0049871579080675065,
+      "tokens_per_second": 943354.5096767538,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.0023053900566969696,
+      "dw_max_abs_error_vs_fp32": 3.356393426656723e-05,
+      "dx_l2_rel_error_vs_fp32": 0.002861892530937632,
+      "dx_max_abs_error_vs_fp32": 9.240611689165235e-07,
+      "effective_3gemm_tflop_s": 4.967301486847828,
+      "experiment": "slm_llm_vocab_scaling",
+      "group_samples_ms": [
+        5.3828,
+        5.16928,
+        5.206496,
+        5.13896
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "checkpointed_chunked_compile_ce",
+      "iterations_per_group": 2,
+      "loss": 9.822061538696289,
+      "loss_abs_error_vs_fp32": 4.00543212890625e-05,
+      "max_ms": 5.3828,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 5.224384,
+      "mean_power_w": 148.43,
+      "median_ms": 5.187887999999999,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 5.13896,
+      "min_sm_clock_mhz": 1410,
+      "peak_incremental_memory_bytes": 38405632,
+      "peak_transient_workspace_bytes": 21104128,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.003129431345625078,
+      "setup_seconds": 1.7568450889084488,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.09453745314953213,
+      "tokens_per_second": 98691.4135386115,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.002273988520996392,
+      "dw_max_abs_error_vs_fp32": 4.735682159662247e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0028618144752801,
+      "dx_max_abs_error_vs_fp32": 9.240611689165235e-07,
+      "effective_3gemm_tflop_s": 27.89277896887934,
+      "experiment": "slm_llm_vocab_scaling",
+      "group_samples_ms": [
+        0.922,
+        0.939152,
+        0.916592,
+        0.925776
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_bf16_dw",
+      "iterations_per_group": 2,
+      "loss": 9.822061538696289,
+      "loss_abs_error_vs_fp32": 4.00543212890625e-05,
+      "max_ms": 0.939152,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.92588,
+      "mean_power_w": 133.0,
+      "median_ms": 0.923888,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.916592,
+      "min_sm_clock_mhz": 1410,
+      "peak_incremental_memory_bytes": 21498880,
+      "peak_transient_workspace_bytes": 4197376,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017307418149440864,
+      "setup_seconds": 0.19903727807104588,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.008328837613977114,
+      "tokens_per_second": 554179.7274128465,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.0022028957992551055,
+      "dw_max_abs_error_vs_fp32": 4.735682159662247e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0028618144752801,
+      "dx_max_abs_error_vs_fp32": 9.240611689165235e-07,
+      "effective_3gemm_tflop_s": 26.142703295811458,
+      "experiment": "slm_llm_vocab_scaling",
+      "group_samples_ms": [
+        0.993824,
+        0.984272,
+        0.9872,
+        0.966256
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_fp32_dw",
+      "iterations_per_group": 2,
+      "loss": 9.822061538696289,
+      "loss_abs_error_vs_fp32": 4.00543212890625e-05,
+      "max_ms": 0.993824,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.982888,
+      "mean_power_w": 133.0,
+      "median_ms": 0.985736,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.966256,
+      "min_sm_clock_mhz": 1410,
+      "peak_incremental_memory_bytes": 55052800,
+      "peak_transient_workspace_bytes": 37751296,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017307418149440864,
+      "setup_seconds": 0.03675504704006016,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.010206962329704179,
+      "tokens_per_second": 519408.8478050919,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_accum_dtype": "bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.0012857567627070942,
+      "dw_max_abs_error_vs_fp32": 3.192853182554245e-05,
+      "dx_l2_rel_error_vs_fp32": 0.002126946347829888,
+      "dx_max_abs_error_vs_fp32": 6.873597158119082e-07,
+      "effective_3gemm_tflop_s": 23.598375642847724,
+      "experiment": "chunk_size_frontier",
+      "group_samples_ms": [
+        1.109184,
+        1.09312,
+        1.086736,
+        1.090912
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_bf16_dw",
+      "iterations_per_group": 2,
+      "loss": 9.837620735168457,
+      "loss_abs_error_vs_fp32": 6.771087646484375e-05,
+      "max_ms": 1.109184,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 30,
+      "mean_ms": 1.094988,
+      "mean_power_w": 170.12,
+      "median_ms": 1.092016,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 1.086736,
+      "min_sm_clock_mhz": 1410,
+      "num_chunks": 4,
+      "peak_incremental_memory_bytes": 21498880,
+      "peak_transient_workspace_bytes": 4197376,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017281238823026485,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.00851065684891593,
+      "tokens_per_second": 468857.59915605624,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 256,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_accum_dtype": "bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.0012102576990674562,
+      "dw_max_abs_error_vs_fp32": 2.9330141842365265e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0021939503006274032,
+      "dx_max_abs_error_vs_fp32": 6.873597158119082e-07,
+      "effective_3gemm_tflop_s": 30.840765862111887,
+      "experiment": "chunk_size_frontier",
+      "group_samples_ms": [
+        0.841328,
+        0.838128,
+        0.81792,
+        0.833024
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_bf16_dw",
+      "iterations_per_group": 2,
+      "loss": 9.837620735168457,
+      "loss_abs_error_vs_fp32": 6.771087646484375e-05,
+      "max_ms": 0.841328,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 30,
+      "mean_ms": 0.8326,
+      "mean_power_w": 170.12,
+      "median_ms": 0.835576,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.81792,
+      "min_sm_clock_mhz": 1410,
+      "num_chunks": 2,
+      "peak_incremental_memory_bytes": 25693184,
+      "peak_transient_workspace_bytes": 8391680,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017253859215390055,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.00897801403429511,
+      "tokens_per_second": 612750.9646040576,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_accum_dtype": "bfloat16",
+      "dw_l2_rel_error_vs_fp32": 0.0011405291924516709,
+      "dw_max_abs_error_vs_fp32": 2.9330141842365265e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0023159449998282223,
+      "dx_max_abs_error_vs_fp32": 9.145442163571715e-07,
+      "effective_3gemm_tflop_s": 37.29953881960608,
+      "experiment": "chunk_size_frontier",
+      "group_samples_ms": [
+        0.681872,
+        0.700496,
+        0.665584,
+        0.699904
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_bf16_dw",
+      "iterations_per_group": 2,
+      "loss": 9.837620735168457,
+      "loss_abs_error_vs_fp32": 6.771087646484375e-05,
+      "max_ms": 0.700496,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 30,
+      "mean_ms": 0.686964,
+      "mean_power_w": 170.12,
+      "median_ms": 0.690888,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.665584,
+      "min_sm_clock_mhz": 1410,
+      "num_chunks": 1,
+      "peak_incremental_memory_bytes": 34081792,
+      "peak_transient_workspace_bytes": 16780288,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017258164408707984,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.014435992241616102,
+      "tokens_per_second": 741075.253876171,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 128,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_accum_dtype": "float32",
+      "dw_l2_rel_error_vs_fp32": 0.001140552863781027,
+      "dw_max_abs_error_vs_fp32": 2.9330141842365265e-05,
+      "dx_l2_rel_error_vs_fp32": 0.002126946347829888,
+      "dx_max_abs_error_vs_fp32": 6.873597158119082e-07,
+      "effective_3gemm_tflop_s": 22.437400982133532,
+      "experiment": "chunk_size_frontier",
+      "group_samples_ms": [
+        1.148864,
+        1.148448,
+        1.148592,
+        1.1444
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_fp32_dw",
+      "iterations_per_group": 2,
+      "loss": 9.837620735168457,
+      "loss_abs_error_vs_fp32": 6.771087646484375e-05,
+      "max_ms": 1.148864,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 30,
+      "mean_ms": 1.147576,
+      "mean_power_w": 170.12,
+      "median_ms": 1.14852,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 1.1444,
+      "min_sm_clock_mhz": 1410,
+      "num_chunks": 4,
+      "peak_incremental_memory_bytes": 55052800,
+      "peak_transient_workspace_bytes": 37751296,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017281238823026485,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.0018397391119394965,
+      "tokens_per_second": 445791.1050743566,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 256,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_accum_dtype": "float32",
+      "dw_l2_rel_error_vs_fp32": 0.0011405336235379541,
+      "dw_max_abs_error_vs_fp32": 2.9330141842365265e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0021939503006274032,
+      "dx_max_abs_error_vs_fp32": 6.873597158119082e-07,
+      "effective_3gemm_tflop_s": 30.057156592329942,
+      "experiment": "chunk_size_frontier",
+      "group_samples_ms": [
+        0.86232,
+        0.8524,
+        0.846384,
+        0.864528
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_fp32_dw",
+      "iterations_per_group": 2,
+      "loss": 9.837620735168457,
+      "loss_abs_error_vs_fp32": 6.771087646484375e-05,
+      "max_ms": 0.864528,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.8564080000000001,
+      "mean_power_w": 152.54,
+      "median_ms": 0.85736,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.846384,
+      "min_sm_clock_mhz": 1410,
+      "num_chunks": 2,
+      "peak_incremental_memory_bytes": 59247104,
+      "peak_transient_workspace_bytes": 41945600,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017253859215390055,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.007372767187426954,
+      "tokens_per_second": 597182.0472147056,
+      "warmup": 4
+    },
+    {
+      "chunk_size": 512,
+      "clock_policy": "locked_1410mhz",
+      "dtype": "torch.bfloat16",
+      "dw_accum_dtype": "float32",
+      "dw_l2_rel_error_vs_fp32": 0.0011405291924516709,
+      "dw_max_abs_error_vs_fp32": 2.9330141842365265e-05,
+      "dx_l2_rel_error_vs_fp32": 0.0023159449998282223,
+      "dx_max_abs_error_vs_fp32": 9.145442163571715e-07,
+      "effective_3gemm_tflop_s": 35.99818369969715,
+      "experiment": "chunk_size_frontier",
+      "group_samples_ms": [
+        0.724624,
+        0.712688,
+        0.707664,
+        0.71904
+      ],
+      "group_sm_clocks_after_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "group_sm_clocks_before_mhz": [
+        1410,
+        1410,
+        1410,
+        1410
+      ],
+      "groups": 4,
+      "implementation": "triton_fused_linear_ce_fp32_dw",
+      "iterations_per_group": 2,
+      "loss": 9.837620735168457,
+      "loss_abs_error_vs_fp32": 6.771087646484375e-05,
+      "max_ms": 0.724624,
+      "max_sm_clock_mhz": 1410,
+      "max_temp_c": 29,
+      "mean_ms": 0.716004,
+      "mean_power_w": 152.54,
+      "median_ms": 0.7158640000000001,
+      "median_sm_clock_mhz": 1410.0,
+      "min_ms": 0.707664,
+      "min_sm_clock_mhz": 1410,
+      "num_chunks": 1,
+      "peak_incremental_memory_bytes": 67635712,
+      "peak_transient_workspace_bytes": 50334208,
+      "persistent_grad_bytes": 17301504,
+      "post_warmup_sm_clock_mhz": 1410,
+      "pre_warmup_sm_clock_mhz": 1410,
+      "protocol": "locked_boost_palindromic_balanced",
+      "scaled_backward_chain_rule_rel_error": 0.0017258164408707984,
+      "shape_bt_h_v": [
+        512,
+        512,
+        16384
+      ],
+      "stdev_ms": 0.006404552131101784,
+      "tokens_per_second": 715219.6506599018,
+      "warmup": 4
+    }
+  ],
+  "suite": "fused_linear_cross_entropy"
+}

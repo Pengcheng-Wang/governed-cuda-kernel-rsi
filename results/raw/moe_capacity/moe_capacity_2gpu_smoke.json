@@ -1,0 +1,276 @@
+{
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "The workload reuses the integrated global-biased router, token permutation, variable dispatch, local fused experts, return all-to-all, and weighted combine path.",
+    "Each source independently caps every destination at ceil(capacity_factor * local_assignments / world_size) and retains the highest router weights in that source-destination segment.",
+    "This source-fair policy bounds aggregate destination capacity without a global selection collective, but can underfill capacity when sources have different split vectors.",
+    "Dropped weights are not renormalized. Quality is reported against the uncapped output, while correctness is checked against an independently masked global-expert reference.",
+    "Separate stage timings reuse prepared tensors and are diagnostic rather than additive. distributed_end_to_end is authoritative."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "capacity": {
+        "accepted_assignments": 128.0,
+        "accepted_router_weight_mass": 64.0203857421875,
+        "dropped_assignment_fraction": 0.0,
+        "dropped_assignments": 0.0,
+        "fully_dropped_token_fraction": 0.0,
+        "partially_retained_token_fraction": 0.0,
+        "planned_assignments": 128.0,
+        "planned_router_weight_mass": 64.0203857421875,
+        "retained_router_weight_fraction": 1.0
+      },
+      "capacity_factor": null,
+      "capacity_policy": "highest router weights per source-destination segment; no post-drop renormalization",
+      "correctness_vs_masked_reference": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999998807907104
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 4.0,
+      "intermediate": 512,
+      "iterations": 3,
+      "local_destination_capacity": null,
+      "num_experts": 4,
+      "quality_vs_uncapped": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 0.9999998807907104
+      },
+      "routing": {
+        "max_to_mean_receive": 2.0,
+        "rank_receive_assignments": [
+          128,
+          0
+        ],
+        "receive_cv": 1.0,
+        "send_matrix": [
+          [
+            64,
+            0
+          ],
+          [
+            64,
+            0
+          ]
+        ]
+      },
+      "routing_pattern": "global_biased",
+      "timings": {
+        "dispatch": {
+          "critical_path_ms": 0.3408868797123432,
+          "local_samples_ms": [
+            0.31957682222127914,
+            0.36577368155121803,
+            0.3408868797123432
+          ],
+          "rank_median_cv": 0.017113314400360135,
+          "rank_median_ms": [
+            0.3408868797123432,
+            0.32941577956080437
+          ],
+          "rank_median_spread_ms": 0.011471100151538849
+        },
+        "distributed_end_to_end": {
+          "critical_path_ms": 2.0739128813147545,
+          "local_samples_ms": [
+            2.0739128813147545,
+            2.0823380909860134,
+            2.048606052994728
+          ],
+          "rank_median_cv": 0.022704027856936516,
+          "rank_median_ms": [
+            2.0739128813147545,
+            1.981831155717373
+          ],
+          "rank_median_spread_ms": 0.09208172559738159
+        },
+        "local_experts": {
+          "critical_path_ms": 0.4421453922986984,
+          "local_samples_ms": [
+            0.45813480392098427,
+            0.4150453023612499,
+            0.4421453922986984
+          ],
+          "rank_median_cv": 0.9075841285786037,
+          "rank_median_ms": [
+            0.4421453922986984,
+            0.021420419216156006
+          ],
+          "rank_median_spread_ms": 0.4207249730825424
+        },
+        "return_combine": {
+          "critical_path_ms": 0.18150778487324715,
+          "local_samples_ms": [
+            0.17896387726068497,
+            0.17413590103387833,
+            0.1750672236084938
+          ],
+          "rank_median_cv": 0.018062290153694666,
+          "rank_median_ms": [
+            0.1750672236084938,
+            0.18150778487324715
+          ],
+          "rank_median_spread_ms": 0.006440561264753342
+        },
+        "router_pack_capacity": {
+          "critical_path_ms": 1.1478541418910027,
+          "local_samples_ms": [
+            1.1529726907610893,
+            1.1279969476163387,
+            1.147543080151081
+          ],
+          "rank_median_cv": 0.00013551542928366705,
+          "rank_median_ms": [
+            1.147543080151081,
+            1.1478541418910027
+          ],
+          "rank_median_spread_ms": 0.0003110617399215698
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "capacity": {
+        "accepted_assignments": 80.0,
+        "accepted_router_weight_mass": 54.4375,
+        "dropped_assignment_fraction": 0.375,
+        "dropped_assignments": 48.0,
+        "fully_dropped_token_fraction": 0.0,
+        "partially_retained_token_fraction": 0.75,
+        "planned_assignments": 128.0,
+        "planned_router_weight_mass": 64.0203857421875,
+        "retained_router_weight_fraction": 0.8503150889971495
+      },
+      "capacity_factor": 1.25,
+      "capacity_policy": "highest router weights per source-destination segment; no post-drop renormalization",
+      "correctness_vs_masked_reference": {
+        "max_abs_error": 0.0,
+        "max_normalized_rmse": 0.0,
+        "min_cosine_similarity": 1.0
+      },
+      "dtype": "torch.bfloat16",
+      "experts_per_rank": 2,
+      "hidden": 256,
+      "hot_bias": 4.0,
+      "intermediate": 512,
+      "iterations": 3,
+      "local_destination_capacity": 40,
+      "num_experts": 4,
+      "quality_vs_uncapped": {
+        "max_abs_error": 0.90625,
+        "max_normalized_rmse": 0.2975199818611145,
+        "min_cosine_similarity": 0.9547169208526611
+      },
+      "routing": {
+        "max_to_mean_receive": 2.0,
+        "rank_receive_assignments": [
+          80,
+          0
+        ],
+        "receive_cv": 1.0,
+        "send_matrix": [
+          [
+            40,
+            0
+          ],
+          [
+            40,
+            0
+          ]
+        ]
+      },
+      "routing_pattern": "global_biased",
+      "timings": {
+        "dispatch": {
+          "critical_path_ms": 0.32176077365875244,
+          "local_samples_ms": [
+            0.31522801145911217,
+            0.3592809662222862,
+            0.32176077365875244
+          ],
+          "rank_median_cv": 0.012643832293908464,
+          "rank_median_ms": [
+            0.32176077365875244,
+            0.3137257881462574
+          ],
+          "rank_median_spread_ms": 0.008034985512495041
+        },
+        "distributed_end_to_end": {
+          "critical_path_ms": 2.1845498122274876,
+          "local_samples_ms": [
+            2.1857009269297123,
+            2.181714866310358,
+            2.1845498122274876
+          ],
+          "rank_median_cv": 0.021063181927996673,
+          "rank_median_ms": [
+            2.1845498122274876,
+            2.0944210700690746
+          ],
+          "rank_median_spread_ms": 0.09012874215841293
+        },
+        "local_experts": {
+          "critical_path_ms": 0.4376666620373726,
+          "local_samples_ms": [
+            0.4376666620373726,
+            0.40837330743670464,
+            0.44145435094833374
+          ],
+          "rank_median_cv": 0.9059788328672562,
+          "rank_median_ms": [
+            0.4376666620373726,
+            0.021589919924736023
+          ],
+          "rank_median_spread_ms": 0.41607674211263657
+        },
+        "return_combine": {
+          "critical_path_ms": 0.1814691349864006,
+          "local_samples_ms": [
+            0.2721981145441532,
+            0.1746458001434803,
+            0.1814691349864006
+          ],
+          "rank_median_cv": 0.017814934666384594,
+          "rank_median_ms": [
+            0.1814691349864006,
+            0.17511658370494843
+          ],
+          "rank_median_spread_ms": 0.006352551281452179
+        },
+        "router_pack_capacity": {
+          "critical_path_ms": 1.261305995285511,
+          "local_samples_ms": [
+            1.2635588645935059,
+            1.253100112080574,
+            1.2538619339466095
+          ],
+          "rank_median_cv": 0.0029596677233293873,
+          "rank_median_ms": [
+            1.2538619339466095,
+            1.261305995285511
+          ],
+          "rank_median_spread_ms": 0.00744406133890152
+        }
+      },
+      "tokens_per_rank": 32,
+      "top_k": 2,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_capacity",
+  "timestamp_utc": "2026-11-10T23:43:45Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

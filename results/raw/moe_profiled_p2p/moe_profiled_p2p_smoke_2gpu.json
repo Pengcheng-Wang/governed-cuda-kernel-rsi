@@ -1,0 +1,184 @@
+{
+  "adaptive_budget": 0.16,
+  "adaptive_window": 48,
+  "additive_margin": 18,
+  "calibration_steps": 96,
+  "correctness": {
+    "cases": {
+      "adaptive_alltoall_layer0_step96": {
+        "cosine_similarity": 0.9999999403953552,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "adaptive_alltoall_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "adaptive_p2p_layer0_step96": {
+        "cosine_similarity": 0.9999999403953552,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "adaptive_p2p_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "additive_alltoall_layer0_step96": {
+        "cosine_similarity": 0.9999999403953552,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "additive_alltoall_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "additive_p2p_layer0_step96": {
+        "cosine_similarity": 0.9999999403953552,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      },
+      "additive_p2p_layer0_step97": {
+        "cosine_similarity": 1.0,
+        "max_abs_error": 0.0,
+        "normalized_rmse": 0.0
+      }
+    },
+    "max_abs_error": 0.0,
+    "max_allowed_abs_error": 0.03125,
+    "min_cosine_similarity": 0.9999999403953552
+  },
+  "cuda": "12.9",
+  "experts_per_rank": 32,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hidden": 2048,
+  "hostname": "node-0",
+  "intermediate": 1024,
+  "method_order": "ascending",
+  "nodes": 1,
+  "notes": [
+    "Oversized NCCL receives with smaller sends were rejected by a prior timeout gate; grouped P2P therefore uses exact fixed profile sizes only.",
+    "On a profile miss the method executes the fully dynamic metadata-packed all-to-all path rather than clipping or spilling.",
+    "Grouped P2P batches fixed-size hidden and metadata sends/receives into one dispatch group and one return group. Self traffic is copied locally.",
+    "Router inference, profile construction, and profile-hit decisions are precomputed outside timed execution."
+  ],
+  "num_cycle_cases": 2,
+  "num_tokens": 128,
+  "p2p_vs_alltoall": {
+    "adaptive": 0.8708051723678414,
+    "additive": 0.9433061133745049
+  },
+  "profile": "smoke",
+  "profile_statistics": {
+    "adaptive": {
+      "fallback_rate": 0.0,
+      "hit_rate": 1.0,
+      "mean_hit_fixed_row_ratio": 1.213623046875,
+      "mean_served_row_ratio": 1.213623046875
+    },
+    "additive": {
+      "fallback_rate": 0.5,
+      "hit_rate": 0.5,
+      "mean_hit_fixed_row_ratio": 1.076171875,
+      "mean_served_row_ratio": 1.0380859375
+    }
+  },
+  "selected_domains": [
+    "biology",
+    "biology"
+  ],
+  "selected_layers": [
+    0
+  ],
+  "selected_steps": [
+    96,
+    97
+  ],
+  "speedup_vs_dynamic": {
+    "adaptive_alltoall": 1.178446178052709,
+    "adaptive_p2p": 1.0261970272054133,
+    "additive_alltoall": 1.0960655321000154,
+    "additive_p2p": 1.0339253170890241
+  },
+  "suite": "distributed_moe_profiled_p2p",
+  "tile_size": 512,
+  "timestamp_utc": "2026-11-11T20:05:54Z",
+  "timings": {
+    "adaptive_alltoall": {
+      "critical_path_ms": 2.5864874478429556,
+      "local_samples_ms": [
+        2.5826748460531235,
+        2.556134946644306
+      ],
+      "rank_median_cv": 0.003313209499706675,
+      "rank_median_ms": [
+        2.569404896348715,
+        2.5864874478429556
+      ],
+      "rank_median_spread_ms": 0.01708255149424076
+    },
+    "adaptive_p2p": {
+      "critical_path_ms": 2.970225177705288,
+      "local_samples_ms": [
+        2.968813292682171,
+        2.9521510004997253
+      ],
+      "rank_median_cv": 0.0016428109804754157,
+      "rank_median_ms": [
+        2.960482146590948,
+        2.970225177705288
+      ],
+      "rank_median_spread_ms": 0.009743031114339828
+    },
+    "additive_alltoall": {
+      "critical_path_ms": 2.780888695269823,
+      "local_samples_ms": [
+        2.756292000412941,
+        2.785287331789732
+      ],
+      "rank_median_cv": 0.0018190947873990896,
+      "rank_median_ms": [
+        2.7707896661013365,
+        2.780888695269823
+      ],
+      "rank_median_spread_ms": 0.010099029168486595
+    },
+    "additive_p2p": {
+      "critical_path_ms": 2.948023611679673,
+      "local_samples_ms": [
+        2.941880840808153,
+        2.9197302646934986
+      ],
+      "rank_median_cv": 0.002928824506931438,
+      "rank_median_ms": [
+        2.930805552750826,
+        2.948023611679673
+      ],
+      "rank_median_spread_ms": 0.017218058928847313
+    },
+    "dynamic": {
+      "critical_path_ms": 3.0480362474918365,
+      "local_samples_ms": [
+        3.0496343970298767,
+        3.0186260119080544
+      ],
+      "rank_median_cv": 0.002286363441827198,
+      "rank_median_ms": [
+        3.0341302044689655,
+        3.0480362474918365
+      ],
+      "rank_median_spread_ms": 0.013906043022871017
+    }
+  },
+  "top_k": 8,
+  "torch": "2.13.0+cu129",
+  "trace_corpus_sha256": "08008e65c5d919ac8c45bef7d07b0b1c9ea260d257d36e9d1c3c8b93257d5ad5",
+  "trace_experts": 64,
+  "trace_model": "allenai/OLMoE-1B-7B-0924",
+  "triton": "3.7.1",
+  "vllm": "0.29.0+cu129",
+  "world_size": 2
+}

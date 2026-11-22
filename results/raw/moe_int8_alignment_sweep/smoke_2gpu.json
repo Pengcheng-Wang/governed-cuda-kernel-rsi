@@ -1,0 +1,995 @@
+{
+  "alignments": [
+    2,
+    16
+  ],
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpus_per_node": 2,
+  "hostname": "node-0",
+  "nodes": 1,
+  "notes": [
+    "This transport-only benchmark isolates the expert-output return path without allocating router or expert weights.",
+    "Balanced, moderate-hot, and extreme-hot deterministic split matrices preserve the variable-split return direction used by expert parallelism.",
+    "The two-collective baseline sends INT8 values and one BF16 scale separately.",
+    "Packet alignments round each uint8 row size upward while fused Triton writes INT8 values, the BF16 scale, and zero padding in one kernel.",
+    "Widths H-2 create naturally aligned raw packets and are paired with standard transformer widths to control for payload size.",
+    "Every packet must reproduce the two-collective quantized return bit-for-bit."
+  ],
+  "profile": "smoke",
+  "records": [
+    {
+      "alignment_speedups": {
+        "16": {
+          "speedup_vs_bf16": 0.3885073409852127,
+          "speedup_vs_two_collective": 1.061983095229357
+        },
+        "2": {
+          "speedup_vs_bf16": 0.38477524454161927,
+          "speedup_vs_two_collective": 1.0517814261365388
+        }
+      },
+      "assignments_per_rank": 128,
+      "crossover": null,
+      "hidden": 510,
+      "iterations": 2,
+      "payload": {
+        "bf16_bytes_per_assignment": 1020,
+        "byte_reduction_fractions": {
+          "16": 0.4980392156862745,
+          "2": 0.4980392156862745
+        },
+        "packet_sizes": {
+          "16": 512,
+          "2": 512
+        },
+        "two_collective_bytes_per_assignment": 512
+      },
+      "quality": {
+        "packets": {
+          "16": {
+            "max_output_nrmse_vs_bf16": 0.0077988263219594955,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999697208404541,
+            "padding_zero": true,
+            "payload_equal": true
+          },
+          "2": {
+            "max_output_nrmse_vs_bf16": 0.0077988263219594955,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999697208404541,
+            "padding_zero": true,
+            "payload_equal": true
+          }
+        },
+        "two_collective_max_output_nrmse": 0.0077988263219594955,
+        "two_collective_min_output_cosine": 0.9999697208404541
+      },
+      "requested_hot_fraction": 0.5,
+      "route": "balanced",
+      "routing": {
+        "max_to_mean_receive": 1.0,
+        "rank0_receive_fraction": 0.5,
+        "rank_receive_assignments": [
+          128,
+          128
+        ],
+        "send_matrix": [
+          [
+            64,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ]
+      },
+      "timings": {
+        "bf16_return": {
+          "critical_path_ms": 0.11337571777403355,
+          "local_samples_ms": [
+            0.11289026588201523,
+            0.11288980022072792
+          ],
+          "rank_median_cv": 0.0021465233730258364,
+          "rank_median_ms": [
+            0.11289003305137157,
+            0.11337571777403355
+          ],
+          "rank_median_spread_ms": 0.00048568472266197205
+        },
+        "dequantize_two": {
+          "critical_path_ms": 0.07664295844733715,
+          "local_samples_ms": [
+            0.0770939514040947,
+            0.0761919654905796
+          ],
+          "rank_median_cv": 0.004993229906867332,
+          "rank_median_ms": [
+            0.07664295844733715,
+            0.07588136941194534
+          ],
+          "rank_median_spread_ms": 0.0007615890353918076
+        },
+        "packet_16_dequantize": {
+          "critical_path_ms": 0.1070043072104454,
+          "local_samples_ms": [
+            0.1056566834449768,
+            0.10357284918427467
+          ],
+          "rank_median_cv": 0.01129170852142762,
+          "rank_median_ms": [
+            0.10461476631462574,
+            0.1070043072104454
+          ],
+          "rank_median_spread_ms": 0.002389540895819664
+        },
+        "packet_16_prebuilt": {
+          "critical_path_ms": 0.20200642757117748,
+          "local_samples_ms": [
+            0.20256824791431427,
+            0.19742827862501144
+          ],
+          "rank_median_cv": 0.0049953752960302834,
+          "rank_median_ms": [
+            0.19999826326966286,
+            0.20200642757117748
+          ],
+          "rank_median_spread_ms": 0.0020081643015146255
+        },
+        "packet_16_quantize": {
+          "critical_path_ms": 0.11444347910583019,
+          "local_samples_ms": [
+            0.11806981638073921,
+            0.11081714183092117
+          ],
+          "rank_median_cv": 0.002656924271028714,
+          "rank_median_ms": [
+            0.11444347910583019,
+            0.11383695527911186
+          ],
+          "rank_median_spread_ms": 0.0006065238267183304
+        },
+        "packet_16_with_quantization": {
+          "critical_path_ms": 0.2918238751590252,
+          "local_samples_ms": [
+            0.283828005194664,
+            0.2858927473425865
+          ],
+          "rank_median_cv": 0.012075063387219198,
+          "rank_median_ms": [
+            0.28486037626862526,
+            0.2918238751590252
+          ],
+          "rank_median_spread_ms": 0.006963498890399933
+        },
+        "packet_2_dequantize": {
+          "critical_path_ms": 0.1218870747834444,
+          "local_samples_ms": [
+            0.13418961316347122,
+            0.10725017637014389
+          ],
+          "rank_median_cv": 0.004810991286856196,
+          "rank_median_ms": [
+            0.12071989476680756,
+            0.1218870747834444
+          ],
+          "rank_median_spread_ms": 0.0011671800166368484
+        },
+        "packet_2_prebuilt": {
+          "critical_path_ms": 0.20788260735571384,
+          "local_samples_ms": [
+            0.20221667364239693,
+            0.20839786157011986
+          ],
+          "rank_median_cv": 0.006232823952165992,
+          "rank_median_ms": [
+            0.2053072676062584,
+            0.20788260735571384
+          ],
+          "rank_median_spread_ms": 0.002575339749455452
+        },
+        "packet_2_quantize": {
+          "critical_path_ms": 0.13248692266643047,
+          "local_samples_ms": [
+            0.14472007751464844,
+            0.11435337364673615
+          ],
+          "rank_median_cv": 0.011259277952483732,
+          "rank_median_ms": [
+            0.1295367255806923,
+            0.13248692266643047
+          ],
+          "rank_median_spread_ms": 0.002950197085738182
+        },
+        "packet_2_with_quantization": {
+          "critical_path_ms": 0.2946543972939253,
+          "local_samples_ms": [
+            0.28597190976142883,
+            0.2868650481104851
+          ],
+          "rank_median_cv": 0.014173641026586246,
+          "rank_median_ms": [
+            0.28641847893595695,
+            0.2946543972939253
+          ],
+          "rank_median_spread_ms": 0.00823591835796833
+        },
+        "quantize_two": {
+          "critical_path_ms": 0.1011979766190052,
+          "local_samples_ms": [
+            0.08961698040366173,
+            0.10925298556685448
+          ],
+          "rank_median_cv": 0.00878715858662755,
+          "rank_median_ms": [
+            0.0994349829852581,
+            0.1011979766190052
+          ],
+          "rank_median_spread_ms": 0.0017629936337471008
+        },
+        "two_prebuilt": {
+          "critical_path_ms": 0.22545503452420235,
+          "local_samples_ms": [
+            0.23356499150395393,
+            0.21734507754445076
+          ],
+          "rank_median_cv": 0.0009137536462284922,
+          "rank_median_ms": [
+            0.22545503452420235,
+            0.2250433899462223
+          ],
+          "rank_median_spread_ms": 0.0004116445779800415
+        },
+        "two_with_quantization": {
+          "critical_path_ms": 0.309912022203207,
+          "local_samples_ms": [
+            0.295259989798069,
+            0.32456405460834503
+          ],
+          "rank_median_cv": 0.0016269094740010534,
+          "rank_median_ms": [
+            0.309912022203207,
+            0.3089052625000477
+          ],
+          "rank_median_spread_ms": 0.0010067597031593323
+        }
+      },
+      "tokens_per_rank": 64,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "alignment_speedups": {
+        "16": {
+          "speedup_vs_bf16": 0.36195681897089416,
+          "speedup_vs_two_collective": 2.7822682483938466
+        },
+        "2": {
+          "speedup_vs_bf16": 0.36017154811395674,
+          "speedup_vs_two_collective": 2.7685453340579262
+        }
+      },
+      "assignments_per_rank": 128,
+      "crossover": null,
+      "hidden": 510,
+      "iterations": 2,
+      "payload": {
+        "bf16_bytes_per_assignment": 1020,
+        "byte_reduction_fractions": {
+          "16": 0.4980392156862745,
+          "2": 0.4980392156862745
+        },
+        "packet_sizes": {
+          "16": 512,
+          "2": 512
+        },
+        "two_collective_bytes_per_assignment": 512
+      },
+      "quality": {
+        "packets": {
+          "16": {
+            "max_output_nrmse_vs_bf16": 0.007757969666272402,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999698996543884,
+            "padding_zero": true,
+            "payload_equal": true
+          },
+          "2": {
+            "max_output_nrmse_vs_bf16": 0.007757969666272402,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999698996543884,
+            "padding_zero": true,
+            "payload_equal": true
+          }
+        },
+        "two_collective_max_output_nrmse": 0.007757969666272402,
+        "two_collective_min_output_cosine": 0.9999698996543884
+      },
+      "requested_hot_fraction": 0.65,
+      "route": "moderate_hot",
+      "routing": {
+        "max_to_mean_receive": 1.296875,
+        "rank0_receive_fraction": 0.6484375,
+        "rank_receive_assignments": [
+          166,
+          90
+        ],
+        "send_matrix": [
+          [
+            83,
+            45
+          ],
+          [
+            83,
+            45
+          ]
+        ]
+      },
+      "timings": {
+        "bf16_return": {
+          "critical_path_ms": 0.10971445590257645,
+          "local_samples_ms": [
+            0.1077498309314251,
+            0.10812189429998398
+          ],
+          "rank_median_cv": 0.008171792713101506,
+          "rank_median_ms": [
+            0.10793586261570454,
+            0.10971445590257645
+          ],
+          "rank_median_spread_ms": 0.00177859328687191
+        },
+        "dequantize_two": {
+          "critical_path_ms": 0.071387505158782,
+          "local_samples_ms": [
+            0.07032090798020363,
+            0.06993114948272705
+          ],
+          "rank_median_cv": 0.008914175150872991,
+          "rank_median_ms": [
+            0.07012602873146534,
+            0.071387505158782
+          ],
+          "rank_median_spread_ms": 0.0012614764273166656
+        },
+        "packet_16_dequantize": {
+          "critical_path_ms": 0.10206014849245548,
+          "local_samples_ms": [
+            0.10342290624976158,
+            0.10064803063869476
+          ],
+          "rank_median_cv": 0.00012092395024321686,
+          "rank_median_ms": [
+            0.10203546844422817,
+            0.10206014849245548
+          ],
+          "rank_median_spread_ms": 2.468004822731018e-05
+        },
+        "packet_16_prebuilt": {
+          "critical_path_ms": 0.19680196419358253,
+          "local_samples_ms": [
+            0.19628601148724556,
+            0.1973179168999195
+          ],
+          "rank_median_cv": 0.020508371952916406,
+          "rank_median_ms": [
+            0.19680196419358253,
+            0.18889200873672962
+          ],
+          "rank_median_spread_ms": 0.007909955456852913
+        },
+        "packet_16_quantize": {
+          "critical_path_ms": 0.1114176120609045,
+          "local_samples_ms": [
+            0.11223927140235901,
+            0.11059595271945
+          ],
+          "rank_median_cv": 0.008916184910163482,
+          "rank_median_ms": [
+            0.1114176120609045,
+            0.10944833047688007
+          ],
+          "rank_median_spread_ms": 0.0019692815840244293
+        },
+        "packet_16_with_quantization": {
+          "critical_path_ms": 0.30311476439237595,
+          "local_samples_ms": [
+            0.3160783089697361,
+            0.2901512198150158
+          ],
+          "rank_median_cv": 0.006068319892613342,
+          "rank_median_ms": [
+            0.30311476439237595,
+            0.2994581591337919
+          ],
+          "rank_median_spread_ms": 0.0036566052585840225
+        },
+        "packet_2_dequantize": {
+          "critical_path_ms": 0.1093987375497818,
+          "local_samples_ms": [
+            0.1153252087533474,
+            0.1034722663462162
+          ],
+          "rank_median_cv": 0.0310897713719548,
+          "rank_median_ms": [
+            0.1093987375497818,
+            0.1028014812618494
+          ],
+          "rank_median_spread_ms": 0.006597256287932396
+        },
+        "packet_2_prebuilt": {
+          "critical_path_ms": 0.20974618382751942,
+          "local_samples_ms": [
+            0.1921667717397213,
+            0.21757511422038078
+          ],
+          "rank_median_cv": 0.011758416457627529,
+          "rank_median_ms": [
+            0.20487094298005104,
+            0.20974618382751942
+          ],
+          "rank_median_spread_ms": 0.004875240847468376
+        },
+        "packet_2_quantize": {
+          "critical_path_ms": 0.11040107347071171,
+          "local_samples_ms": [
+            0.11146813631057739,
+            0.10933401063084602
+          ],
+          "rank_median_cv": 0.0030047689204725134,
+          "rank_median_ms": [
+            0.11040107347071171,
+            0.10973960161209106
+          ],
+          "rank_median_spread_ms": 0.0006614718586206436
+        },
+        "packet_2_with_quantization": {
+          "critical_path_ms": 0.30461722053587437,
+          "local_samples_ms": [
+            0.3174310550093651,
+            0.29180338606238365
+          ],
+          "rank_median_cv": 0.009311078907141092,
+          "rank_median_ms": [
+            0.30461722053587437,
+            0.2989969216287136
+          ],
+          "rank_median_spread_ms": 0.005620298907160759
+        },
+        "quantize_two": {
+          "critical_path_ms": 0.08006417192518711,
+          "local_samples_ms": [
+            0.08213333785533905,
+            0.07799500599503517
+          ],
+          "rank_median_cv": 0.005093085825437954,
+          "rank_median_ms": [
+            0.08006417192518711,
+            0.07925275713205338
+          ],
+          "rank_median_spread_ms": 0.0008114147931337357
+        },
+        "two_prebuilt": {
+          "critical_path_ms": 0.21893810480833054,
+          "local_samples_ms": [
+            0.21956907585263252,
+            0.21830713376402855
+          ],
+          "rank_median_cv": 0.00652942737992276,
+          "rank_median_ms": [
+            0.21893810480833054,
+            0.21609757095575333
+          ],
+          "rank_median_spread_ms": 0.0028405338525772095
+        },
+        "two_with_quantization": {
+          "critical_path_ms": 0.8433465845882893,
+          "local_samples_ms": [
+            1.3988357968628407,
+            0.28785737231373787
+          ],
+          "rank_median_cv": 0.4494181652954371,
+          "rank_median_ms": [
+            0.8433465845882893,
+            0.32035703770816326
+          ],
+          "rank_median_spread_ms": 0.522989546880126
+        }
+      },
+      "tokens_per_rank": 64,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "alignment_speedups": {
+        "16": {
+          "speedup_vs_bf16": 0.3418423200953361,
+          "speedup_vs_two_collective": 1.7135631867530363
+        },
+        "2": {
+          "speedup_vs_bf16": 0.3396187278446447,
+          "speedup_vs_two_collective": 1.7024169196025223
+        }
+      },
+      "assignments_per_rank": 128,
+      "crossover": null,
+      "hidden": 512,
+      "iterations": 2,
+      "payload": {
+        "bf16_bytes_per_assignment": 1024,
+        "byte_reduction_fractions": {
+          "16": 0.484375,
+          "2": 0.498046875
+        },
+        "packet_sizes": {
+          "16": 528,
+          "2": 514
+        },
+        "two_collective_bytes_per_assignment": 514
+      },
+      "quality": {
+        "packets": {
+          "16": {
+            "max_output_nrmse_vs_bf16": 0.007710918318480253,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999703168869019,
+            "padding_zero": true,
+            "payload_equal": true
+          },
+          "2": {
+            "max_output_nrmse_vs_bf16": 0.007710918318480253,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999703168869019,
+            "padding_zero": true,
+            "payload_equal": true
+          }
+        },
+        "two_collective_max_output_nrmse": 0.007710918318480253,
+        "two_collective_min_output_cosine": 0.9999703168869019
+      },
+      "requested_hot_fraction": 0.5,
+      "route": "balanced",
+      "routing": {
+        "max_to_mean_receive": 1.0,
+        "rank0_receive_fraction": 0.5,
+        "rank_receive_assignments": [
+          128,
+          128
+        ],
+        "send_matrix": [
+          [
+            64,
+            64
+          ],
+          [
+            64,
+            64
+          ]
+        ]
+      },
+      "timings": {
+        "bf16_return": {
+          "critical_path_ms": 0.10178494267165661,
+          "local_samples_ms": [
+            0.10269181802868843,
+            0.10087806731462479
+          ],
+          "rank_median_cv": 0.0006168551374648513,
+          "rank_median_ms": [
+            0.10178494267165661,
+            0.10165944695472717
+          ],
+          "rank_median_spread_ms": 0.00012549571692943573
+        },
+        "dequantize_two": {
+          "critical_path_ms": 0.0754308421164751,
+          "local_samples_ms": [
+            0.073176808655262,
+            0.07768487557768822
+          ],
+          "rank_median_cv": 0.017402486877083453,
+          "rank_median_ms": [
+            0.0754308421164751,
+            0.07285038009285927
+          ],
+          "rank_median_spread_ms": 0.002580462023615837
+        },
+        "packet_16_dequantize": {
+          "critical_path_ms": 0.10576704517006874,
+          "local_samples_ms": [
+            0.10348344221711159,
+            0.10766973719000816
+          ],
+          "rank_median_cv": 0.00090116490436415,
+          "rank_median_ms": [
+            0.10557658970355988,
+            0.10576704517006874
+          ],
+          "rank_median_spread_ms": 0.00019045546650886536
+        },
+        "packet_16_prebuilt": {
+          "critical_path_ms": 0.2081079874187708,
+          "local_samples_ms": [
+            0.22424710914492607,
+            0.18795998767018318
+          ],
+          "rank_median_cv": 0.004839167521535672,
+          "rank_median_ms": [
+            0.20610354840755463,
+            0.2081079874187708
+          ],
+          "rank_median_spread_ms": 0.0020044390112161636
+        },
+        "packet_16_quantize": {
+          "critical_path_ms": 0.12755743227899075,
+          "local_samples_ms": [
+            0.11401157826185226,
+            0.14110328629612923
+          ],
+          "rank_median_cv": 0.053187552565180825,
+          "rank_median_ms": [
+            0.12755743227899075,
+            0.11467374861240387
+          ],
+          "rank_median_spread_ms": 0.012883683666586876
+        },
+        "packet_16_with_quantization": {
+          "critical_path_ms": 0.29775407165288925,
+          "local_samples_ms": [
+            0.2804817631840706,
+            0.30538905411958694
+          ],
+          "rank_median_cv": 0.008157692259179375,
+          "rank_median_ms": [
+            0.29293540865182877,
+            0.29775407165288925
+          ],
+          "rank_median_spread_ms": 0.004818663001060486
+        },
+        "packet_2_dequantize": {
+          "critical_path_ms": 0.11055078357458115,
+          "local_samples_ms": [
+            0.10244129225611687,
+            0.1064380630850792
+          ],
+          "rank_median_cv": 0.02842500950316068,
+          "rank_median_ms": [
+            0.10443967767059803,
+            0.11055078357458115
+          ],
+          "rank_median_spread_ms": 0.006111105903983116
+        },
+        "packet_2_prebuilt": {
+          "critical_path_ms": 0.20839832723140717,
+          "local_samples_ms": [
+            0.21733483299613,
+            0.1885206438601017
+          ],
+          "rank_median_cv": 0.013299883620357833,
+          "rank_median_ms": [
+            0.20292773842811584,
+            0.20839832723140717
+          ],
+          "rank_median_spread_ms": 0.005470588803291321
+        },
+        "packet_2_quantize": {
+          "critical_path_ms": 0.11498364619910717,
+          "local_samples_ms": [
+            0.1144232228398323,
+            0.11496385559439659
+          ],
+          "rank_median_cv": 0.0012631075283641643,
+          "rank_median_ms": [
+            0.11469353921711445,
+            0.11498364619910717
+          ],
+          "rank_median_spread_ms": 0.00029010698199272156
+        },
+        "packet_2_with_quantization": {
+          "critical_path_ms": 0.2997035626322031,
+          "local_samples_ms": [
+            0.2813548780977726,
+            0.3072819672524929
+          ],
+          "rank_median_cv": 0.009065556646500517,
+          "rank_median_ms": [
+            0.29431842267513275,
+            0.2997035626322031
+          ],
+          "rank_median_spread_ms": 0.005385139957070351
+        },
+        "quantize_two": {
+          "critical_path_ms": 0.08291983976960182,
+          "local_samples_ms": [
+            0.08395686745643616,
+            0.08004996925592422
+          ],
+          "rank_median_cv": 0.005556653584436852,
+          "rank_median_ms": [
+            0.08200341835618019,
+            0.08291983976960182
+          ],
+          "rank_median_spread_ms": 0.0009164214134216309
+        },
+        "two_prebuilt": {
+          "critical_path_ms": 0.23950589820742607,
+          "local_samples_ms": [
+            0.21958909928798676,
+            0.25099702179431915
+          ],
+          "rank_median_cv": 0.008872887331886393,
+          "rank_median_ms": [
+            0.23529306054115295,
+            0.23950589820742607
+          ],
+          "rank_median_spread_ms": 0.004212837666273117
+        },
+        "two_with_quantization": {
+          "critical_path_ms": 0.5102204158902168,
+          "local_samples_ms": [
+            0.6205663084983826,
+            0.3161998465657234
+          ],
+          "rank_median_cv": 0.04275208359603813,
+          "rank_median_ms": [
+            0.468383077532053,
+            0.5102204158902168
+          ],
+          "rank_median_spread_ms": 0.041837338358163834
+        }
+      },
+      "tokens_per_rank": 64,
+      "top_k": 2,
+      "warmup": 1
+    },
+    {
+      "alignment_speedups": {
+        "16": {
+          "speedup_vs_bf16": 0.3659406064725154,
+          "speedup_vs_two_collective": 0.9932018462736352
+        },
+        "2": {
+          "speedup_vs_bf16": 0.023677795151757674,
+          "speedup_vs_two_collective": 0.06426406210315148
+        }
+      },
+      "assignments_per_rank": 128,
+      "crossover": null,
+      "hidden": 512,
+      "iterations": 2,
+      "payload": {
+        "bf16_bytes_per_assignment": 1024,
+        "byte_reduction_fractions": {
+          "16": 0.484375,
+          "2": 0.498046875
+        },
+        "packet_sizes": {
+          "16": 528,
+          "2": 514
+        },
+        "two_collective_bytes_per_assignment": 514
+      },
+      "quality": {
+        "packets": {
+          "16": {
+            "max_output_nrmse_vs_bf16": 0.0077256103977561,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999701380729675,
+            "padding_zero": true,
+            "payload_equal": true
+          },
+          "2": {
+            "max_output_nrmse_vs_bf16": 0.0077256103977561,
+            "max_vs_two_collective_error": 0.0,
+            "min_output_cosine_vs_bf16": 0.9999701380729675,
+            "padding_zero": true,
+            "payload_equal": true
+          }
+        },
+        "two_collective_max_output_nrmse": 0.0077256103977561,
+        "two_collective_min_output_cosine": 0.9999701380729675
+      },
+      "requested_hot_fraction": 0.65,
+      "route": "moderate_hot",
+      "routing": {
+        "max_to_mean_receive": 1.296875,
+        "rank0_receive_fraction": 0.6484375,
+        "rank_receive_assignments": [
+          166,
+          90
+        ],
+        "send_matrix": [
+          [
+            83,
+            45
+          ],
+          [
+            83,
+            45
+          ]
+        ]
+      },
+      "timings": {
+        "bf16_return": {
+          "critical_path_ms": 0.10329810902476311,
+          "local_samples_ms": [
+            0.10045710951089859,
+            0.10363291949033737
+          ],
+          "rank_median_cv": 0.0061024421107056925,
+          "rank_median_ms": [
+            0.10204501450061798,
+            0.10329810902476311
+          ],
+          "rank_median_spread_ms": 0.0012530945241451263
+        },
+        "dequantize_two": {
+          "critical_path_ms": 0.07176399230957031,
+          "local_samples_ms": [
+            0.07247505709528923,
+            0.0710529275238514
+          ],
+          "rank_median_cv": 0.0008036327447061707,
+          "rank_median_ms": [
+            0.07176399230957031,
+            0.07164874114096165
+          ],
+          "rank_median_spread_ms": 0.00011525116860866547
+        },
+        "packet_16_dequantize": {
+          "critical_path_ms": 0.10360311716794968,
+          "local_samples_ms": [
+            0.10174885392189026,
+            0.10112905874848366
+          ],
+          "rank_median_cv": 0.010554715897025944,
+          "rank_median_ms": [
+            0.10143895633518696,
+            0.10360311716794968
+          ],
+          "rank_median_spread_ms": 0.002164160832762718
+        },
+        "packet_16_prebuilt": {
+          "critical_path_ms": 0.1922925002872944,
+          "local_samples_ms": [
+            0.1927088014781475,
+            0.19125686958432198
+          ],
+          "rank_median_cv": 0.0008058408312884365,
+          "rank_median_ms": [
+            0.19198283553123474,
+            0.1922925002872944
+          ],
+          "rank_median_spread_ms": 0.0003096647560596466
+        },
+        "packet_16_quantize": {
+          "critical_path_ms": 0.1115831546485424,
+          "local_samples_ms": [
+            0.11200923472642899,
+            0.10932376608252525
+          ],
+          "rank_median_cv": 0.004124434946126729,
+          "rank_median_ms": [
+            0.11066650040447712,
+            0.1115831546485424
+          ],
+          "rank_median_spread_ms": 0.0009166542440652847
+        },
+        "packet_16_with_quantization": {
+          "critical_path_ms": 0.2822810783982277,
+          "local_samples_ms": [
+            0.283949077129364,
+            0.28047291561961174
+          ],
+          "rank_median_cv": 0.00012415058930283877,
+          "rank_median_ms": [
+            0.2822109963744879,
+            0.2822810783982277
+          ],
+          "rank_median_spread_ms": 7.008202373981476e-05
+        },
+        "packet_2_dequantize": {
+          "critical_path_ms": 0.10312185622751713,
+          "local_samples_ms": [
+            0.10210974141955376,
+            0.10007712990045547
+          ],
+          "rank_median_cv": 0.009932755518767572,
+          "rank_median_ms": [
+            0.10109343566000462,
+            0.10312185622751713
+          ],
+          "rank_median_spread_ms": 0.002028420567512512
+        },
+        "packet_2_prebuilt": {
+          "critical_path_ms": 0.2098260447382927,
+          "local_samples_ms": [
+            0.1867576502263546,
+            0.23224297910928726
+          ],
+          "rank_median_cv": 0.0007767936910360007,
+          "rank_median_ms": [
+            0.20950031466782093,
+            0.2098260447382927
+          ],
+          "rank_median_spread_ms": 0.0003257300704717636
+        },
+        "packet_2_quantize": {
+          "critical_path_ms": 0.11205836199223995,
+          "local_samples_ms": [
+            0.11196918785572052,
+            0.10896334424614906
+          ],
+          "rank_median_cv": 0.0071546954389078155,
+          "rank_median_ms": [
+            0.11046626605093479,
+            0.11205836199223995
+          ],
+          "rank_median_spread_ms": 0.0015920959413051605
+        },
+        "packet_2_with_quantization": {
+          "critical_path_ms": 4.362657433375716,
+          "local_samples_ms": [
+            8.287339005619287,
+            0.28387922793626785
+          ],
+          "rank_median_cv": 0.008909105212138847,
+          "rank_median_ms": [
+            4.285609116777778,
+            4.362657433375716
+          ],
+          "rank_median_spread_ms": 0.07704831659793854
+        },
+        "quantize_two": {
+          "critical_path_ms": 0.07990887388586998,
+          "local_samples_ms": [
+            0.08107069879770279,
+            0.07757404819130898
+          ],
+          "rank_median_cv": 0.0036833247306230655,
+          "rank_median_ms": [
+            0.07932237349450588,
+            0.07990887388586998
+          ],
+          "rank_median_spread_ms": 0.0005865003913640976
+        },
+        "two_prebuilt": {
+          "critical_path_ms": 0.23694639094173908,
+          "local_samples_ms": [
+            0.21514110267162323,
+            0.25165919214487076
+          ],
+          "rank_median_cv": 0.007539639913015197,
+          "rank_median_ms": [
+            0.233400147408247,
+            0.23694639094173908
+          ],
+          "rank_median_spread_ms": 0.0035462435334920883
+        },
+        "two_with_quantization": {
+          "critical_path_ms": 0.2803620882332325,
+          "local_samples_ms": [
+            0.2820952795445919,
+            0.2740500494837761
+          ],
+          "rank_median_cv": 0.004099715692450861,
+          "rank_median_ms": [
+            0.278072664514184,
+            0.2803620882332325
+          ],
+          "rank_median_spread_ms": 0.0022894237190485
+        }
+      },
+      "tokens_per_rank": 64,
+      "top_k": 2,
+      "warmup": 1
+    }
+  ],
+  "suite": "distributed_moe_int8_alignment_sweep",
+  "timestamp_utc": "2026-11-11T07:51:05Z",
+  "torch": "2.13.0+cu129",
+  "torch_cuda": "12.9",
+  "triton": "3.7.1",
+  "world_size": 2
+}

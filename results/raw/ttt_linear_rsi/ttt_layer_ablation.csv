@@ -1,0 +1,11 @@
+config,D,K,stage_id,stage_name,fwd_ms_mean,fwd_ms_std,bwd_ms_mean,bwd_ms_std,total_ms_mean,total_ms_std,speedup_vs_a0,tokens_per_sec_mean
+"D=1024,H=16,K=64",1024,64,A0,A0_upstream_ttt_block_baseline,1.1333,0.0097,2.6744,0.0082,3.8077,0.0146,1.0,1075717.8
+"D=1024,H=16,K=64",1024,64,A1,A1_zero_spill_ttt_kernel_no_bwd_replay,1.0852,0.0029,2.4908,0.007,3.576,0.0098,1.065,1145411.6
+"D=1024,H=16,K=64",1024,64,A2,A2_plus_fused_in_kernel_output_ln_residual,0.8411,0.0012,2.0762,0.0068,2.9173,0.0079,1.305,1404032.7
+"D=1024,H=16,K=64",1024,64,A3,A3_plus_fused_qkve_single_gemm,0.8407,0.002,1.9605,0.0031,2.8012,0.0051,1.359,1462212.3
+"D=1024,H=16,K=64",1024,64,A4,A4_plus_persistent_2d_triton_rmsnorm,0.7472,0.002,1.7703,0.0021,2.5175,0.0038,1.513,1627015.8
+"D=2048,H=16,K=128",2048,128,A0,A0_upstream_ttt_block_baseline,2.5615,0.0037,9.2321,0.0061,11.7935,0.0072,1.0,347308.6
+"D=2048,H=16,K=128",2048,128,A1,A1_zero_spill_ttt_kernel_no_bwd_replay,2.5502,0.0042,6.3382,0.0062,8.8884,0.0091,1.327,460824.5
+"D=2048,H=16,K=128",2048,128,A2,A2_plus_fused_in_kernel_output_ln_residual,2.1246,0.0015,5.615,0.0102,7.7396,0.0116,1.524,529229.4
+"D=2048,H=16,K=128",2048,128,A3,A3_plus_fused_qkve_single_gemm,2.1714,0.0015,5.2865,0.0014,7.4579,0.0028,1.581,549214.6
+"D=2048,H=16,K=128",2048,128,A4,A4_plus_persistent_2d_triton_rmsnorm,1.9658,0.0012,4.8482,0.0026,6.814,0.0024,1.731,601117.8

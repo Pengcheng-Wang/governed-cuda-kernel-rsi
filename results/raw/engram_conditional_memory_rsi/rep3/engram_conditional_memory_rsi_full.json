@@ -1,0 +1,796 @@
+{
+  "experiment": "E130_deepseek_engram_conditional_memory_round4_rsi",
+  "mode": "full",
+  "harness_version": "1.0.0",
+  "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+  "rsi_ledger_tsv_sha256": "c869dfa60c22e2ed935f0ba44212ccdfaaca1f9d9fc97e420d8947342304761c",
+  "total_wall_seconds": 339.3,
+  "end_gpu0_sm_clock_mhz": 1410.0,
+  "end_gpu0_power_w": 88.63,
+  "environment": {
+    "timestamp_utc": "2026-11-18T01:48:47Z",
+    "hostname": "node-0",
+    "platform": "Linux-6.8.0-1067-azure-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "torch": "2.13.0+cu129",
+    "torch_cuda": "12.9",
+    "cuda_driver": "580.178.04",
+    "gpu_name": "NVIDIA A100-SXM4-80GB",
+    "gpu_count": 8,
+    "compute_capability": [
+      8,
+      0
+    ],
+    "gpu_memory_bytes": 85093777408,
+    "allow_tf32_matmul": false,
+    "allow_tf32_cudnn": true,
+    "triton": "3.7.1",
+    "flash_attn": "2.8.3.post1"
+  },
+  "suite_0_adversarial_and_oracle_audits": {
+    "surjective_vocab_audit": {
+      "unicode_sample_vocab_size": 26,
+      "unicode_compressed_vocab_size": 11,
+      "unicode_reduction_pct": 57.69,
+      "prod_vocab_size": 129280,
+      "prod_compressed_vocab_size": 99546,
+      "prod_reduction_pct": 23.0,
+      "prod_num_heads": 16,
+      "prod_total_prime_entries": 1049422,
+      "single_doc_bitwise_mismatches": 0,
+      "packed_doc_bitwise_mismatches": 0,
+      "packed_doc_hash_cross_doc_leak": 0,
+      "surjective_collision_exact": true
+    },
+    "demo_numerical_pitfall_audit": {
+      "rmsnorm_eps_none_bf16_finfo_eps": 0.0078125,
+      "rmsnorm_eps_none_vs_1e5_rel_l2_drift": 0.005881,
+      "signed_sqrt_zero_score_finite_ok": true,
+      "demo_signed_sqrt_bf16_fwd_rel_l2": 0.002891,
+      "demo_signed_sqrt_bf16_zero_crossing_dH_rel_l2": 0.087166,
+      "paper_eq6_smooth_bf16_dH_rel_l2": 0.00166936,
+      "packed_shortconv_fwd_cross_doc_leak": 0.0,
+      "packed_shortconv_bwd_doc0_leak": 0.0,
+      "packed_shortconv_bwd_doc1_diff": 0.0
+    },
+    "fp32_parity_checks": [
+      {
+        "name": "fp32_fwd_Y",
+        "ok": true,
+        "rel_l2": 9e-08,
+        "max_abs": 5.6e-07,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dH",
+        "ok": true,
+        "rel_l2": 8.6e-07,
+        "max_abs": 5.196e-05,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dE",
+        "ok": true,
+        "rel_l2": 1.33e-06,
+        "max_abs": 3.235e-05,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dW_kv",
+        "ok": true,
+        "rel_l2": 1.32e-06,
+        "max_abs": 0.00010377,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dgamma_h",
+        "ok": true,
+        "rel_l2": 5.39e-06,
+        "max_abs": 3.326e-05,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dgamma_k",
+        "ok": true,
+        "rel_l2": 5.39e-06,
+        "max_abs": 3.326e-05,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dgamma_conv",
+        "ok": true,
+        "rel_l2": 1.9e-07,
+        "max_abs": 2.8e-06,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "fp32_bwd_dw_conv",
+        "ok": true,
+        "rel_l2": 1.9e-07,
+        "max_abs": 4.35e-06,
+        "regime": "nonzero_oracle"
+      }
+    ],
+    "bf16_parity_checks": [
+      {
+        "name": "bf16_eq6_fwd_Y",
+        "ok": true,
+        "rel_l2": 0.00203164,
+        "max_abs": 0.0129048,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "bf16_eq6_bwd_dH",
+        "ok": true,
+        "rel_l2": 0.00166936,
+        "max_abs": 0.0155912,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "bf16_eq6_bwd_dE",
+        "ok": true,
+        "rel_l2": 0.00291505,
+        "max_abs": 0.01678731,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "bf16_eq6_bwd_dW_kv",
+        "ok": true,
+        "rel_l2": 0.00290118,
+        "max_abs": 0.22380299,
+        "regime": "nonzero_oracle"
+      },
+      {
+        "name": "bf16_eq6_bwd_dw_conv",
+        "ok": true,
+        "rel_l2": 0.00318769,
+        "max_abs": 0.0689777,
+        "regime": "nonzero_oracle"
+      }
+    ],
+    "richardson_checks": [
+      {
+        "name": "rich_dH",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.006838208498763265,
+        "err_1h": 0.0017076386307905977,
+        "ratio_2h_over_1h": 4.00448,
+        "richardson_rel_err": 9.194612179743212e-08
+      },
+      {
+        "name": "rich_dE",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.08459545971950888,
+        "err_1h": 0.021209578931120632,
+        "ratio_2h_over_1h": 3.98855,
+        "richardson_rel_err": 5.585757056894803e-07
+      },
+      {
+        "name": "rich_dW_kv",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.20446226625357156,
+        "err_1h": 0.051137458876951314,
+        "ratio_2h_over_1h": 3.99829,
+        "richardson_rel_err": 4.4069249111702887e-07
+      },
+      {
+        "name": "rich_dgamma_h",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.0027609917315345456,
+        "err_1h": 0.0006925500543957241,
+        "ratio_2h_over_1h": 3.9867,
+        "richardson_rel_err": 5.084117845190782e-08
+      },
+      {
+        "name": "rich_dgamma_k",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.002760991730824003,
+        "err_1h": 0.0006925500572378951,
+        "ratio_2h_over_1h": 3.9867,
+        "richardson_rel_err": 5.0841244946645865e-08
+      },
+      {
+        "name": "rich_dgamma_conv",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.008803805469000281,
+        "err_1h": 0.0022008364906582756,
+        "ratio_2h_over_1h": 4.00021,
+        "richardson_rel_err": 2.758817080151902e-09
+      },
+      {
+        "name": "rich_dw_conv",
+        "ok": true,
+        "mode": "nonlinear_oh2_richardson",
+        "err_2h": 0.004180487776906716,
+        "err_1h": 0.0010387053593916562,
+        "ratio_2h_over_1h": 4.02471,
+        "richardson_rel_err": 8.155587185353169e-08
+      }
+    ],
+    "jit_lazy_adam_vs_dense_vs_sparse_audit": {
+      "num_steps": 50,
+      "zipf_top64_token_share": 0.7183,
+      "mean_active_table_row_fraction": 0.02295,
+      "flushed_stale_rows_at_eval": 27939,
+      "jit_lazy_adam_max_fwd_rel_l2": 4.95e-06,
+      "jit_lazy_adam_full_table_rel_l2": 1.82e-06,
+      "sparse_adam_max_fwd_rel_l2": 0.479611,
+      "sparse_adam_full_table_rel_l2": 0.65702,
+      "accuracy_advantage_over_sparse_adam_x": 361000.0
+    },
+    "redteam_exploits_rejected": 4,
+    "redteam_total": 4,
+    "triton_cubin_spill_audit": {
+      "engram_ngram_hash": {
+        "compiled_specializations": 4,
+        "max_n_regs": 40,
+        "max_n_spills": 0
+      },
+      "engram_gather_fwd": {
+        "compiled_specializations": 1,
+        "max_n_regs": 80,
+        "max_n_spills": 0
+      },
+      "jit_lazy_adam_catchup": {
+        "compiled_specializations": 1,
+        "max_n_regs": 40,
+        "max_n_spills": 0
+      },
+      "jit_lazy_adam_sorted_catchup": {
+        "compiled_specializations": 3,
+        "max_n_regs": 40,
+        "max_n_spills": 0
+      },
+      "sorted_tile_segmented_bwd_and_adam": {
+        "compiled_specializations": 3,
+        "max_n_regs": 32,
+        "max_n_spills": 0
+      },
+      "boundary_carry_finalize_adam": {
+        "compiled_specializations": 3,
+        "max_n_regs": 22,
+        "max_n_spills": 0
+      },
+      "engram_gate_prenorm_fwd": {
+        "compiled_specializations": 6,
+        "max_n_regs": 56,
+        "max_n_spills": 0
+      },
+      "engram_dilated_conv_silu_resid_fwd": {
+        "compiled_specializations": 6,
+        "max_n_regs": 24,
+        "max_n_spills": 0
+      },
+      "engram_conv_silu_q_dw_bwd": {
+        "compiled_specializations": 5,
+        "max_n_regs": 30,
+        "max_n_spills": 0
+      },
+      "engram_token_grad_bwd": {
+        "compiled_specializations": 6,
+        "max_n_regs": 80,
+        "max_n_spills": 0
+      },
+      "engram_dgamma_split_bwd": {
+        "compiled_specializations": 5,
+        "max_n_regs": 89,
+        "max_n_spills": 0
+      }
+    },
+    "total_cubin_spills": 0,
+    "all_10_kernels_compiled_zero_spills": true
+  },
+  "suite_a_round4_engram_vector_ratchets": {
+    "zipf_top64_token_share": 0.6152,
+    "track1_engram_lookup_bwd_opt": {
+      "total_prime_rows": 1049422,
+      "d_head": 80,
+      "d_mem": 1280,
+      "baseline_geomean_ms": 4.2545,
+      "incumbent_candidate": "t3_round4_rsi_csr_atomic_free_bwd_pre_fwd_jit_lazy_adam",
+      "incumbent_geomean_ms": 0.7893,
+      "speedup_vs_demo_baseline_x": 5.3902,
+      "baseline_peak_mib": 2908.73,
+      "incumbent_peak_mib": 3297.9,
+      "trials": [
+        {
+          "track": "track1_engram_lookup_bwd_opt",
+          "trial_id": 0,
+          "candidate_id": "t0_demo_cpu_numpy_hash_atomic_embed_dense_adam",
+          "candidate_sha256": "1e83668c8f2dd99acd463d045987b894987b579eb049fb4c2fcf728de9920eef",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.001156,
+          "min_richardson_ratio": 4.0,
+          "max_richardson_ratio": 4.0,
+          "geomean_ms": 4.2545,
+          "peak_alloc_mib": 2908.73,
+          "worst_shape_ratio_vs_baseline": 1.0,
+          "speedup_vs_baseline": 1.0,
+          "speedup_vs_incumbent": 1.0,
+          "decision": "BASELINE",
+          "diagnosis": "engram_demo_v1.py baseline: CPU NumPy hash (DtoH/HtoD) + nn.Embedding atomicAdd + Dense Adam",
+          "per_shape_ms": {
+            "S1_B4_T1024_H16_D80": 2.9283,
+            "S2_B4_T2048_H16_D80": 4.1151,
+            "S3_B8_T2048_H16_D80": 6.3906
+          }
+        },
+        {
+          "track": "track1_engram_lookup_bwd_opt",
+          "trial_id": 1,
+          "candidate_id": "t1_gpu_triton_prime_hash_atomic_embed_dense_adam",
+          "candidate_sha256": "836f79b4c0dfffcaacc8bbc9ad41136c30b8c4791c0e4ea35ca2bfa5e79a5f26",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.001156,
+          "min_richardson_ratio": 4.0,
+          "max_richardson_ratio": 4.0,
+          "geomean_ms": 1.7263,
+          "peak_alloc_mib": 2908.98,
+          "worst_shape_ratio_vs_baseline": 0.5117,
+          "speedup_vs_baseline": 2.4645,
+          "speedup_vs_incumbent": 2.4645,
+          "decision": "KEEP",
+          "diagnosis": "Ratcheted 2.465x over incumbent (2.465x vs baseline, worst shape S1_B4_T1024_H16_D80 0.512x); Eliminate CPU NumPy DtoH/HtoD stall via pure-GPU Triton int64 prime hash -> KEEP",
+          "per_shape_ms": {
+            "S1_B4_T1024_H16_D80": 1.4984,
+            "S2_B4_T2048_H16_D80": 1.68,
+            "S3_B8_T2048_H16_D80": 2.0438
+          }
+        },
+        {
+          "track": "track1_engram_lookup_bwd_opt",
+          "trial_id": 2,
+          "candidate_id": "t2_gpu_hash_atomic_bwd_with_sparse_jit_lazy_adam",
+          "candidate_sha256": "8a4802f3d8dbcab09091030a8ab4db74be61af7c27e23308dc07ac4c17632075",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.001156,
+          "min_richardson_ratio": 4.0,
+          "max_richardson_ratio": 4.0,
+          "geomean_ms": 1.1613,
+          "peak_alloc_mib": 4037.39,
+          "worst_shape_ratio_vs_baseline": 0.3084,
+          "speedup_vs_baseline": 3.6636,
+          "speedup_vs_incumbent": 1.4865,
+          "decision": "KEEP",
+          "diagnosis": "Ratcheted 1.487x over incumbent (3.664x vs baseline, worst shape S1_B4_T1024_H16_D80 0.308x); Replace O(total_N) Dense Adam with O(U) JIT-Lazy-Adam; still bottlenecked by Zipfian atomicAdd & dense grad memset",
+          "per_shape_ms": {
+            "S1_B4_T1024_H16_D80": 0.9031,
+            "S2_B4_T2048_H16_D80": 1.0994,
+            "S3_B8_T2048_H16_D80": 1.5775
+          }
+        },
+        {
+          "track": "track1_engram_lookup_bwd_opt",
+          "trial_id": 3,
+          "candidate_id": "t3_round4_rsi_csr_atomic_free_bwd_pre_fwd_jit_lazy_adam",
+          "candidate_sha256": "85b290094fb93fbc039254225f7efee9c3889df0174e9d2486a5b2278c1669eb",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.001156,
+          "min_richardson_ratio": 4.0,
+          "max_richardson_ratio": 4.0,
+          "geomean_ms": 0.7893,
+          "peak_alloc_mib": 3297.9,
+          "worst_shape_ratio_vs_baseline": 0.2349,
+          "speedup_vs_baseline": 5.3902,
+          "speedup_vs_incumbent": 1.4713,
+          "decision": "KEEP",
+          "diagnosis": "Ratcheted 1.471x over incumbent (5.390x vs baseline, worst shape S1_B4_T1024_H16_D80 0.235x); Atomic-free CSR segment-reduce backward (0 atomics, 0 dense grad HBM) + Pre-Forward JIT-Lazy-Adam -> KEEP",
+          "per_shape_ms": {
+            "S1_B4_T1024_H16_D80": 0.6878,
+            "S2_B4_T2048_H16_D80": 0.7156,
+            "S3_B8_T2048_H16_D80": 0.9989
+          }
+        }
+      ]
+    },
+    "track2_engram_m4_gate_shortconv": {
+      "d_mem": 1280,
+      "baseline_geomean_ms": 8.2699,
+      "compiled_geomean_ms": 4.1921,
+      "incumbent_candidate": "t4_round4_rsi_two_stage_zero_transpose_split64_b256",
+      "incumbent_geomean_ms": 2.5453,
+      "speedup_vs_eager_demo_x": 3.2491,
+      "speedup_vs_torch_compile_x": 1.647,
+      "baseline_peak_mib": 4409.21,
+      "incumbent_peak_mib": 3888.72,
+      "hbm_reduction_ratio_x": 1.1338,
+      "split_cta_scratch_mib": 17.5,
+      "trials": [
+        {
+          "track": "track2_engram_m4_gate_shortconv_fwdbwd",
+          "trial_id": 0,
+          "candidate_id": "t0_eager_demo_5gemm_12norm_transpose_cudnn_conv1d",
+          "candidate_sha256": "d20256e3a119581899c8ebfcfd7d152da6718630dfde3433c3a693f0791c9a20",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.005905,
+          "min_richardson_ratio": 3.9973,
+          "max_richardson_ratio": 3.9983,
+          "geomean_ms": 8.2699,
+          "peak_alloc_mib": 4409.21,
+          "worst_shape_ratio_vs_baseline": 1.0,
+          "speedup_vs_baseline": 1.0,
+          "speedup_vs_incumbent": 1.0,
+          "decision": "BASELINE",
+          "diagnosis": "Track 2 RSI Trial 0: t0_eager_demo_5gemm_12norm_transpose_cudnn_conv1d",
+          "per_shape_ms": {
+            "G1_B2_T1024_M4_C1536": 4.7457,
+            "G2_B2_T2048_M4_C1536": 8.6955,
+            "G3_B2_T2048_M4_C2560": 13.706
+          }
+        },
+        {
+          "track": "track2_engram_m4_gate_shortconv_fwdbwd",
+          "trial_id": 1,
+          "candidate_id": "t1_torch_compile_inductor_demo_engram",
+          "candidate_sha256": "61159fd6491a24edbe8a1e54b36483dc1ce4822b83df3d641308e8dffd83bbeb",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.004211,
+          "min_richardson_ratio": 3.9973,
+          "max_richardson_ratio": 3.9983,
+          "geomean_ms": 4.1921,
+          "peak_alloc_mib": 3729.24,
+          "worst_shape_ratio_vs_baseline": 0.5148,
+          "speedup_vs_baseline": 1.9727,
+          "speedup_vs_incumbent": 1.9727,
+          "decision": "KEEP",
+          "diagnosis": "Ratcheted 1.973x over incumbent (1.973x vs baseline, worst shape G1_B2_T1024_M4_C1536 0.515x); Track 2 RSI Trial 1: t1_torch_compile_inductor_demo_engram",
+          "per_shape_ms": {
+            "G1_B2_T1024_M4_C1536": 2.443,
+            "G2_B2_T2048_M4_C1536": 4.4521,
+            "G3_B2_T2048_M4_C2560": 6.7733
+          }
+        },
+        {
+          "track": "track2_engram_m4_gate_shortconv_fwdbwd",
+          "trial_id": 2,
+          "candidate_id": "t2_merged_kv_gemm_vectorized_gate_eager_conv1d",
+          "candidate_sha256": "44a5e41ef3a3ffc98707ab53d7070089c8f3b6273caa306b23f70ec3aa900ab6",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.004822,
+          "min_richardson_ratio": 3.9973,
+          "max_richardson_ratio": 3.9983,
+          "geomean_ms": 12.6122,
+          "peak_alloc_mib": 5689.31,
+          "worst_shape_ratio_vs_baseline": 1.5818,
+          "speedup_vs_baseline": 0.6557,
+          "speedup_vs_incumbent": 0.3324,
+          "decision": "REJECT_SHAPE_REGRESSION",
+          "diagnosis": "Shape G3_B2_T2048_M4_C2560 regressed 1.582x vs baseline (21.680ms vs 13.706ms); Track 2 RSI Trial 2: t2_merged_kv_gemm_vectorized_gate_eager_conv1d",
+          "per_shape_ms": {
+            "G1_B2_T1024_M4_C1536": 6.9685,
+            "G2_B2_T2048_M4_C1536": 13.279,
+            "G3_B2_T2048_M4_C2560": 21.6804
+          }
+        },
+        {
+          "track": "track2_engram_m4_gate_shortconv_fwdbwd",
+          "trial_id": 3,
+          "candidate_id": "t3_zero_transpose_triton_gate_shortconv_b128_s16",
+          "candidate_sha256": "ab1fe88b9370b5b20a2b9ee9428a2f8911061910cd6006a65028203f1512fb70",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.002921,
+          "min_richardson_ratio": 3.9973,
+          "max_richardson_ratio": 3.9983,
+          "geomean_ms": 3.7899,
+          "peak_alloc_mib": 3875.6,
+          "worst_shape_ratio_vs_baseline": 0.4816,
+          "speedup_vs_baseline": 2.1821,
+          "speedup_vs_incumbent": 1.1061,
+          "decision": "KEEP",
+          "diagnosis": "Ratcheted 1.106x over incumbent (2.182x vs baseline, worst shape G2_B2_T2048_M4_C1536 0.482x); Track 2 RSI Trial 3: t3_zero_transpose_triton_gate_shortconv_b128_s16",
+          "per_shape_ms": {
+            "G1_B2_T1024_M4_C1536": 2.2522,
+            "G2_B2_T2048_M4_C1536": 4.1875,
+            "G3_B2_T2048_M4_C2560": 5.7719
+          }
+        },
+        {
+          "track": "track2_engram_m4_gate_shortconv_fwdbwd",
+          "trial_id": 4,
+          "candidate_id": "t4_round4_rsi_two_stage_zero_transpose_split64_b256",
+          "candidate_sha256": "7db9e9d8313c106ee4c72ec7e1cad68b944531beeabe57ec2a159165b9ea3e1d",
+          "eval_harness_sha256": "3cf0f07831179f4665fb83fee3c2b11e3269ccf106c3f412336bf77a4925904e",
+          "correctness_pass": true,
+          "anti_cheat_pass": true,
+          "max_fp64_rel_l2": 0.002921,
+          "min_richardson_ratio": 3.9973,
+          "max_richardson_ratio": 3.9983,
+          "geomean_ms": 2.5453,
+          "peak_alloc_mib": 3888.72,
+          "worst_shape_ratio_vs_baseline": 0.3123,
+          "speedup_vs_baseline": 3.2491,
+          "speedup_vs_incumbent": 1.489,
+          "decision": "KEEP",
+          "diagnosis": "Ratcheted 1.489x over incumbent (3.249x vs baseline, worst shape G3_B2_T2048_M4_C2560 0.312x); Track 2 RSI Trial 4: t4_round4_rsi_two_stage_zero_transpose_split64_b256",
+          "per_shape_ms": {
+            "G1_B2_T1024_M4_C1536": 1.4545,
+            "G2_B2_T2048_M4_C1536": 2.6487,
+            "G3_B2_T2048_M4_C2560": 4.2801
+          }
+        }
+      ]
+    }
+  },
+  "suite_b_8gpu_nvswitch_sharded_engram": {
+    "gate_g9_1gpu_vs_8gpu_sharded_prefetch_parity": {
+      "passed": true,
+      "losses_1gpu": [
+        9.049489,
+        9.090263,
+        9.071915
+      ],
+      "losses_8gpu_sharded_prefetch": [
+        9.049497,
+        9.09042,
+        9.071828
+      ],
+      "max_3step_loss_rel_diff": 1.72e-05,
+      "step1_grad_rel_l2": {
+        "tok_emb": 0.00482953,
+        "blk0_wqkv": 0.00367801,
+        "blk2_engram_Wkv": 0.00536482,
+        "blk2_engram_wconv": 0.00527352,
+        "lm_head": 0.00305666
+      },
+      "reassembled_8shard_3step_master_table_rel_l2": 0.0
+    },
+    "scaling_config": {
+      "world_size": 8,
+      "total_prime_engram_rows": 8390584,
+      "d_head": 80,
+      "d_mem": 1280,
+      "d_backbone": 1536,
+      "n_mhc_blocks": 6,
+      "seq_len": 2048,
+      "global_tokens_per_step": 65536,
+      "zipf_top64_token_share": 0.6532
+    },
+    "regimes": [
+      {
+        "regime": "r0_eager_replicated_demo_baseline",
+        "step_ms": 364.405,
+        "global_tok_per_s": 179843.7,
+        "peak_alloc_mib_per_rank": 29692.44,
+        "zipf_dedup_compression_ratio_x": 1.0,
+        "engram_comm_payload_mib_per_rank": 1280.302
+      },
+      {
+        "regime": "r1_sharded_naive_alltoall_sync",
+        "step_ms": 162.209,
+        "global_tok_per_s": 404022.9,
+        "peak_alloc_mib_per_rank": 13439.51,
+        "zipf_dedup_compression_ratio_x": 1.0,
+        "engram_comm_payload_mib_per_rank": 41.661
+      },
+      {
+        "regime": "r2_sharded_dedup_alltoallv_sync",
+        "step_ms": 142.719,
+        "global_tok_per_s": 459195.9,
+        "peak_alloc_mib_per_rank": 13441.63,
+        "zipf_dedup_compression_ratio_x": 2.469,
+        "engram_comm_payload_mib_per_rank": 17.231
+      },
+      {
+        "regime": "r3_sharded_dedup_alltoallv_layer2_async_prefetch",
+        "step_ms": 141.691,
+        "global_tok_per_s": 462528.5,
+        "peak_alloc_mib_per_rank": 13440.88,
+        "zipf_dedup_compression_ratio_x": 2.469,
+        "engram_comm_payload_mib_per_rank": 17.231
+      }
+    ],
+    "speedup_prefetch_vs_replicated_demo_x": 2.5718,
+    "speedup_prefetch_vs_naive_alltoall_x": 1.1448,
+    "speedup_prefetch_vs_sync_dedup_x": 1.0073,
+    "hbm_saved_per_rank_mib": 16251.56
+  },
+  "suite_c_valbpb_rsi_and_sparsity_allocation_law": {
+    "vocab_size": 1024,
+    "compressed_vocab_size": 788,
+    "d_model": 192,
+    "n_blocks": 6,
+    "seq_len": 256,
+    "global_tokens_per_step": 32768,
+    "budget_seconds_per_generation": 12.0,
+    "untrained_init_val_bpb": 10.07362,
+    "baseline_gen0_eager_demo_val_bpb": 3.60517,
+    "compiled_gen1_val_bpb": 3.19473,
+    "final_incumbent_gen_id": 4,
+    "final_incumbent_candidate": "gen4_round4_rsi_zero_transpose_engram_tile_fused_jit_lazy_adam",
+    "final_incumbent_val_bpb": 3.16774,
+    "final_incumbent_untouched_test_bpb": 3.17679,
+    "val_bpb_gain_vs_eager_demo_gen0": 0.43743,
+    "val_bpb_gain_vs_compiled_gen1": 0.02699,
+    "test_bpb_gain_vs_eager_demo_gen0": 0.43997,
+    "step_multiplier_gen4_vs_eager_demo_gen0": 2.5075,
+    "valbpb_ledger_sha256": "b6cb6881ed7591e5c3f1acaf794d9531a34752fe95fa96588303bcfa35d49532",
+    "generations": [
+      {
+        "gen_id": 0,
+        "candidate_id": "gen0_eager_demo_cpu_hash_atomic_embed_dense_adam",
+        "param_count": 8109468,
+        "budget_s": 12.0,
+        "elapsed_s": 12.1762,
+        "completed_steps": 67,
+        "steps_per_sec": 5.503,
+        "global_tok_per_s": 180307.1,
+        "val_bpb": 3.60517,
+        "untouched_test_bpb": 3.61676,
+        "peak_grad_norm": 17.4408,
+        "decision": "BASELINE",
+        "incumbent_val_bpb_after": 3.60517,
+        "hypothesis_note": "Eager engram_demo_v1.py baseline (CPU NumPy hash + nn.Embedding atomicAdd + Dense Adam 5x LR + Eager Gate/ShortConv/mHC)"
+      },
+      {
+        "gen_id": 1,
+        "candidate_id": "gen1_torch_compile_gpu_hash_replicated_dense_adam",
+        "param_count": 8109468,
+        "budget_s": 12.0,
+        "elapsed_s": 12.0476,
+        "completed_steps": 137,
+        "steps_per_sec": 11.372,
+        "global_tok_per_s": 372624.5,
+        "val_bpb": 3.19473,
+        "untouched_test_bpb": 3.2072,
+        "peak_grad_norm": 94.8909,
+        "decision": "KEEP",
+        "incumbent_val_bpb_after": 3.19473,
+        "hypothesis_note": "Eliminate CPU NumPy DtoH/HtoD via GPU Prime Hash + torch.compile (inductor) Engram & mHC -> KEEP"
+      },
+      {
+        "gen_id": 2,
+        "candidate_id": "gen2_sparse_adam_unscaled_0p2x_lr_shortcut",
+        "param_count": 8109468,
+        "budget_s": 12.0,
+        "elapsed_s": 12.0409,
+        "completed_steps": 135,
+        "steps_per_sec": 11.212,
+        "global_tok_per_s": 367389.0,
+        "val_bpb": 3.21119,
+        "untouched_test_bpb": 3.22332,
+        "peak_grad_norm": 28.0061,
+        "decision": "REVERT_VAL_BPB",
+        "incumbent_val_bpb_after": 3.19473,
+        "hypothesis_note": "Optimizer shortcut: replace exact 5x-LR Adam with unscaled 0.2x SparseAdam (drops momentum drift & starves memory table) -> REVERT_VAL_BPB"
+      },
+      {
+        "gen_id": 3,
+        "candidate_id": "gen3_ungated_static_engram_skip_key_projs_shortcut",
+        "param_count": 8109468,
+        "budget_s": 12.0,
+        "elapsed_s": 12.085,
+        "completed_steps": 141,
+        "steps_per_sec": 11.667,
+        "global_tok_per_s": 382316.0,
+        "val_bpb": 3.2365,
+        "untouched_test_bpb": 3.25243,
+        "peak_grad_norm": 4.7816,
+        "decision": "REVERT_VAL_BPB",
+        "incumbent_val_bpb_after": 3.19473,
+        "hypothesis_note": "Single-factor architectural shortcut vs Gen 1 (arXiv:2601.07372 Sec. 2.3/5): skip 4 key projections & RMS context gating (alpha=1) + nonzero ShortConv init -> faster step, worse val_bpb -> REVERT_VAL_BPB"
+      },
+      {
+        "gen_id": 4,
+        "candidate_id": "gen4_round4_rsi_zero_transpose_engram_tile_fused_jit_lazy_adam",
+        "param_count": 8109468,
+        "budget_s": 12.0,
+        "elapsed_s": 12.015,
+        "completed_steps": 168,
+        "steps_per_sec": 13.983,
+        "global_tok_per_s": 458180.6,
+        "val_bpb": 3.16774,
+        "untouched_test_bpb": 3.17679,
+        "peak_grad_norm": 100.2288,
+        "decision": "KEEP",
+        "incumbent_val_bpb_after": 3.16774,
+        "hypothesis_note": "Full Round-4 RSI Co-Design: Zero-Transpose Fused M=4 Gate+ShortConv (Exact Zero-Init) + Zero-Sync Tile-Fused Pre-Forward JIT-Lazy-Adam(lr=5x, wd=0) + Dropless Grouped MoE + Fused mHC -> KEEP"
+      }
+    ],
+    "sparsity_allocation_law_ablation": {
+      "matched_steps": 168,
+      "u_curve_interior_optimum_verified": true,
+      "u_curve_strict_4pt_verified": true,
+      "hybrid_rho075_gain_over_pure_moe_rho100_bpb": 0.13436,
+      "hybrid_rho075_gain_over_pure_engram_rho000_bpb": 0.10177,
+      "hybrid_rho075_gain_over_mem_heavy_rho025_bpb": 0.09529,
+      "hybrid_rho075_gain_over_iso_flops_dense_bpb": 0.173,
+      "hybrid_rho075_vs_iso_total_param_wider_dense_bpb": 0.14839,
+      "arms": [
+        {
+          "arm_id": "rho_1p00_pure_mhc_moe",
+          "rho_moe_fraction": 1.0,
+          "matched_steps": 168,
+          "total_params": 8103688,
+          "active_params_per_token": 2795272,
+          "engram_table_params": 0,
+          "inactive_moe_params": 5308416,
+          "wall_seconds": 11.05,
+          "val_bpb": 3.21643,
+          "untouched_test_bpb": 3.22233
+        },
+        {
+          "arm_id": "rho_0p75_optimal_hybrid_mhc_moe_engram",
+          "rho_moe_fraction": 0.75,
+          "matched_steps": 168,
+          "total_params": 8109468,
+          "active_params_per_token": 2791816,
+          "engram_table_params": 1336340,
+          "inactive_moe_params": 3981312,
+          "wall_seconds": 11.275,
+          "val_bpb": 3.08207,
+          "untouched_test_bpb": 3.10243
+        },
+        {
+          "arm_id": "rho_0p25_memory_heavy_mhc_moe_engram",
+          "rho_moe_fraction": 0.25,
+          "matched_steps": 168,
+          "total_params": 8101348,
+          "active_params_per_token": 2784904,
+          "engram_table_params": 3989340,
+          "inactive_moe_params": 1327104,
+          "wall_seconds": 10.705,
+          "val_bpb": 3.17736,
+          "untouched_test_bpb": 3.18548
+        },
+        {
+          "arm_id": "rho_0p00_pure_engram_conditional_memory",
+          "rho_moe_fraction": 0.0,
+          "matched_steps": 168,
+          "total_params": 8095144,
+          "active_params_per_token": 2779144,
+          "engram_table_params": 5316000,
+          "inactive_moe_params": 0,
+          "wall_seconds": 7.434,
+          "val_bpb": 3.18384,
+          "untouched_test_bpb": 3.19231
+        },
+        {
+          "arm_id": "dense_iso_active_flops_mhc",
+          "rho_moe_fraction": -1.0,
+          "matched_steps": 168,
+          "total_params": 2779144,
+          "active_params_per_token": 2779144,
+          "engram_table_params": 0,
+          "inactive_moe_params": 0,
+          "wall_seconds": 7.035,
+          "val_bpb": 3.25507,
+          "untouched_test_bpb": 3.26477
+        },
+        {
+          "arm_id": "dense_iso_total_params_wider_mhc",
+          "rho_moe_fraction": -2.0,
+          "matched_steps": 168,
+          "total_params": 8080648,
+          "active_params_per_token": 8080648,
+          "engram_table_params": 0,
+          "inactive_moe_params": 0,
+          "wall_seconds": 7.119,
+          "val_bpb": 3.23046,
+          "untouched_test_bpb": 3.23716
+        }
+      ]
+    }
+  }
+}
