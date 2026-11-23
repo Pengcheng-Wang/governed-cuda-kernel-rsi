@@ -2051,6 +2051,41 @@ and achieves **`PROMOTE` (`0.9578` Confirm IUT across `baseline`, `dsa_e157`,
 `+0.3098` over `MoBA E158` and `+0.1760` over `DSA E157`, all 5 public
 long-context strata `0.9390..0.9692`)**.
 
+Round-34 RSI (`E160`, `v151`) `Adaptive Budget-Split Dual-Route Sparse-Linear
+Attention (AdaH2SA-GDN), Counterfactual Rejected-Block Fact-Flip
+Identification, Capacity-Delay Phase Transition Law, & Governed Loop
+Optimization v3.8 Wave-2 Tournament` results are under `raw/adah2sa_gdn_rsi/`.
+It contains the smoke verification gate (`smoke.json`), three independent 8-GPU
+process repetitions (`rep1.json`, `rep2.json`, `rep3.json`), the aggregated
+3-rep summary (`adah2sa_gdn_rsi_summary.json`), markdown report
+(`adah2sa_gdn_rsi_report.md`), `README.md`, 7 CSV tables
+(`track1_training_matrix.csv`, `track2_decode_matrix.csv`,
+`track3_block_ablation.csv`, `track3_capacity_delay_phase.csv`,
+`track4_cp8_scaling.csv`, `track5_autoresearch.csv`,
+`track6_governed_loop_w2_tournament.csv`), and `SHA256SUMS.txt` (`14` verified
+entries) governed by `PROGRAM.md` Section 37, the byte-identical frozen
+evaluator `code/rsi_kernel_harness.py` (`SHA256 = 3cf0f078...`), and
+`code/governed_loop_guard.py v3.8` (`manifest_root_sha256 = 7c64510b...`). It
+executes the three decisive empirical tests formulated during our M365 Copilot
+`Cowork` (`GPT 6.2 Astra, Max`) peer review: (1) counterfactual rejected-block
+fact-flip identification (`cosine = 0.999958`, `2.91x` retention over
+Uniform-Write `E159` vs `0.000000` selected-only and shuffled-state controls);
+(2) 25-cell $(M_{\text{facts}} \times \Delta c)$ capacity-delay phase law
+(`+7.9` to `+36.5` pp recall gain over `E159`); and (3) `16/16` `0`-spill (`89`
+specializations, `max_regs = 168 <= 168`, `128` regs on backward surprise-state
+recurrence) SM80 Triton kernels winning **`8/8` training shapes (`2.48x–14.38x`
+Total, `2.79x–15.74x` Fwd, `2.05x–4.50x` HBM reduction)**, **`23.84x–110.65x`
+decode speedup (`p50 = 0.141–0.149 ms`, `p95 = 0.169–0.177 ms`, `3.41x` lower
+effective KV read)**, **`3.50x` ($D=1024$) & `3.21x` ($D=2048$)
+`AdaH2SAGDNBlockRSI` stack speedup**, **`4.40x–5.25x` 8-GPU NVSwitch Ulysses
+`AdaH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2` across
+all 5 forward/backward tensors (`o, dQ, dK, dV, dg`)**, **`3.74x` ($D=1024$) /
+`3.06x` ($D=2048$) faster time-to-quality (`val_bpb <= 0.02`)** in `12s`
+autoresearch, and **`PROMOTE` (`0.9652` Confirm IUT across all `4/4`
+comparators including `h2sa_gdn_e159`) + `HOLDOUT_PROMOTE` (`0.9652` on fresh
+unsealed `B10` Wave-2 Holdout, `+0.1072` over Wave-1 Champion `H2SA-GDN E159`,
+`one-sided LCB = +0.1014 > 0.01`)**.
+
 Finite-sample prevalence certification is under
 `raw/pacing_coalescing_order_prevalence_certification/`. For every E89
 profile, kernel, and accuracy point, it computes the exact L1 distance to the

@@ -4616,6 +4616,31 @@ Measured on this allocation:
   **`HOLDOUT_PROMOTE` (`0.9535` Single-Touch Holdout vs `0.7775` `DSA E157` [`+0.1760`, `LCB =
   +0.1701`] and `0.6437` `MoBA E158` [`+0.3098`, `LCB = +0.3039`], `Confirm IUT = 0.9578 PROMOTE`
   across all `3/3` comparators, all 5 public long-context strata `0.9390..0.9692`)**.
+- Extending the same byte-identical frozen RSI evaluator (`SHA256 = 3cf0f078...`, Round-34
+  `PROGRAM.md` Sec. 37, E160) together with **Hardened Governed Loop Optimization Wave-2
+  (`code/governed_loop_guard.py v3.8`, `manifest_root_sha256 = 7c64510b...`, `B10` fresh unsealed
+  Holdout quarantine)** to **`Adaptive Budget-Split Dual-Route Sparse-Linear Attention
+  (AdaH2SA-GDN)`** executed the three decisive tests formulated during our M365 Copilot `Cowork`
+  (`GPT 6.2 Astra, Max`) peer review: (1) causally identifying rejected-block memory rescue under
+  frozen sparse routes and selected-block $(K, V)$ tokens with **`0.999958` counterfactual
+  fact-flip cosine alignment and `2.91x` higher retention (`0.5963` vs `0.2047`) than Uniform-Write
+  `E159`**, while selected-only (`0.000000`) and shuffled-state (`0.000000`) controls show zero
+  sensitivity; (2) mapping the 25-cell $(M_{\text{facts}} \in \{1,2,4,8,16\}) \times (\Delta c \in
+  \{2,4,8,12,16\})$ capacity-delay phase law, proving `SubtileRescue` dominates when
+  $M_{\text{facts}} \le k_s = 2$ while `SurpriseGDN` dominates when $M_{\text{facts}} > k_s$ (`+7.9`
+  to `+36.5` pp recall gain over `E159`); and (3) reordering live-range tiles in
+  `_adah2sa_gdn_surprise_state_bwd_dv_dkpart_rsi_kernel` (`174 -> 128` regs) so all **`16/16`
+  Round-34 RSI Triton kernels (`89` specializations)** achieve **`0` cubin spills (`max_regs = 168
+  <= 168`, `FP32 max_rel_l2 = 9.01e-7 < 1e-4`, `BF16 max_rel_l2 = 2.99e-3 < 1.5e-2`, `3/3` mutations
+  killed)**, **`2.48x–14.38x` training speedup (`15.74x` Fwd, `4.50x` HBM reduction)**,
+  **`23.84x–110.65x` decode speedup (`p50 = 0.141–0.149 ms`, `p95 = 0.169–0.177 ms`, `3.41x` lower
+  effective KV read)**, **`3.50x` ($D=1024$) & `3.21x` ($D=2048$) `AdaH2SAGDNBlockRSI` stack
+  speedup**, **`4.40x–5.25x` 8-GPU NVSwitch Ulysses `AdaH2SA-GDN-CP = 8` speedup over Ring with
+  exact `0.00e+00` `rel_l2` across all 5 forward/backward tensors (`o, dQ, dK, dV, dg`)**, **`3.74x`
+  ($D=1024$) / `3.06x` ($D=2048$) faster time-to-quality (`val_bpb <= 0.02`)** in `12s`
+  autoresearch, and **`HOLDOUT_PROMOTE` at `0.9652` (`+0.1072` over Wave-1 Champion `H2SA-GDN E159`,
+  `one-sided LCB = +0.1014 > 0.01`, `Confirm IUT = 0.9652 PROMOTE` across all `4/4` comparators, all
+  5 Wave-2 strata `0.9583..0.9722`)**.
 - Equal-split expert-dispatch all-to-all exposed a 0.096 ms intra-node and
   0.251 ms three-node launch/coordination floor.
 - Large expert-dispatch payloads reached 210.1 GB/s logical per-rank injection

@@ -940,7 +940,33 @@ A100 GPUs.
     `HOLDOUT_PROMOTE` (`0.9535` Single-Touch Holdout, `+0.3098` over `MoBA
     E158` and `+0.1760` over `DSA E157` across `RULER_Needle`,
     `BABILong_StateTrack`, `LongBench_DocQA`, `RepoBench_Code`, and
-    `Crowded_MQAR`), `E159`).
+    `Crowded_MQAR`), `E159`), and **Round-34 RSI (`v151`): `Adaptive
+    Budget-Split Dual-Route Sparse-Linear Attention (AdaH2SA-GDN),
+    Counterfactual Rejected-Block Fact-Flip Identification, Capacity-Delay
+    Phase Transition Law, & Governed Loop Optimization v3.8 Wave-2 Tournament`**
+    (executing the three decisive empirical tests prescribed during our M365
+    Copilot `Cowork` `GPT 6.2 Astra, Max` peer review: (1) causally identifying
+    rejected-block memory rescue under frozen sparse routes and selected-block
+    $(K, V)$ tokens with `0.999958` fact-flip cosine alignment and `2.91x`
+    higher retention than Uniform-Write `E159` vs `0.000000` on selected-only
+    and shuffled-state controls; (2) mapping the 25-cell $(M_{\text{facts}} \in
+    \{1,2,4,8,16\}) \times (\Delta c \in \{2,4,8,12,16\})$ capacity-delay phase
+    boundary (`SubtileRescue` dominant at $M_{\text{facts}} \le k_s = 2$,
+    `SurpriseGDN` dominant at $M_{\text{facts}} > k_s$, `+7.9` to `+36.5` pp
+    recall gain over `E159`); and (3) compiling `16/16` `0`-spill (`89`
+    specializations, `max_regs = 168 <= 168`, backward surprise-state kernel
+    reduced from `174` to `128` regs via live-range tile reordering) Round-34
+    RSI Triton kernels achieving `2.48x–14.38x` training speedup (`15.74x` Fwd,
+    `4.50x` HBM reduction), `23.84x–110.65x` decode speedup (`p50 =
+    0.141–0.149 ms`, `p95 = 0.169–0.177 ms`, `3.41x` lower effective KV read),
+    `3.50x` ($D=1024$) & `3.21x` ($D=2048$) `AdaH2SAGDNBlockRSI` stack speedup,
+    `4.40x–5.25x` 8-GPU NVSwitch Ulysses `AdaH2SA-GDN-CP = 8` speedup over Ring
+    with exact `0.00e+00` `rel_l2` across all 5 forward/backward tensors (`o,
+    dQ, dK, dV, dg`), `3.74x` ($D=1024$) / `3.06x` ($D=2048$) faster
+    time-to-quality (`val_bpb <= 0.02`) in `12s` autoresearch, and Wave-2
+    `HOLDOUT_PROMOTE` at `0.9652` (`+0.1072` over Wave-1 Champion `H2SA-GDN
+    E159`, `one-sided LCB = +0.1014 > 0.01`, `B10` fresh unsealed Holdout),
+    `E160`).
 
 See `EXPERIMENTS.md` for the preregistered matrix and
 `results/benchmark_report.md` for measured findings once available.
