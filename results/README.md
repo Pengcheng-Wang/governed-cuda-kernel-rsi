@@ -2122,6 +2122,40 @@ unsealed `B10` Wave-3 Holdout, `+0.0960` over Wave-2 Champion `AdaH2SA-GDN
 E160`, `one-sided LCB = +0.0902 > 0.01`, `Dipolar_IntraBlock_FactFlip = 0.9780`
 vs `0.5800` `E160`)**.
 
+Round-36 RSI (`E162`, `v153`) `LSE-Calibrated Centered-Residual Subtile-WY
+Sparse-Linear Attention (CalH2SA-GDN), Selected-Hit vs. Rejected-Miss Duality
+Identification, & Governed Loop Optimization v3.8 Wave-4 Tournament` results
+are under `raw/calh2sa_gdn_rsi/`. It contains the smoke verification gate
+(`smoke.json`), three independent 8-GPU process repetitions (`rep1.json`,
+`rep2.json`, `rep3.json`), the aggregated 3-rep summary (`summary_3rep.json`
+and `calh2sa_gdn_rsi_summary.json`), markdown report
+(`calh2sa_gdn_rsi_report.md`), `README.md`, 5 CSV tables
+(`track1_training_matrix.csv`, `track2_decode_latency.csv`,
+`track3_block_ablation.csv`, `track3_duality_recall_phase_law.csv`,
+`track4_cp8_scaling.csv`), and `SHA256SUMS.txt` (`13` verified entries)
+governed by `PROGRAM.md` Section 39, the byte-identical frozen evaluator
+`code/rsi_kernel_harness.py` (`SHA256 = 3cf0f078...`), and
+`code/governed_loop_guard.py v3.8` (`manifest_root_sha256 = ef6777f5...`). It
+closes the exact residual identity $\mathbf{o}_{\text{dense}, t} -
+\mathbf{o}_{\text{sel}, t} = m_t(\mathbf{r}_t - \mathbf{o}_{\text{sel}, t})$
+via online-softmax LSE rejected-mass calibration and centered residual readout:
+(1) `6.11x` lower Selected-Hit poison leakage (`0.5270 -> 0.0862`,
+`selected_hit_fidelity_cos = 0.996345` vs `0.931919` `E161`, `+6.44` pp),
+`1.58x` higher Rejected-Miss retention (`0.0975` vs `0.0619` `E161`), and
+`0.997747` dipolar cosine; (2) `18/18` `0`-spill (`157` specializations,
+`max_regs = 168 <= 168`, `FP32 max_rel_l2 = 8.21e-7`, `BF16 max_rel_l2 =
+3.39e-3`) SM80 Triton kernels achieving **`3.03x–17.10x` training speedup
+(`15.20x` Fwd, `18.77x` Bwd, `2.40x–4.00x` HBM reduction)**,
+**`3.23x–167.73x` decode speedup (`p50 = 0.1367–0.1421 ms`)**, **`7.88x`
+($D=1024$) & `6.93x` ($D=2048$) `CalH2SAGDNBlockRSI` stack speedup**, and
+**`1.68x–4.03x` 8-GPU NVSwitch Ulysses `CalH2SA-GDN-CP = 8` speedup over Ring
+with exact `0.00e+00` `rel_l2` across `o, dQ, dK, dV, dg`**; and (3)
+**`PROMOTE` (`0.9846` Confirm IUT across all `6/6` comparators including
+`orthh2sa_gdn_e161`) + `HOLDOUT_PROMOTE` (`0.9846` on fresh unsealed `B10`
+Wave-4 Holdout, `+0.0763` over Wave-3 Champion `OrthH2SA-GDN E161`, `one-sided
+LCB = +0.0717 > 0.01`, `SelectedHit_Poison_Immunity = 0.9963` vs `0.5850`
+`E161`)**.
+
 Finite-sample prevalence certification is under
 `raw/pacing_coalescing_order_prevalence_certification/`. For every E89
 profile, kernel, and accuracy point, it computes the exact L1 distance to the

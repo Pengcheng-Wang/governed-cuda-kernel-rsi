@@ -992,7 +992,37 @@ A100 GPUs.
     `HOLDOUT_PROMOTE` at `0.9730` across all `5/5` mandatory comparators
     (`+0.0960` over Wave-2 Champion `AdaH2SA-GDN E160`, `one-sided LCB = +0.0902
     > 0.01`, `Dipolar_IntraBlock_FactFlip = 0.9780` vs `0.5800` `E160`),
-    `E161`).
+    `E161`), and **Round-36 RSI (`v153`): `LSE-Calibrated Centered-Residual
+    Subtile-WY Sparse-Linear Attention (CalH2SA-GDN), Selected-Hit vs.
+    Rejected-Miss Duality Identification, & Governed Loop Optimization v3.8
+    Wave-4 Tournament`** (closing the exact residual identity
+    $\mathbf{o}_{\text{dense}, t} - \mathbf{o}_{\text{sel}, t} = m_t(\mathbf{r}_t
+    - \mathbf{o}_{\text{sel}, t})$ by calibrating the readout gate with the
+    online-softmax log-sum-exp $L_t = \text{lse}_{\text{log2}, t} \cdot \ln 2$
+    already materialized by `_moba_fwd_rsi_kernel` (`\hat{m}_t = \sigma(g_t -
+    \eta_{\text{LSE}}(\operatorname{sg}(L_t) - \tau_{\text{LSE}}))`) and
+    centering the readout as $\mathbf{y}_t = \mathbf{o}_{\text{sel}, t} +
+    \hat{m}_t(\mathbf{S}_{c_q}^\top\hat{\mathbf{q}}_t -
+    \rho_{\text{center}}\mathbf{o}_{\text{sel}, t})$ with exact backward scaling
+    $\mathrm{d}\mathbf{o}_{\text{sel}, t} = (1 -
+    \rho_{\text{center}}\hat{m}_t)\mathrm{d}\mathbf{y}_t$: (1) suppressing
+    Selected-Hit poison leakage by `6.11x` (`0.5270 -> 0.0862`, lifting
+    `selected_hit_fidelity_cos` to `0.996345` vs `0.931919` `E161`, `+6.44` pp)
+    while simultaneously boosting Rejected-Miss rescue retention by `1.58x`
+    (`0.0619 -> 0.0975`, `rescue_cos = 0.998145`) and preserving `0.997747`
+    dipolar cosine alignment; (2) compiling `18/18` `0`-spill (`157`
+    specializations, `max_regs = 168 <= 168`, `FP32 max_rel_l2 = 8.21e-7`,
+    `BF16 max_rel_l2 = 3.39e-3`, `3/3` mutations killed) Round-36 RSI Triton
+    kernels achieving `3.03x–17.10x` training speedup (`15.20x` Fwd, `18.77x`
+    Bwd, `2.40x–4.00x` HBM reduction), `3.23x–167.73x` decode speedup (`p50 =
+    0.1367–0.1421 ms`, `p95 = 0.1734–0.1855 ms`), `7.88x` ($D=1024$) & `6.93x`
+    ($D=2048$) `CalH2SAGDNBlockRSI` speedup, and `1.68x–4.03x` 8-GPU NVSwitch
+    Ulysses `CalH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00`
+    `rel_l2` across all 5 forward/backward tensors (`o, dQ, dK, dV, dg`); and
+    (3) achieving Wave-4 `HOLDOUT_PROMOTE` at `0.9846` across all `6/6`
+    mandatory comparators (`+0.0763` over Wave-3 Champion `OrthH2SA-GDN E161`
+    `0.9083`, `one-sided LCB = +0.0717 > 0.01`, `SelectedHit_Poison_Immunity =
+    0.9963` vs `0.5850` `E161`), `E162`).
 
 See `EXPERIMENTS.md` for the preregistered matrix and
 `results/benchmark_report.md` for measured findings once available.

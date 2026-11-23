@@ -346,6 +346,12 @@ def make_report(root: Path) -> tuple[str, dict[str, Any]]:
         / "raw"
         / "orthh2sa_gdn_rsi"
     )
+    calh2sa_gdn_rsi_dir = (
+        root
+        / "results"
+        / "raw"
+        / "calh2sa_gdn_rsi"
+    )
     quantization = root / "results" / "raw" / "quantization"
     scaling = root / "results" / "raw" / "training_scaling"
     fsdp2 = root / "results" / "raw" / "fsdp2"
@@ -1038,6 +1044,10 @@ def make_report(root: Path) -> tuple[str, dict[str, Any]]:
     orthh2sa_gdn_rsi = load_json(
         orthh2sa_gdn_rsi_dir
         / "orthh2sa_gdn_rsi_summary.json"
+    )
+    calh2sa_gdn_rsi = load_json(
+        calh2sa_gdn_rsi_dir
+        / "calh2sa_gdn_rsi_summary.json"
     )
     ddp_1 = load_json(scaling / "ddp_training_1gpu_full.json")
     ddp_8 = load_json(scaling / "ddp_training_8gpu_full.json")
@@ -17618,6 +17628,38 @@ def make_report(root: Path) -> tuple[str, dict[str, Any]]:
         "governed_confirm_iut_verdict": orthh2sa_gov["confirm_iut_verdict"],
         "governed_holdout_verdict": orthh2sa_gov["holdout_verdict"],
         "governed_holdout_score": orthh2sa_gov["candidate_summary"][-1]["holdout_score"],
+    }
+    calh2sa_cub = calh2sa_gdn_rsi["track1b_summary"]["cubin_audit"]
+    calh2sa_or = calh2sa_gdn_rsi["track1a_summary"]
+    calh2sa_gov = calh2sa_gdn_rsi["track6_summary"]
+    highlights["calh2sa_gdn_rsi"] = {
+        "eval_harness_sha256": calh2sa_gdn_rsi["frozen_harness"]["sha256"],
+        "governed_manifest_root_sha256": calh2sa_gov["manifest_root_sha256"],
+        "rsi_n_kernels": calh2sa_cub["total_kernels"],
+        "rsi_total_specs": calh2sa_cub["total_specializations"],
+        "rsi_spilling_specs": calh2sa_cub["spilling_specializations"],
+        "rsi_max_regs": calh2sa_cub["max_regs"],
+        "rsi_max_smem_bytes": calh2sa_cub["max_smem_bytes"],
+        "max_fp32_rel_l2": calh2sa_or["max_fp32_rel_l2"],
+        "max_bf16_rel_l2": calh2sa_or["max_bf16_rel_l2"],
+        "mutations_killed": calh2sa_or["mutations_killed"],
+        "selected_hit_fidelity_cos": calh2sa_or["selected_hit_poison_regime"]["CalH2SA_GDN_E162"]["selected_hit_fidelity_cos"],
+        "poison_leakage_reduction_vs_e161_x": calh2sa_or["selected_hit_poison_regime"]["poison_leakage_reduction_vs_e161"],
+        "rejected_miss_rescue_cos": calh2sa_or["rejected_miss_rescue_regime"]["CalH2SA_GDN_E162"]["rejected_miss_rescue_cos"],
+        "dipolar_intrablock_cosine": calh2sa_or["dipolar_intrablock_regime"]["CalH2SA_GDN_E162_dipolar_cos"],
+        "peak_kernel_fwd_speedup_x": calh2sa_gdn_rsi["track1b_summary"]["max_fwd_speedup_vs_sdpa"],
+        "peak_kernel_bwd_speedup_x": calh2sa_gdn_rsi["track1b_summary"]["max_bwd_speedup_vs_sdpa"],
+        "peak_kernel_fwdbwd_speedup_x": calh2sa_gdn_rsi["track1b_summary"]["max_total_speedup_vs_sdpa"],
+        "peak_memory_reduction_x": calh2sa_gdn_rsi["track1b_summary"]["max_hbm_reduction"],
+        "peak_decode_speedup_x": calh2sa_gdn_rsi["track1c_summary"]["max_decode_speedup"],
+        "layer_D1024_A4_speedup_x": calh2sa_gdn_rsi["track2_summary"]["rows"][0]["speedup_A4_vs_A0"]["mean"],
+        "layer_D2048_A4_speedup_x": calh2sa_gdn_rsi["track2_summary"]["rows"][1]["speedup_A4_vs_A0"]["mean"],
+        "peak_cp8_ulysses_vs_ring_speedup_x": calh2sa_gdn_rsi["track4_summary"]["max_cp8_speedup_vs_ring"],
+        "governed_round1_winner": calh2sa_gov["round1_search"]["selected_candidate_id"],
+        "governed_round2_winner": calh2sa_gov["round2_crossover"]["selected_candidate_id"],
+        "governed_confirm_iut_verdict": calh2sa_gov["confirm_iut"]["iut_decision"],
+        "governed_holdout_verdict": calh2sa_gov["holdout_verdict"]["status"],
+        "governed_holdout_score": calh2sa_gov["holdout_means"]["C5_CalH2SA_GDN"],
     }
     for schedule in (
         "geometric_1p10",
@@ -35932,6 +35974,26 @@ def make_report(root: Path) -> tuple[str, dict[str, Any]]:
             "   In `E159` (`H2SA-GDN`) and `E160` (`AdaH2SA-GDN`), Route 3 updates the fast-weight memory $\\mathbf{S}_c \\in \\mathbb{R}^{K \\times V}$ once per coarse block $c$ ($B_C = 128$ tokens) using the coarse block centroid $(\\hat{\\mathbf{k}}_c = \\boldsymbol{\\mu}_c / \\|\\boldsymbol{\\mu}_c\\|_2, \\bar{\\mathbf{v}}_c)$. Whenever two subtiles inside the same rejected block carry distinct keys $\\mathbf{k}_A \\perp \\mathbf{k}_B$ with opposite values $+\\mathbf{v}_{\\text{dip}}$ and $-\\mathbf{v}_{\\text{dip}}$ (**Dipolar Intra-Block Superposition**), the coarse-block average value vanishes identically ($\\bar{\\mathbf{v}}_c = \\frac{1}{2}(+\\mathbf{v}_{\\text{dip}} - \\mathbf{v}_{\\text{dip}}) = \\mathbf{0}$), causing **both `E159` and `E160` to collapse to `0.000000` dipolar cosine and `0.000000` retention**! By advancing $\\mathbf{S}_{c,r}$ across all $R = B_C / B_S$ subtiles inside block $c$ in registers via surprise-gated subtile Householder steps (`_orthh2sa_gdn_subtile_wy_fwd_rsi_kernel`), `OrthH2SA-GDN` (`E161`) writes $+\\hat{\\mathbf{k}}_A \\mathbf{v}_{\\text{dip}}^\\top$ on subtile $r=0$ and $-\\hat{\\mathbf{k}}_B \\mathbf{v}_{\\text{dip}}^\\top$ on subtile $r=1$ without cancellation, achieving **`0.999613` dipolar cosine alignment and `0.623854` retention** while keeping the block-level readout buffer `SHist [B, HKV, NC, K, V]` identical in size to `E159`/`E160`.",
             "2. **High-Rank Multi-Fact Phase Transition Gain (`+17.1` pp Over `E160`, `+46.6` pp Over `E159`) & Zero-Spill Subtile-Adjoint Live-Range Ordering (`148/148` Specs):**",
             "   Across the 25-cell $(M_{\\text{facts}} \\in \\{1,2,4,8,16\\}) \\times (\\Delta c \\in \\{2,4,8,12,16\\})$ phase grid, doubling the effective fast-weight update rank per block from $1$ to $R = 2$ and eliminating intra-block cross-subtile ghost terms lifts high-density multi-fact recall at $M_{\\text{facts}} = 8..16$ from `0.5137..0.7485` (`E160`) and `0.2143..0.5234` (`E159`) to **`0.6804..0.8582` (`+11.0` to `+17.1` percentage points over `E160`, `+33.5` to `+46.6` percentage points over `E159`)**. In `_orthh2sa_gdn_subtile_wy_bwd_dv_dkpart_rsi_kernel`, consuming `b_S_prev` from `SHistSub` before accumulating `dSHist_hq` into `b_F` at block boundaries ($r = 0$) maintains **`0` register spills across all `148` compiled specializations of all `16` kernels (`max_regs = 168 <= 168`)**, delivering **`3.50x–23.06x` training speedup (`23.79x` Fwd, `22.03x` Bwd, `4.33x` HBM reduction)**, **`24.16x–154.86x` decode speedup (`p50 = 0.1355–0.1391 ms`, `p95 = 0.1681–0.1737 ms`)**, **`9.88x` ($D=1024$) & `8.52x` ($D=2048$) `OrthH2SAGDNBlockRSI` stack speedup**, **`3.85x–5.19x` 8-GPU NVSwitch Ulysses `OrthH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2` across all 5 forward/backward tensors (`o, dQ, dK, dV, dg`)**, **`6.21x` ($D=1024$) / `5.31x` ($D=2048$) faster time-to-quality (`val_bpb <= 0.02`)** in `12.0s` autoresearch, and Wave-3 **`HOLDOUT_PROMOTE` at `0.9730` across all `5/5` mandatory comparators (`+0.0960` over Wave-2 Champion `AdaH2SA-GDN E160`, `one-sided LCB = +0.0902 > 0.01`, `Dipolar_IntraBlock_FactFlip = 0.9780` vs `0.5800` `E160`)**.",
+            "",
+            "## `LSE-Calibrated Centered-Residual Subtile-WY Sparse-Linear Attention (CalH2SA-GDN)` (`MoBA` `arXiv:2502.13189` + `DeepSeek-V3.2 DSA` `arXiv:2512.02556` + `Gated-DeltaNet` `arXiv:2412.06464` + `Gated DeltaProduct` `arXiv:2502.10297`) Round-36 RSI Online-Softmax LSE Rejected-Mass Calibration, Centered Residual Readout, Selected-Hit vs. Rejected-Miss Duality Identification, Bitwise-Exact `CalH2SA-GDN-CP = 8`, & Governed Loop Optimization (`v3.8`) Wave-4 Tournament (`B10` Unsealed Holdout) (E162)",
+            "",
+            "(3 process repetitions on 8x NVIDIA A100-SXM4-80GB; byte-identical immutable `eval_harness_sha256 = 3cf0f07831179f46...`, `governed_loop_guard.py v3.8` Wave-4 `manifest_root_sha256 = ef6777f50fdac05f...`, `0` spills across `100%` of compiled specializations `157/157` over `18` Triton kernels, `max_regs = 168 <= 168`, `max_smem = 40,960 B`)",
+            "",
+            "| Track / Suite | Baseline (`Upstream MoBA` / `DSA E157` / `MoBA E158` / `H2SA-GDN E159` / `AdaH2SA-GDN E160` / `OrthH2SA-GDN E161`) | Promoted Round-36 Winner (`C5_CalH2SA_GDN` / `CalH2SAGDNBlockRSI`) | 3-Rep Median / IUT Metric | Speedup / Improvement | Key Hardware / Algorithmic Mechanism |",
+            "| --- | --- | --- | --- | --- | --- |",
+            "| Track 1A Differentiable `FP64` `calh2sa_gdn_fp64_oracle` Parity, 3-Mutation Kill Gate, & Selected-Hit vs. Rejected-Miss Duality Identification | Uncalibrated `OrthH2SA-GDN E161` (`SelectedHit_Poison fidelity = 0.931919`, `poison_leakage_ratio = 0.527046`; `RejectedMiss_Rescue retention = 0.061882`); `AdaH2SA-GDN E160` (`Dipolar cosine = 0.0000`) | `calh2sa_gdn_fp64_oracle` + `parallel_calh2sa_gdn_rsi` ($\\hat{m}_t = \\sigma(g_t - \\eta_{\\text{LSE}}(\\operatorname{sg}(L_t) - \\tau_{\\text{LSE}}))$, $\\mathbf{y}_t = \\mathbf{o}_{\\text{sel},t} + \\hat{m}_t(\\mathbf{S}_{c_q}^\\top\\hat{\\mathbf{q}}_t - \\rho_{\\text{center}}\\mathbf{o}_{\\text{sel},t})$) | `FP32 max_rel_l2 = 8.21e-7 < 1e-6`, `BF16 max_rel_l2 = 3.39e-3 <= 5e-3`; `3/3` (`100%`) mutations killed (`M1 = 0.388`, `M2 = 0.287`, `M3 = 1.000`); `SelectedHit_Poison fidelity = 0.996345`, `poison_leakage_ratio = 0.086215` | **`6.11x` lower Selected-Hit poison leakage (`+6.44` pp fidelity vs `E161`), `1.58x` higher Rejected-Miss retention (`0.0975` vs `0.0619`), & `0.9977` dipolar cosine** | Base-2-to-natural LSE calibration (`b_lse * ln(2)`) + centered residual injection + exact `(1 - rho * m_hat)` `dO_sel` backward scaling |",
+            "| Track 1B SM80 Compiler Register, Spill, & SMEM Audit + 12-Shape Training Forward/Backward Matrix (`B=2, T \\in \\{1024, 2048, 4096\\}, H_Q=16, H_{KV} \\in \\{4, 16\\}, K=V \\in \\{64, 128\\}$) | Eager PyTorch MoBA + Subtile-WY Centered Readout (`17.940..36.084 ms`) & Uncalibrated `OrthH2SA-GDN E161` (`0.974..11.883 ms`) | `18` Zero-Spill Round-36 RSI Triton Kernels (`_calh2sa_prep_mhat_rsi_kernel` `17` regs, `_calh2sa_gdn_readout_inject_fwd_rsi_kernel` `166` regs, `_calh2sa_scale_do_sel_rsi_kernel` `56` regs; `1.052..11.913 ms`) | **`0` cubin spills across all `18` kernels / `157` specializations**, `max_regs = 168 <= 168`, `max_smem = 40,960 B`; `< 0.5%` median runtime delta vs `E161` at $T \\ge 2048$ | **`3.03x–17.10x` Total speedup (`15.20x` Fwd, `18.77x` Bwd) & `2.40x–4.00x` HBM traffic reduction** | Decoupling 1D `_calh2sa_prep_mhat_rsi_kernel` drops `_calh2sa_gdn_readout_inject_fwd_rsi_kernel` from `188` to `166` regs (`0` spills) |",
+            "| Track 1C Single-Pass Subtile-WY Decode Latency (`p50`/`p95`) & KV-Cache Bandwidth (`calh2sa_gdn_decode_rsi`, $T_q=1, B \\in \\{1, 4, 8\\}, T_{\\text{cache}} \\in \\{1024, 2048, 4096\\}, H_Q=16, H_{KV}=4, K=128$) | Full-Chunk `parallel_calh2sa_gdn_rsi` Prefill (`0.474..24.725 ms`) | `calh2sa_gdn_decode_rsi` (`p50 = 0.1367–0.1421 ms`, `p95 = 0.1734–0.1855 ms`) | Flat **`~0.14 ms` `p50` latency across all batch sizes and cache lengths** & **`5.57x` KV-byte traffic reduction** at $T_{\\text{cache}}=4096$ | **`3.23x–167.73x` faster than Chunk-Prefill** | 3-launch adaptive gate bitmask + sparse subtile readout + $O(1)$ $\\mathbf{S}_{\\text{final}}$ injection |",
+            "| Track 2 & Track 3 `CalH2SAGDNBlockRSI` 5-Stage Ablation (`A0 -> A4`) & 25-Cell Joint Selected-Hit + Rejected-Miss + Dipolar Recall Matrix ($M_{\\text{facts}} \\in \\{1,2,4,8,16\\} \\times \\Delta c \\in \\{1,2,4,8,12\\}$) | `Stage A0` (`44.676 ms` at $D=1024$; `44.551 ms` at $D=2048$); Uncalibrated `OrthH2SA-GDN E161` suffers Selected-Hit poison leakage across mixed queries | `Stage A4` (`5.669 ms` at $D=1024$; `6.430 ms` at $D=2048$); `CalH2SA-GDN E162` improves joint Selected-Hit + Rejected-Miss recall over `E161` across `21/25` cells | Monotonic `A0 -> A4` speedup & up to **`+2.26` pp recall gain over `E161` on mixed Selected-Hit + Dipolar cells** | **`7.88x` ($D=1024$) & `6.93x` ($D=2048$) 2-layer Transformer block speedup** | LSE-calibrated gate suppresses poison when selected subtiles match the query |",
+            "| Track 4 & Track 5 Bitwise-Exact 8-GPU NVSwitch Context Parallelism (`CalH2SA-GDN-CP = 8`, $B=2, T_{\\text{total}} \\in \\{4096, 8192\\}, H_Q=32, H_{KV}=8, K \\in \\{64, 128\\}$) & 4-Layer Hybrid Convergence | 8-GPU Ring Baseline (`12.670..14.538 ms`); Uncalibrated `E159`/`E161` 4-layer models (`57.71` / `43.10 bpb`) | `calh2sa_gdn_cp8_ulysses_rsi` (`3.576 / 7.542 / 4.807 ms`); 4-layer `CalH2SA-GDN` (`25.43 bpb`, `1.14x` faster than SDPA) | **Bitwise-exact `0.00e+00` `rel_l2` across all 5 forward/backward tensors (`o, dQ, dK, dV, dg`) vs single-GPU** | **`1.68x–4.03x` faster than 8-GPU Ring with `0.00e+00` `rel_l2` parity** | Exact GQA head-shard All-to-All (`HQ_local = 4, HKV_local = 1`) preserves `LSE` and `g_cal` per head |",
+            "| Track 6 `governed_loop_guard.py v3.8` Wave-4 Tournament on Fresh Unsealed `B10` Splits (`Search_W4` $\\to$ `Confirm_W4 IUT` $\\to$ `Sealed Holdout_W4`, `3,600` seed-item pairs / `24` clusters / `5` seeds across 6 strata including `SelectedHit_Poison_Immunity` & `Dipolar_IntraBlock_FactFlip`) | Mandatory Comparators (`6`): `baseline` (`0.5950`), `dsa_e157` (`0.7317`), `moba_e158` (`0.6417`), `h2sa_gdn_e159` (`0.7692`), `adah2sa_gdn_e160` (`0.8275`), and Wave-3 Champion `current_incumbent_id = orthh2sa_gdn_e161` (`0.9083` Holdout, `SelectedHit_Poison_Immunity = 0.5850`); Round-1 Proposers `W4_C1_LSEGateOnly_NoCenter` (`0.9508` R1 Winner), `W4_C2_CenterOnly_NoLSE` (`0.9208`), `W4_C3_CoarseWY_LSECal` (`0.8940`), `W4_C4_StaticBudget_LSECal` (`0.9455`) | Round-2 Crossover **`C5_CalH2SA_GDN`** (`Confirm_W4 = 0.9846`, `Holdout_W4 = 0.9846`, `SelectedHit_Poison_Immunity = 0.9963`, `Dipolar_IntraBlock_FactFlip = 0.9977`) | `check-preconditions = GO` (`MDE_80% = 0.0156`), `audit-splits = CLEAN`, `audit-leaks = CLEAN`, `gate-confirm-iut = PROMOTE` (**`6/6` comparators including `orthh2sa_gdn_e161`**), `gate-holdout = FINALIZED` (`holdout_guardrails_passed = True`), `verify-ledger = VERIFIED` | **`+0.0763` Holdout gain over Wave-3 Champion `OrthH2SA-GDN E161` (`LCB = +0.0717 > 0.01`), `+0.1571` over `AdaH2SA-GDN E160`, `+0.2154` over `H2SA-GDN E159`, `+0.2529` over `DSA E157`, and `+0.3429` over `MoBA E158`** | LSE-calibrated gate (`W4_C1`) $\\times$ centered residual readout (`W4_C2`) $\\times$ subtile-WY (`E161`) under `B10` quarantine |",
+            "",
+            "**Key E162 takeaways:**",
+            "",
+            "1. **Closing the Exact Residual Identity via Online-Softmax LSE Calibration (`6.11x` Lower Selected-Hit Poison Leakage & `1.58x` Higher Rejected-Miss Retention):**",
+            "   In `E159`–`E161`, the readout gate $g_t = \\sigma(\\mathbf{W}_g \\mathbf{x}_t)$ is a pure input-projection token prior that knows nothing about whether the sparse attention route $\\mathcal{A}_t$ actually matched $\\mathbf{q}_t$ (`Selected-Hit`, $L_t \\gg \\tau_{\\text{LSE}}$) or missed $\\mathbf{q}_t$ (`Rejected-Miss`, $L_t \\ll \\tau_{\\text{LSE}}$). Consequently, when the true target fact lies inside a selected block (`SelectedHit_Poison`), `OrthH2SA-GDN E161` still injects uncalibrated fast-weight readout (`poison_leakage_ratio = 0.5270`, degrading `selected_hit_fidelity_cos` to `0.9319`). By reusing the online-softmax log-sum-exp $L_t = \\text{lse}_{\\text{log2}, t} \\cdot \\ln 2$ already materialized by `_moba_fwd_rsi_kernel` (`0` extra attention passes) to calibrate $\\hat{m}_t = \\sigma(g_t - \\eta_{\\text{LSE}}(\\operatorname{sg}(L_t) - \\tau_{\\text{LSE}}))$ and centering the readout as $\\mathbf{y}_t = \\mathbf{o}_{\\text{sel}, t} + \\hat{m}_t(\\mathbf{S}_{c_q}^\\top\\hat{\\mathbf{q}}_t - \\rho_{\\text{center}}\\mathbf{o}_{\\text{sel}, t})$, `CalH2SA-GDN` (`E162`) suppresses Selected-Hit poison leakage by **`6.11x` (`0.5270 -> 0.0862`, lifting `selected_hit_fidelity_cos` to `0.996345`)** while simultaneously boosting Rejected-Miss rescue retention by **`1.58x` (`0.0619 -> 0.0975`, `rescue_cos = 0.998145`)** and preserving **`0.997747` dipolar intra-block cosine alignment**.",
+            "2. **Exact Centered-Residual Adjoint Scaling (`(1 - rho * m_hat) * dO`), Zero-Spill Pre-Gate Decoupling (`188 -> 166` Regs, `0` Spills Across `157` Specs), & Wave-4 `HOLDOUT_PROMOTE` (`0.9846`):**",
+            "   Differentiating $\\mathbf{y}_t = (1 - \\rho_{\\text{center}}\\hat{m}_t)\\mathbf{o}_{\\text{sel}, t} + \\hat{m}_t \\mathbf{S}_{c_q}^\\top\\hat{\\mathbf{q}}_t$ requires scaling the upstream gradient entering the sparse softmax backward pass by $\\mathrm{d}\\mathbf{o}_{\\text{sel}, t} = (1 - \\rho_{\\text{center}}\\hat{m}_t)\\mathrm{d}\\mathbf{y}_t$ (`_calh2sa_scale_do_sel_rsi_kernel`; omitting this scaling fails adversarial mutation `M2` with `rel_l2 = 0.2874`). Decoupling the LSE-calibrated gate into `_calh2sa_prep_mhat_rsi_kernel` (`17` regs) and reusing `gcal` in `_h2sa_gdn_readout_bwd_ds_rsi_kernel` / `_h2sa_gdn_readout_bwd_dq_dg_rsi_kernel` eliminates register-pressure spills (`188 -> 166` regs in forward readout and `4 -> 0` spills in backward readout), achieving **`0` cubin spills across all `157` specializations of all `18` kernels (`max_regs = 168 <= 168`, `FP32 max_rel_l2 = 8.21e-7`, `BF16 max_rel_l2 = 3.39e-3`)**, **`3.03x–17.10x` training speedup**, **`3.23x–167.73x` decode speedup**, **`1.68x–4.03x` 8-GPU NVSwitch Ulysses `CalH2SA-GDN-CP = 8` speedup over Ring with bitwise-exact `0.00e+00` `rel_l2` across `o, dQ, dK, dV, dg`**, and Wave-4 **`HOLDOUT_PROMOTE` at `0.9846` across all `6/6` mandatory comparators (`+0.0763` over Wave-3 Champion `OrthH2SA-GDN E161`, `LCB = +0.0717 > 0.01`)**.",
         ]
     )
 
@@ -36656,6 +36718,9 @@ def make_report(root: Path) -> tuple[str, dict[str, Any]]:
             "- `code/orthh2sa_gdn_rsi_kernels.py`",
             "- `code/bench_orthh2sa_gdn_rsi.py`",
             "- `code/analyze_orthh2sa_gdn_rsi.py`",
+            "- `code/calh2sa_gdn_rsi_kernels.py`",
+            "- `code/bench_calh2sa_gdn_rsi.py`",
+            "- `code/analyze_calh2sa_gdn_rsi.py`",
             "- `code/bench_transformer_training.py`",
             "- `code/bench_int8_gemm.py`",
             "- `code/bench_marlin_w4a16.py`",
@@ -36825,6 +36890,7 @@ def make_report(root: Path) -> tuple[str, dict[str, Any]]:
             "results/raw/h2sa_gdn_rsi",
             "results/raw/adah2sa_gdn_rsi",
             "results/raw/orthh2sa_gdn_rsi",
+            "results/raw/calh2sa_gdn_rsi",
             "results/raw/marlin_w4a16",
             "results/raw/moe",
             "results/raw/ep_overlap",
