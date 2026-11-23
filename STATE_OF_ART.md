@@ -4641,6 +4641,31 @@ Measured on this allocation:
   autoresearch, and **`HOLDOUT_PROMOTE` at `0.9652` (`+0.1072` over Wave-1 Champion `H2SA-GDN E159`,
   `one-sided LCB = +0.1014 > 0.01`, `Confirm IUT = 0.9652 PROMOTE` across all `4/4` comparators, all
   5 Wave-2 strata `0.9583..0.9722`)**.
+- Extending the same byte-identical frozen RSI evaluator (`SHA256 = 3cf0f078...`, Round-35
+  `PROGRAM.md` Sec. 38, E161) together with **Hardened Governed Loop Optimization Wave-3
+  (`code/governed_loop_guard.py v3.8`, `manifest_root_sha256 = 08d2d1d3...`, `B10` fresh unsealed
+  Holdout quarantine)** to **`Route-Orthogonalized Subtile-WY Dual-Route Sparse-Linear Attention
+  (OrthH2SA-GDN)`** resolved the Coarse-Block Rank-1 Fast-Weight Collapse exposed in `E160`'s
+  multi-fact phase law: (1) under frozen sparse routes and selected-block $(K, V)$ tokens,
+  disentangling opposite-sign dipolar facts $(\mathbf{k}_A, +\mathbf{v}_{\text{dip}})$ and
+  $(\mathbf{k}_B, -\mathbf{v}_{\text{dip}})$ inside the *same* rejected coarse block achieved
+  **`0.999613` dipolar cosine alignment and `0.623854` retention whereas both `E159` (`H2SA-GDN`)
+  and `E160` (`AdaH2SA-GDN`) collapse to `0.000000` (`\bar{\mathbf{v}}_c = \mathbf{0}`)**; (2)
+  doubling the fast-weight update rank per coarse block from $1$ to $R = 2$ via in-register
+  subtile-granular coupled Householder WY updates lifted high-density multi-fact recall at
+  $M_{\text{facts}} = 8..16$ by **`+11.0` to `+17.1` percentage points over `E160` (`+33.5` to
+  `+46.6` percentage points over `E159`)**; and (3) all **`16/16` Round-35 RSI Triton kernels
+  (`148` specializations)** achieved **`0` cubin spills (`max_regs = 168 <= 168`, `FP32 max_rel_l2 =
+  8.93e-7 < 1e-4`, `BF16 max_rel_l2 = 3.01e-3 < 1.5e-2`, `3/3` mutations killed)**, **`3.50x–23.06x`
+  training speedup (`23.79x` Fwd, `22.03x` Bwd, `4.33x` HBM reduction)**, **`24.16x–154.86x` decode
+  speedup (`p50 = 0.1355–0.1391 ms`, `p95 = 0.1681–0.1737 ms`)**, **`9.88x` ($D=1024$) & `8.52x`
+  ($D=2048$) `OrthH2SAGDNBlockRSI` stack speedup**, **`3.85x–5.19x` 8-GPU NVSwitch Ulysses
+  `OrthH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2` across all 5
+  forward/backward tensors (`o, dQ, dK, dV, dg`)**, **`6.21x` ($D=1024$) / `5.31x` ($D=2048$)
+  faster time-to-quality (`val_bpb <= 0.02`)** in `12s` autoresearch, and **`HOLDOUT_PROMOTE` at
+  `0.9730` across all `5/5` mandatory comparators (`+0.0960` over Wave-2 Champion `AdaH2SA-GDN
+  E160`, `one-sided LCB = +0.0902 > 0.01`, `Dipolar_IntraBlock_FactFlip = 0.9780` vs `0.5800`
+  `E160`)**.
 - Equal-split expert-dispatch all-to-all exposed a 0.096 ms intra-node and
   0.251 ms three-node launch/coordination floor.
 - Large expert-dispatch payloads reached 210.1 GB/s logical per-rank injection

@@ -1,0 +1,11 @@
+config,stage,description,B,T,D,HQ,HKV,K,fwd_ms,bwd_ms,total_ms,total_iqr_ms,peak_mib,speedup_vs_a0,mem_reduction_vs_a0,tok_per_s
+D1024_B2_T1024_H16_GQA4_K64,A0,Eager periphery + coarse MoBA baseline,2,1024,1024,16,4,64,22.3547,28.4397,52.9409,0.48,345.37,1.0,1.0,38684.7
+D1024_B2_T1024_H16_GQA4_K64,A1,Zero-spill parallel_orthh2sa_gdn_rsi + eager periphery,2,1024,1024,16,4,64,3.3449,5.2785,8.9975,0.019,239.78,5.88,1.44,227617.9
+D1024_B2_T1024_H16_GQA4_K64,A2,A1 + FusedMoBAQKRMSNormRoPEFunction,2,1024,1024,16,4,64,2.542,4.0571,6.8409,0.0659,193.91,7.74,1.78,299374.6
+D1024_B2_T1024_H16_GQA4_K64,A3,A2 + Fused qkvg_proj + FusedMoBARMSNorm + FusedMoBARMSNormSigmoidGated,2,1024,1024,16,4,64,2.1441,3.0451,5.4079,0.0298,124.88,9.79,2.77,378702.7
+D1024_B2_T1024_H16_GQA4_K64,A4,"A3 + DualRouteShare cross-layer (q_subtile_mask, qtile_mask) reuse",2,1024,1024,16,4,64,2.072,3.0732,5.3568,0.0122,124.68,9.88,2.77,382317.8
+D2048_B2_T1024_H16_GQA4_K128,A0,Eager periphery + coarse MoBA baseline,2,1024,2048,16,4,128,22.4885,28.7393,53.1487,0.3135,715.64,1.0,1.0,38533.4
+D2048_B2_T1024_H16_GQA4_K128,A1,Zero-spill parallel_orthh2sa_gdn_rsi + eager periphery,2,1024,2048,16,4,128,3.3868,6.9211,10.0387,0.0441,488.1,5.29,1.47,204010.1
+D2048_B2_T1024_H16_GQA4_K128,A2,A1 + FusedMoBAQKRMSNormRoPEFunction,2,1024,2048,16,4,128,2.7292,5.6932,8.2496,0.0228,398.1,6.44,1.8,248255.4
+D2048_B2_T1024_H16_GQA4_K128,A3,A2 + Fused qkvg_proj + FusedMoBARMSNorm + FusedMoBARMSNormSigmoidGated,2,1024,2048,16,4,128,2.1906,4.4156,6.4447,0.0095,258.16,8.25,2.77,317780.3
+D2048_B2_T1024_H16_GQA4_K128,A4,"A3 + DualRouteShare cross-layer (q_subtile_mask, qtile_mask) reuse",2,1024,2048,16,4,128,2.1063,4.4303,6.2385,0.0123,257.9,8.52,2.77,328284.3

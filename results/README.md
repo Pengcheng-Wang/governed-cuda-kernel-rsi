@@ -2086,6 +2086,42 @@ comparators including `h2sa_gdn_e159`) + `HOLDOUT_PROMOTE` (`0.9652` on fresh
 unsealed `B10` Wave-2 Holdout, `+0.1072` over Wave-1 Champion `H2SA-GDN E159`,
 `one-sided LCB = +0.1014 > 0.01`)**.
 
+Round-35 RSI (`E161`, `v152`) `Route-Orthogonalized Subtile-WY Dual-Route
+Sparse-Linear Attention (OrthH2SA-GDN), Dipolar Intra-Block
+Fact-Disentanglement Identification, High-Rank Multi-Fact Phase Law, & Governed
+Loop Optimization v3.8 Wave-3 Tournament` results are under
+`raw/orthh2sa_gdn_rsi/`. It contains the smoke verification gate
+(`smoke.json`), three independent 8-GPU process repetitions (`rep1.json`,
+`rep2.json`, `rep3.json`), the aggregated 3-rep summary
+(`orthh2sa_gdn_rsi_summary.json`), markdown report
+(`orthh2sa_gdn_rsi_report.md`), `README.md`, 7 CSV tables
+(`track1_training_matrix.csv`, `track2_decode_matrix.csv`,
+`track3_block_ablation.csv`, `track3_capacity_delay_phase.csv`,
+`track4_cp8_scaling.csv`, `track5_autoresearch.csv`,
+`track6_governed_loop_w3_tournament.csv`), and `SHA256SUMS.txt` (`14` verified
+entries) governed by `PROGRAM.md` Section 38, the byte-identical frozen
+evaluator `code/rsi_kernel_harness.py` (`SHA256 = 3cf0f078...`), and
+`code/governed_loop_guard.py v3.8` (`manifest_root_sha256 = 08d2d1d3...`). It
+resolves Coarse-Block Rank-1 Fast-Weight Collapse via in-register
+subtile-granular coupled Rank-$R$ Householder WY recurrence: (1) dipolar
+intra-block fact-disentanglement (`cosine = 0.999613`, `retention = 0.623854`
+vs `0.000000` for both `E159` and `E160` where $\bar{\mathbf{v}}_c =
+\mathbf{0}$); (2) `+11.0` to `+17.1` pp recall gain over `E160` (`+33.5` to
+`+46.6` pp over `E159`) at $M_{\text{facts}} = 8..16$; and (3) `16/16` `0`-spill
+(`148` specializations, `max_regs = 168 <= 168`) SM80 Triton kernels winning
+**`8/8` training shapes (`3.50x–23.06x` Total, `3.77x–23.79x` Fwd, `2.46x–22.03x`
+Bwd, `1.80x–4.33x` HBM reduction)**, **`24.16x–154.86x` decode speedup (`p50 =
+0.1355–0.1391 ms`, `p95 = 0.1681–0.1737 ms`)**, **`9.88x` ($D=1024$) & `8.52x`
+($D=2048$) `OrthH2SAGDNBlockRSI` stack speedup**, **`3.85x–5.19x` 8-GPU NVSwitch
+Ulysses `OrthH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2`
+across all 5 forward/backward tensors (`o, dQ, dK, dV, dg`)**, **`6.21x`
+($D=1024$) / `5.31x` ($D=2048$) faster time-to-quality (`val_bpb <= 0.02`)** in
+`12s` autoresearch, and **`PROMOTE` (`0.9730` Confirm IUT across all `5/5`
+comparators including `adah2sa_gdn_e160`) + `HOLDOUT_PROMOTE` (`0.9730` on fresh
+unsealed `B10` Wave-3 Holdout, `+0.0960` over Wave-2 Champion `AdaH2SA-GDN
+E160`, `one-sided LCB = +0.0902 > 0.01`, `Dipolar_IntraBlock_FactFlip = 0.9780`
+vs `0.5800` `E160`)**.
+
 Finite-sample prevalence certification is under
 `raw/pacing_coalescing_order_prevalence_certification/`. For every E89
 profile, kernel, and accuracy point, it computes the exact L1 distance to the
