@@ -1022,7 +1022,35 @@ A100 GPUs.
     (3) achieving Wave-4 `HOLDOUT_PROMOTE` at `0.9846` across all `6/6`
     mandatory comparators (`+0.0763` over Wave-3 Champion `OrthH2SA-GDN E161`
     `0.9083`, `one-sided LCB = +0.0717 > 0.01`, `SelectedHit_Poison_Immunity =
-    0.9963` vs `0.5850` `E161`), `E162`).
+    0.9963` vs `0.5850` `E161`), `E162`), and **Round-37 RSI (`v154`):
+    `Subspace-Complementary Orthogonal-Query Dual-Route Sparse-Linear Attention
+    (CompH2SA-GDN), Compositional Hit+Miss Duality Identification, & Governed
+    Loop Optimization v3.8 Wave-5 Tournament`** (resolving Compositional
+    Multi-Hop `Selected-Hit + Rejected-Miss` Interference by projecting each
+    query $\mathbf{q}_t$ onto the orthogonal complement of its selected-route
+    key anchor $\bar{\boldsymbol{\mu}}_{\text{sel}, t}$ ($\tilde{\mathbf{q}}_t
+    = \mathbf{q}_t - \lambda_{\text{proj}}\langle\mathbf{q}_t,
+    \bar{\boldsymbol{\mu}}_{\text{sel}, t}\rangle
+    \bar{\boldsymbol{\mu}}_{\text{sel}, t}$) and modulating LSE suppression by
+    the unexplained orthogonal query energy ratio $\rho_{\perp, t} =
+    \|\tilde{\mathbf{q}}_t\|_2 / \|\mathbf{q}_t\|_2$: (1) on compositional
+    queries $\mathbf{q}_t = 5.5\mathbf{k}_{\text{sel}} +
+    5.5\mathbf{k}_{\text{rej}}$, achieving `0.999988` rejected-hop cosine,
+    `3.36x` higher rejected-hop retention than `E162` (`0.1344` vs `0.0401`),
+    `1,061.04x` lower poison projection than `E161`, `0.999933` Selected-Hit
+    fidelity, and `+12.73` pp mean recall gain [up to `+37.25` pp at
+    $M=2,\Delta c=8$: `0.4943 -> 0.8668`] over `E162` across the 25-cell
+    compositional recall grid; (2) compiling `19/19` `0`-spill (`172`
+    specializations, `max_regs = 168 <= 168`, `FP32 max_rel_l2 = 8.42e-7`,
+    `BF16 max_rel_l2 = 3.44e-3`, `3/3` mutations killed) Round-37 RSI Triton
+    kernels achieving `2.86x–15.81x` training speedup, `3.43x–188.31x` decode
+    speedup (`p50 = 0.1381–0.1419 ms`), `7.47x` ($D=1024$) & `6.62x` ($D=2048$)
+    `CompH2SAGDNBlockRSI` speedup, and `1.70x–3.88x` 8-GPU NVSwitch Ulysses
+    `CompH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2`
+    across `o, dQ, dK, dV, dg`; and (3) achieving Wave-5 `HOLDOUT_PROMOTE` at
+    `0.9891` across all `7/7` mandatory comparators (`+0.0642` over Wave-4
+    Champion `CalH2SA-GDN E162` `0.9249`, `one-sided LCB = +0.0603 > 0.01`,
+    `Composite_HitAndMiss_MultiHop = 0.9999` vs `0.5901` `E162`), `E163`).
 
 See `EXPERIMENTS.md` for the preregistered matrix and
 `results/benchmark_report.md` for measured findings once available.

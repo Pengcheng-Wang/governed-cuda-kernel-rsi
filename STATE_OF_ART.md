@@ -4693,6 +4693,31 @@ Measured on this allocation:
   **`HOLDOUT_PROMOTE` at `0.9846` across all `6/6` mandatory comparators (`+0.0763` over Wave-3
   Champion `OrthH2SA-GDN E161` `0.9083`, `one-sided LCB = +0.0717 > 0.01`,
   `SelectedHit_Poison_Immunity = 0.9963` vs `0.5850` `E161`)**.
+- Extending the same byte-identical frozen RSI evaluator (`SHA256 = 3cf0f078...`, Round-37
+  `PROGRAM.md` Sec. 40, E163) together with **Hardened Governed Loop Optimization Wave-5
+  (`code/governed_loop_guard.py v3.8`, `manifest_root_sha256 = 1f7fc5dc...`, `B10` fresh unsealed
+  Holdout quarantine)** to **`Subspace-Complementary Orthogonal-Query Dual-Route Sparse-Linear
+  Attention (CompH2SA-GDN)`** resolved Compositional Multi-Hop (`Selected-Hit + Rejected-Miss`)
+  Interference by projecting each query $\mathbf{q}_t$ onto the orthogonal complement of its
+  selected-route key anchor $\bar{\boldsymbol{\mu}}_{\text{sel}, t}$ ($\tilde{\mathbf{q}}_t =
+  \mathbf{q}_t - \lambda_{\text{proj}}\langle\mathbf{q}_t, \bar{\boldsymbol{\mu}}_{\text{sel},
+  t}\rangle \bar{\boldsymbol{\mu}}_{\text{sel}, t}$) and modulating LSE suppression by the
+  unexplained orthogonal query energy ratio $\rho_{\perp, t} = \|\tilde{\mathbf{q}}_t\|_2 /
+  \|\mathbf{q}_t\|_2$: (1) on compositional multi-hop queries $\mathbf{q}_t = 5.5\mathbf{k}_{\text{sel}}
+  + 5.5\mathbf{k}_{\text{rej}}$, `CompH2SA-GDN` achieved **`0.999988` rejected-hop cosine, `3.36x`
+  higher rejected-hop retention than `E162` (`0.1344` vs `0.0401`), `1,061.04x` lower poison
+  projection than `E161` (`0.000288` vs `0.3054`), `0.999933` Selected-Hit fidelity, and `+12.73` pp
+  mean recall gain (up to `+37.25` pp at $M=2,\Delta c=8$: `0.4943 -> 0.8668`) over `E162` across
+  the 25-cell compositional recall grid**; (2) implementing 1D per-(token, head) forward/backward
+  subspace projection kernels (`40`/`48` regs) preserved **`0` cubin spills across all `19/19`
+  kernels (`172` specializations, `max_regs = 168 <= 168`, `FP32 max_rel_l2 = 8.42e-7 < 1e-6`, `BF16
+  max_rel_l2 = 3.44e-3 <= 5e-3`, `3/3` mutations killed)**, **`2.86x–15.81x` training speedup**,
+  **`3.43x–188.31x` decode speedup (`p50 = 0.1381–0.1419 ms`, `p95 = 0.1726–0.1818 ms`)**, **`7.47x`
+  ($D=1024$) & `6.62x` ($D=2048$) `CompH2SAGDNBlockRSI` speedup**, and **`1.70x–3.88x` 8-GPU
+  NVSwitch Ulysses `CompH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2` across `o,
+  dQ, dK, dV, dg`**; and (3) `C5_CompH2SA_GDN` achieved **`HOLDOUT_PROMOTE` at `0.9891` across all
+  `7/7` mandatory comparators (`+0.0642` over Wave-4 Champion `CalH2SA-GDN E162` `0.9249`,
+  `one-sided LCB = +0.0603 > 0.01`, `Composite_HitAndMiss_MultiHop = 0.9999` vs `0.5901` `E162`)**.
 - Equal-split expert-dispatch all-to-all exposed a 0.096 ms intra-node and
   0.251 ms three-node launch/coordination floor.
 - Large expert-dispatch payloads reached 210.1 GB/s logical per-rank injection

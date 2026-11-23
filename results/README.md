@@ -2156,6 +2156,39 @@ Wave-4 Holdout, `+0.0763` over Wave-3 Champion `OrthH2SA-GDN E161`, `one-sided
 LCB = +0.0717 > 0.01`, `SelectedHit_Poison_Immunity = 0.9963` vs `0.5850`
 `E161`)**.
 
+Round-37 RSI (`E163`, `v154`) `Subspace-Complementary Orthogonal-Query
+Dual-Route Sparse-Linear Attention (CompH2SA-GDN), Compositional Hit+Miss
+Duality Identification, & Governed Loop Optimization v3.8 Wave-5 Tournament`
+results are under `raw/comph2sa_gdn_rsi/`. It contains the smoke verification
+gate (`smoke.json`), three independent 8-GPU process repetitions (`rep1.json`,
+`rep2.json`, `rep3.json`), the aggregated 3-rep summary (`summary_3rep.json`
+and `comph2sa_gdn_rsi_summary.json`), markdown report
+(`comph2sa_gdn_rsi_report.md`), `README.md`, 5 CSV tables
+(`track1_training_matrix.csv`, `track2_decode_latency.csv`,
+`track3_block_ablation.csv`, `track3_compositional_recall_phase_law.csv`,
+`track4_cp8_scaling.csv`), and `SHA256SUMS.txt` (`13` verified entries)
+governed by `PROGRAM.md` Section 40, the byte-identical frozen evaluator
+`code/rsi_kernel_harness.py` (`SHA256 = 3cf0f078...`), and
+`code/governed_loop_guard.py v3.8` (`manifest_root_sha256 = 1f7fc5dc...`). It
+resolves Compositional Multi-Hop (`Selected-Hit + Rejected-Miss`) Interference
+via selected-route subspace orthogonalization and unexplained-query-energy LSE
+modulation: (1) `3.36x` higher Compositional Rejected-Hop retention than `E162`
+(`0.1344` vs `0.0401`, `rejected_hop_cos = 0.999988`), `1,061.04x` lower poison
+projection than `E161`, `0.999933` Selected-Hit fidelity, and `+12.73` pp mean
+recall gain (up to `+37.25` pp at $M=2,\Delta c=8$: `0.4943 -> 0.8668`) over
+`E162` across the 25-cell compositional recall grid; (2) `19/19` `0`-spill
+(`172` specializations, `max_regs = 168 <= 168`, `FP32 max_rel_l2 = 8.42e-7`,
+`BF16 max_rel_l2 = 3.44e-3`) SM80 Triton kernels achieving **`2.86x–15.81x`
+training speedup (`2.40x–4.00x` HBM reduction)**, **`3.43x–188.31x` decode
+speedup (`p50 = 0.1381–0.1419 ms`)**, **`7.47x` ($D=1024$) & `6.62x` ($D=2048$)
+`CompH2SAGDNBlockRSI` speedup**, and **`1.70x–3.88x` 8-GPU NVSwitch Ulysses
+`CompH2SA-GDN-CP = 8` speedup over Ring with exact `0.00e+00` `rel_l2` across
+`o, dQ, dK, dV, dg`**; and (3) **`PROMOTE` (`0.9891` Confirm IUT across all
+`7/7` comparators including `calh2sa_gdn_e162`) + `HOLDOUT_PROMOTE` (`0.9891`
+on fresh unsealed `B10` Wave-5 Holdout, `+0.0642` over Wave-4 Champion
+`CalH2SA-GDN E162`, `one-sided LCB = +0.0603 > 0.01`,
+`Composite_HitAndMiss_MultiHop = 0.9999` vs `0.5901` `E162`)**.
+
 Finite-sample prevalence certification is under
 `raw/pacing_coalescing_order_prevalence_certification/`. For every E89
 profile, kernel, and accuracy point, it computes the exact L1 distance to the
